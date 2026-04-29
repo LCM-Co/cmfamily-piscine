@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <meta name="last-decision-id" content="P01-pompe">
+  <meta name="last-decision-title" content="Choix de la pompe principale (Pentair Intelliflo ou alternative)">
 </head>
 <body>
   <header class="site-header">
@@ -26,6 +28,14 @@
       </nav>
     </div>
   </header>
+
+  <div class="notif-banner">
+    <div class="container">
+      <span>🔔 <strong>Décision en cours :</strong> Choix de la pompe principale</span>
+      <a href="decisions.html#decision-current">Voir la décision →</a>
+      <button class="btn-subscribe" data-subscribe-btn type="button">🔔 S'abonner aux alertes</button>
+    </div>
+  </div>
 
   <section class="hero">
     <div class="container">
@@ -152,5 +162,6 @@
       <p>Site mis à jour automatiquement à chaque modification du modèle</p>
     </div>
   </footer>
+  <script src="assets/js/notify.js" defer></script>
 </body>
 </html>

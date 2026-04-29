@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <meta name="last-decision-id" content="P01-pompe">
+  <meta name="last-decision-title" content="Choix de la pompe principale (Pentair Intelliflo ou alternative)">
 </head>
 <body>
   <header class="site-header">
@@ -33,8 +35,71 @@
       <p style="color: var(--c-fg-soft); font-size: 1.05rem;">
         Toutes les décisions tranchées sur le projet, classées par catégorie.
         Chaque décision indique le choix fait, le rationale, et les détails techniques.
-        <strong>25 décisions consolidées au 27 avril 2026.</strong>
       </p>
+
+      <!-- ───────────────────────────────────────────────
+           DÉCISION EN COURS (modifier ce bloc à chaque nouvelle décision ouverte)
+           Mettre à jour aussi <meta name="last-decision-id"> en haut de page
+           pour déclencher la notification aux abonnés.
+           ─────────────────────────────────────────────── -->
+      <div class="decision-current" id="decision-current">
+        <h2>Choix de la pompe principale</h2>
+        <div class="meta">Ouverte le 29 avril 2026 · Mise à jour aujourd'hui</div>
+
+        <div class="description">
+          <p>
+            La D12 prévoit une <strong>Pentair Intelliflo à variation de vitesse</strong>
+            avec débit nominal 47 m³/h. Avant de commander, on doit confirmer le choix
+            de la pompe et de son sourcing. Trois options :
+          </p>
+          <ul>
+            <li><strong>Pentair Intelliflo VSF</strong> — le standard premium, importée
+              depuis la Réunion, ~3 200 € pose comprise. SAV bien organisé.</li>
+            <li><strong>Davey ProMaster ECO</strong> — qualité australienne, importée
+              depuis Maurice, ~2 600 €. SAV moins documenté en zone sud-ouest océan Indien.</li>
+            <li><strong>Astralpool VS Connect</strong> — milieu de gamme espagnole,
+              ~2 100 €, mais durée de vie moindre en climat tropical salin (3-5 ans vs 8-10).</li>
+          </ul>
+          <p>Avis attendu sur : préférence marque, budget acceptable, avis sur SAV local.</p>
+        </div>
+
+        <div class="status-row">
+          <span class="status-chip active"><span class="dot"></span> En cours</span>
+          <span class="status-chip"><span class="dot"></span> À discuter</span>
+          <span class="status-chip"><span class="dot"></span> Prise</span>
+        </div>
+
+        <div class="actions-row">
+          <a href="https://forms.gle/PLACEHOLDER_FORM_AVIS"
+             target="_blank" rel="noopener" class="btn">
+            💬 Donner mon avis
+          </a>
+          <a href="https://forms.gle/PLACEHOLDER_FORM_DISCUSS"
+             target="_blank" rel="noopener" class="btn btn-secondary">
+            ❓ Demander à en discuter
+          </a>
+          <button class="comments-toggle"
+                  data-toggle-comments
+                  data-target="#comments-P01">
+            👁 Voir les commentaires
+          </button>
+        </div>
+
+        <div id="comments-P01" class="comments-panel">
+          <h4>Commentaires reçus de la famille</h4>
+          <p style="font-size: 0.92rem; color: var(--c-fg-soft); margin-bottom: 16px;">
+            Pour ajouter un commentaire, utilisez le formulaire ci-dessous.
+            Les retours sont synthétisés ici à chaque mise à jour.
+          </p>
+          <iframe
+            src="https://docs.google.com/forms/d/e/PLACEHOLDER_FORM_COMMENTS/viewform?embedded=true"
+            title="Commentaires sur la décision en cours">
+            Chargement…
+          </iframe>
+        </div>
+      </div>
+
+      <hr>
 
       <h2>Géométrie et structure</h2>
 
@@ -105,7 +170,16 @@
         </div>
       </div>
 
-      <h2>Hydraulique et équipements</h2>
+      <div class="section-pending">
+        <div class="header">
+          <h2>Hydraulique et équipements</h2>
+          <span class="badge badge-warning">⚠ À valider</span>
+        </div>
+        <div class="info">
+          Ces 7 décisions (D08 à D14) sont des propositions de l'équipe technique
+          mais n'ont pas encore été validées par la famille. Elles seront discutées
+          dans les prochaines semaines.
+        </div>
 
       <div class="decision">
         <span class="num">D08</span>
@@ -172,8 +246,17 @@
           PAC inutile.
         </div>
       </div>
+      </div><!-- /section-pending Hydraulique -->
 
-      <h2>Pièces à sceller et électricité</h2>
+      <div class="section-pending">
+        <div class="header">
+          <h2>Pièces à sceller et électricité</h2>
+          <span class="badge badge-warning">⚠ À valider</span>
+        </div>
+        <div class="info">
+          Ces 2 décisions (D15 et D16) dépendent du choix final de la pompe et
+          de l'architecture hydraulique. Elles seront tranchées en même temps.
+        </div>
 
       <div class="decision">
         <span class="num">D15</span>
@@ -197,6 +280,7 @@
           Transformateur 12V dans local technique.
         </div>
       </div>
+      </div><!-- /section-pending Pièces à sceller -->
 
       <h2>Aménagements lounge</h2>
 
@@ -277,13 +361,22 @@
         </div>
       </div>
 
-      <div class="decision">
-        <span class="num">D24</span>
-        <h4>Couverture</h4>
-        <div class="body">
-          <strong>Bâche à bulles manuelle</strong>, surface couvrante 132,8 m².
-          Économies eau (évaporation -90 % = critique en climat tropical chaud).
-          Coût indicatif ~10 €/m² × 133 = ~1 300 €.
+      <div class="section-pending">
+        <div class="header">
+          <h3 style="margin: 0; color: #a05a00;">D24 — Couverture <span class="badge badge-warning" style="margin-left: 8px;">⚠ À valider</span></h3>
+        </div>
+        <div class="info">
+          Choix de la couverture (bâche à bulles manuelle vs volet automatique vs
+          aucune couverture) à confirmer par la famille.
+        </div>
+        <div class="decision" style="margin-bottom: 0;">
+          <span class="num">D24</span>
+          <h4>Couverture (proposition)</h4>
+          <div class="body">
+            <strong>Bâche à bulles manuelle</strong>, surface couvrante 132,8 m².
+            Économies eau (évaporation -90 % = critique en climat tropical chaud).
+            Coût indicatif ~10 €/m² × 133 = ~1 300 €.
+          </div>
         </div>
       </div>
 
@@ -363,5 +456,6 @@
       <p>Piscine Lennon · Mahajanga · Suivi de projet familial</p>
     </div>
   </footer>
+  <script src="assets/js/notify.js" defer></script>
 </body>
 </html>
