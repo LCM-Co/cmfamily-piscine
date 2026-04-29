@@ -1,0 +1,353 @@
+/* Espace technique — styles dédiés */
+
+.tech-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid var(--c-line);
+  margin: 28px 0 0;
+}
+
+.tech-tab {
+  padding: 12px 24px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--c-fg-soft);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tech-tab:hover { color: var(--c-fg); }
+
+.tech-tab.active {
+  color: var(--c-blue-lago-deep);
+  border-bottom-color: var(--c-blue-lago-deep);
+  font-weight: 600;
+}
+
+.badge-count {
+  background: var(--c-blanc);
+  color: var(--c-fg-soft);
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+.tech-tab.active .badge-count {
+  background: var(--c-blue-lago-deep);
+  color: white;
+}
+
+.tech-panel {
+  padding-top: 28px;
+}
+
+.tech-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.tech-panel-head h2 { margin: 0; }
+.tech-panel-head .hint {
+  font-size: 0.88rem;
+  color: var(--c-fg-soft);
+}
+
+.tech-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 22px;
+  padding: 12px 14px;
+  background: var(--c-blanc);
+  border-radius: 10px;
+  border: 1px solid var(--c-line);
+}
+.tech-filter-bar .label {
+  font-size: 0.85rem;
+  color: var(--c-fg-soft);
+  align-self: center;
+  margin-right: 4px;
+}
+
+/* — Liste des threads — */
+.threads-list { display: flex; flex-direction: column; gap: 10px; }
+
+.thread-card {
+  background: white;
+  border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-blue-lago);
+  border-radius: 10px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: baseline;
+}
+.thread-card:hover {
+  border-color: var(--c-blue-lago-deep);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+.thread-card.private { border-left-color: #a05a00; background: #fffdf8; }
+.thread-card.closed { opacity: 0.6; border-left-color: #888; }
+
+.thread-card .domain-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: var(--c-blanc);
+  color: var(--c-fg-soft);
+}
+.thread-card .title {
+  flex: 1 1 240px;
+  font-weight: 600;
+  color: var(--c-fg);
+}
+.thread-card .meta {
+  font-size: 0.82rem;
+  color: var(--c-fg-soft);
+}
+.thread-card .privacy {
+  font-size: 0.74rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #fff3dd;
+  color: #a05a00;
+  border: 1px solid #f0c47a;
+}
+.thread-card.public-thread .privacy {
+  background: #e8f0e3;
+  color: #2a5a2a;
+  border-color: #a8c89a;
+}
+
+/* — Détail thread (modal en plein écran) — */
+.thread-detail {
+  position: fixed;
+  inset: 0;
+  background: rgba(20,20,24,0.6);
+  z-index: 9990;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 20px;
+  animation: dec-fade-in 0.15s ease-out;
+}
+.thread-detail-inner {
+  background: white;
+  border-radius: 14px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.thread-detail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--c-line);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.thread-detail-head h3 {
+  margin: 0;
+  font-family: var(--f-sans);
+  font-size: 1.2rem;
+  color: var(--c-blue-lago-deep);
+  flex: 1 1 200px;
+}
+.thread-detail-close {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: var(--c-fg-soft);
+  width: 32px;
+  height: 32px;
+}
+
+.messages-stream {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  background: var(--c-blanc);
+}
+.message-card {
+  background: white;
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  max-width: 90%;
+}
+.message-card.from-claude {
+  border-left: 3px solid var(--c-blue-lago);
+}
+.message-card.from-lennon {
+  border-left: 3px solid #d18a3a;
+  margin-left: auto;
+  background: #fff8ec;
+}
+.message-card .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.84rem;
+  margin-bottom: 6px;
+  color: var(--c-fg-soft);
+}
+.message-card .head strong { color: var(--c-fg); }
+.message-card .body {
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+.message-card .body p { margin: 0 0 8px; }
+.message-card .body p:last-child { margin-bottom: 0; }
+.message-card .body code {
+  background: var(--c-blanc);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+.message-card .body pre {
+  background: var(--c-blanc);
+  padding: 10px 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.86em;
+}
+
+.message-form {
+  border-top: 1px solid var(--c-line);
+  padding: 14px 20px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.message-form-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.message-form input[type="text"] {
+  flex: 0 0 140px;
+  padding: 8px 12px;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.92rem;
+}
+.message-form textarea {
+  flex: 1;
+  min-height: 60px;
+  max-height: 200px;
+  padding: 8px 12px;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.94rem;
+  resize: vertical;
+}
+.message-form button {
+  background: var(--c-blue-lago-deep);
+  color: white;
+  border: none;
+  padding: 0 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.message-form button:disabled { opacity: 0.6; cursor: wait; }
+
+/* — Liste des études — */
+.studies-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.study-card {
+  background: white;
+  border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-blue-lago);
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.study-card:hover {
+  border-color: var(--c-blue-lago-deep);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+.study-card.validated { border-left-color: var(--c-zen, #2a5a2a); background: #f8faf5; }
+.study-card.review { border-left-color: #d18a3a; background: #fffdf8; }
+.study-card.obsolete { opacity: 0.55; }
+
+.study-card .domain-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--c-fg-soft);
+  margin-bottom: 6px;
+}
+.study-card .title {
+  font-family: var(--f-sans);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--c-fg);
+  margin: 0 0 6px;
+  line-height: 1.35;
+}
+.study-card .status-badge {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 4px;
+}
+.study-card .status-badge.draft { background: #fff3dd; color: #a05a00; border: 1px solid #f0c47a; }
+.study-card .status-badge.review { background: #e3eef8; color: #2a4a6a; border: 1px solid #a0c0e0; }
+.study-card .status-badge.validated { background: #e8f0e3; color: #2a5a2a; border: 1px solid #a8c89a; }
+.study-card .status-badge.obsolete { background: #efefef; color: #555; border: 1px solid #ccc; }
+
+.empty-state {
+  text-align: center;
+  color: var(--c-fg-soft);
+  padding: 40px;
+  font-style: italic;
+}
+
+@media (max-width: 720px) {
+  .tech-tabs { overflow-x: auto; }
+  .tech-tab { white-space: nowrap; padding: 10px 14px; font-size: 0.92rem; }
+  .tech-panel-head { flex-direction: column; align-items: stretch; }
+  .thread-card { flex-direction: column; align-items: flex-start; }
+  .message-form-row { flex-direction: column; }
+  .message-form input[type="text"] { flex: none; }
+  .studies-list { grid-template-columns: 1fr; }
+  .thread-detail { padding: 0; }
+  .thread-detail-inner { border-radius: 0; max-height: 100vh; }
+}

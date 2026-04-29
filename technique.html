@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Technique — Chan Ming POOL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/technique.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        Chan Ming POOL
+        <small>Mahajanga · Madagascar</small>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">Accueil</a>
+        <a href="modele-3d.html">Modèle 3D</a>
+        <a href="specifications.html">Spécifications</a>
+        <a href="plans.html">Plan</a>
+        <a href="decisions.html">Décisions</a>
+        <a href="technique.html" class="active">Technique</a>
+        <a href="chantier.html">Chantier</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container-narrow">
+      <h1>Espace technique</h1>
+      <p style="color: var(--c-fg-soft); font-size: 1.05rem;">
+        Zone de travail entre Lennon et Claude pour les choix techniques du
+        projet : <strong>structure</strong>, <strong>hydraulique</strong>,
+        <strong>électricité</strong>, <strong>traitement de l'eau</strong>,
+        <strong>tests qualité</strong>. Deux outils :
+        <strong>💬 Discussions</strong> pour échanger sur des sujets ouverts,
+        <strong>📐 Études</strong> pour les fiches de calculs et vérifications.
+      </p>
+
+      <!-- Onglets -->
+      <div class="tech-tabs" role="tablist">
+        <button class="tech-tab active" data-tab="discussions" role="tab" aria-selected="true">
+          💬 Discussions <span class="badge-count" id="discussions-count"></span>
+        </button>
+        <button class="tech-tab" data-tab="studies" role="tab" aria-selected="false">
+          📐 Études <span class="badge-count" id="studies-count"></span>
+        </button>
+      </div>
+
+      <!-- Onglet Discussions -->
+      <section class="tech-panel" id="panel-discussions" role="tabpanel">
+        <div class="tech-panel-head">
+          <h2>Discussions techniques</h2>
+          <button class="btn" id="btn-new-thread">➕ Nouvelle discussion</button>
+        </div>
+
+        <div class="tech-filter-bar">
+          <span class="label">Filtrer par domaine :</span>
+          <button class="filter-chip active" data-filter="all">Tous</button>
+          <button class="filter-chip" data-filter="structure">🏗 Structure</button>
+          <button class="filter-chip" data-filter="hydraulique">💧 Hydraulique</button>
+          <button class="filter-chip" data-filter="electricite">⚡ Électricité</button>
+          <button class="filter-chip" data-filter="traitement_eau">🧪 Traitement eau</button>
+          <button class="filter-chip" data-filter="etancheite">🛡 Étanchéité</button>
+          <button class="filter-chip" data-filter="tests_qualite">✅ Tests qualité</button>
+          <button class="filter-chip" data-filter="general">💭 Général</button>
+        </div>
+
+        <div class="threads-list" id="threads-list">
+          <p class="empty-state">Chargement…</p>
+        </div>
+      </section>
+
+      <!-- Onglet Études -->
+      <section class="tech-panel" id="panel-studies" role="tabpanel" hidden>
+        <div class="tech-panel-head">
+          <h2>Études et fiches de calcul</h2>
+          <span class="hint">37 fiches de référence pré-instanciées · cliquez pour ouvrir et compléter</span>
+        </div>
+
+        <div class="tech-filter-bar">
+          <span class="label">Filtrer par domaine :</span>
+          <button class="filter-chip active" data-study-filter="all">Tous</button>
+          <button class="filter-chip" data-study-filter="structure">🏗 Structure</button>
+          <button class="filter-chip" data-study-filter="hydraulique">💧 Hydraulique</button>
+          <button class="filter-chip" data-study-filter="electricite">⚡ Électricité</button>
+          <button class="filter-chip" data-study-filter="traitement_eau">🧪 Traitement eau</button>
+          <button class="filter-chip" data-study-filter="tests_qualite">✅ Tests qualité</button>
+        </div>
+
+        <div class="studies-list" id="studies-list">
+          <p class="empty-state">Chargement…</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Chan Ming POOL · Mahajanga · Suivi de projet familial</p>
+    </div>
+  </footer>
+  <script src="assets/js/notify.js" defer></script>
+  <script src="assets/js/technique.js" defer></script>
+</body>
+</html>
