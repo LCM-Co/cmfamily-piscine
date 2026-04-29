@@ -24,10 +24,10 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 // ─────────────────────────────────────────────────────────────────────
-// TODO: replace with anon public key (clé publique Supabase, safe en clair)
+// Clés publiques Supabase — safe en clair (RLS protège les données)
 // ─────────────────────────────────────────────────────────────────────
 export const SUPABASE_URL = "https://dfedxlqcbrhbxrxwspru.supabase.co";
-export const SUPABASE_ANON_KEY = "REPLACE_WITH_ANON_PUBLIC_KEY";
+export const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRmZWR4bHFjYnJoYnhyeHdzcHJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NzcwODIsImV4cCI6MjA5MzA1MzA4Mn0.ksGH-nq3ZGNYtSvHgaxIitVdEy78jCnksT8qHqqo2qI";
 
 let _client = null;
 
