@@ -200,22 +200,29 @@
     function renderPinned(pinnedMsg) {
       pinnedWrap.innerHTML = "";
       if (!pinnedMsg) return;
-      pinnedWrap.append(el("div", { className: "pinned-block-inner" },
+      const inner = el("div", { className: "pinned-block-inner collapsed" });
+      const toggleBtn = el("button", {
+        className: "btn-pinned-toggle",
+        title: "Déplier / replier la conclusion",
+        onclick: () => {
+          inner.classList.toggle("collapsed");
+          toggleBtn.textContent = inner.classList.contains("collapsed") ? "Voir le détail ▾" : "Replier ▴";
+        }
+      }, "Voir le détail ▾");
+
+      inner.append(
         el("div", { className: "pinned-head" },
           el("span", { className: "pinned-icon" }, "📌"),
           el("strong", {}, "Conclusion qui fait foi"),
           el("span", { className: "pinned-meta" },
-            "épinglée par " + (_thread.pinned_by || "?") + " · " + fmtDate(_thread.pinned_at)),
+            "par " + (pinnedMsg.author || "?") + " · " + fmtDate(pinnedMsg.created_at)),
+          toggleBtn,
           el("button", { className: "btn-unpin",
             title: "Désépingler", onclick: () => togglePin(pinnedMsg.id) }, "✕"),
         ),
-        el("div", { className: "pinned-author" },
-          el("strong", {}, pinnedMsg.author),
-          " · ",
-          el("span", {}, fmtDate(pinnedMsg.created_at))
-        ),
         el("div", { className: "pinned-body", html: mdToHtml(pinnedMsg.body_md) })
-      ));
+      );
+      pinnedWrap.append(inner);
     }
 
     function renderMessages(msgs) {
