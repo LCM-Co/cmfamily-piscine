@@ -358,11 +358,15 @@
   }
 
   // ─── Bootstrap : pour chaque décision, charge l'état et câble les actions ───
+  // Cache global de l'état courant pour pouvoir recompter après chaque action
+  const _currentStates = {};
+
   async function init() {
     const allDecisions = Array.from(document.querySelectorAll('.decision[id^="dec-"]'));
     if (!allDecisions.length) return;
 
     const states = await fetchAll();
+    Object.assign(_currentStates, states);
 
     for (const decisionEl of allDecisions) {
       const id = decisionEl.id; // "dec-D31"
@@ -383,6 +387,9 @@
         renderLedger(ledgerEl, newState);
         const status = effectiveStatus(decisionEl, newState);
         buildActions(decisionEl, decId, status, refresh);
+        // Met à jour le cache et recompte les bandeaux
+        if (newState) _currentStates[decId] = newState;
+        updateCounters(_currentStates);
       };
 
       applyStatusOverride(decisionEl, state);
@@ -396,21 +403,39 @@
   }
 
   function updateCounters(states) {
-    // Recompte les compteurs des bandeaux famille / constructeur d'après l'état Redis
+    // Recompte les compteurs et masque/affiche les cartes des bandeaux famille / constructeur
     const decisions = Array.from(document.querySelectorAll('.decision[data-decideur]'));
     const stats = { famille: { todo: 0, discussing: 0, done: 0, archived: 0 },
                     constructeur: { todo: 0, discussing: 0, done: 0, archived: 0 } };
+    const statusById = {};
     for (const d of decisions) {
       const decideur = d.dataset.decideur;
-      if (!stats[decideur]) continue;
       const id = (d.id || "").replace(/^dec-/, "");
       const override = states[id];
       let st;
       if (override && override.status) st = override.status;
       else st = effectiveStatus(d, null);
-      if (stats[decideur][st] === undefined) stats[decideur].discussing++;
-      else stats[decideur][st]++;
+      statusById[id] = st;
+      if (stats[decideur] && stats[decideur][st] !== undefined) stats[decideur][st]++;
+      else if (stats[decideur]) stats[decideur].discussing++;
     }
+
+    // Masquer les action-cards des décisions qui ne sont plus en todo
+    const cards = document.querySelectorAll(".action-required .action-card");
+    for (const card of cards) {
+      const href = card.getAttribute("href") || "";
+      const id = href.replace(/^#dec-/, "");
+      const st = statusById[id];
+      card.style.display = (st === "todo") ? "" : "none";
+    }
+
+    // Masquer le bandeau entier si plus aucune carte visible
+    document.querySelectorAll(".action-required").forEach(section => {
+      const visibleCards = Array.from(section.querySelectorAll(".action-card"))
+        .filter(c => c.style.display !== "none");
+      section.style.display = visibleCards.length === 0 ? "none" : "";
+    });
+
     const fam = stats.famille;
     const con = stats.constructeur;
     const famLead = document.querySelector(".action-famille .lead");
