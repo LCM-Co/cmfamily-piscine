@@ -1,4 +1,4 @@
-/* Piscine Lennon — système de notifications navigateur natif
+/* Chan Ming POOL — système de notifications navigateur natif
    Détecte une nouvelle décision via la balise <meta name="last-decision-id">
    et affiche une notification système si l'utilisateur a accordé la permission.
 */
@@ -50,7 +50,7 @@
     }
     if (Notification.permission === "granted") {
       setSubscribed(true);
-      new Notification("Piscine Lennon", {
+      new Notification("Chan Ming POOL", {
         body: "Vous êtes inscrit aux alertes du projet.",
         icon: "/favicon.png"
       });
@@ -63,7 +63,7 @@
     const perm = await Notification.requestPermission();
     if (perm === "granted") {
       setSubscribed(true);
-      new Notification("Piscine Lennon", {
+      new Notification("Chan Ming POOL", {
         body: "C'est parti — vous recevrez les nouvelles décisions ici.",
         icon: "/favicon.png"
       });
@@ -74,9 +74,16 @@
     const current = metaValue();
     if (!current) return;
     const lastSeen = localStorage.getItem(STORAGE_KEY);
-    if (current === lastSeen) return;
+    if (current === lastSeen) {
+      // Décision déjà vue : atténuer le bandeau accueil
+      document.querySelectorAll(".notif-banner").forEach(b => {
+        b.style.opacity = "0.55";
+        b.dataset.alreadySeen = "1";
+      });
+      return;
+    }
     if (isSubscribed() && lastSeen) {
-      new Notification("Piscine Lennon — Nouvelle décision", {
+      new Notification("Chan Ming POOL — Nouvelle décision", {
         body: metaTitle(),
         icon: "/favicon.png",
         tag: "piscine-decision",
@@ -88,8 +95,13 @@
 
   function toggleComments(e) {
     e.preventDefault();
-    const panel = document.querySelector(e.target.dataset.target);
-    if (panel) panel.classList.toggle("open");
+    const btn = e.currentTarget;
+    const panel = document.querySelector(btn.dataset.target);
+    if (panel) {
+      const isOpen = panel.classList.toggle("open");
+      btn.textContent = isOpen ? "🙈 Masquer les commentaires" : "👁 Voir les commentaires";
+      btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    }
   }
 
   document.addEventListener("DOMContentLoaded", () => {

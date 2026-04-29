@@ -1,4 +1,4 @@
-# Piscine Lennon — Site de suivi familial
+# Chan Ming POOL — Site de suivi familial
 
 Site web statique pour le suivi du projet de piscine multi-zones à Mahajanga, Madagascar.
 

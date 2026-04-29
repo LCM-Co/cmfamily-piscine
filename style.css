@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────────
-   Piscine Lennon — Suivi de projet · Style global
+   Chan Ming POOL — Suivi de projet · Style global
    Palette : BLUE LAGO ardoise, Hintsy, travertin, basalte
    ───────────────────────────────────────────────────────────── */
 
@@ -737,13 +737,6 @@ table tr:nth-child(even) td { background: rgba(245, 241, 232, 0.4); }
 .notif-banner .btn-subscribe:hover { transform: translateY(-1px); }
 .notif-banner .btn-subscribe.subscribed { opacity: 0.6; cursor: default; }
 
-@media (max-width: 768px) {
-  .decision-current { padding: 20px 18px; }
-  .decision-current h2 { font-size: 1.3rem; }
-  .actions-row { flex-direction: column; align-items: stretch; }
-  .actions-row .btn, .comments-toggle { text-align: center; }
-}
-
 /* — Footer — */
 .site-footer {
   background: var(--c-basalte);
@@ -767,4 +760,8 @@ table tr:nth-child(even) td { background: rgba(245, 241, 232, 0.4); }
   .container, .container-narrow { padding: 0 16px; }
   .viewer-frame { height: 70vh; }
   .pdf-frame { height: 80vh; }
+  .decision-current { padding: 20px 18px; }
+  .decision-current h2 { font-size: 1.3rem; }
+  .actions-row { flex-direction: column; align-items: stretch; }
+  .actions-row .btn, .comments-toggle { text-align: center; }
 }
