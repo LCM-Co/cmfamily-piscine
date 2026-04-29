@@ -10,7 +10,6 @@
 (function () {
   const API = "/api/decisions";
   const LS_NAME = "piscine.decAuthor";
-  const LS_PWD = "piscine.decPassword";
   const TIME_FMT = new Intl.DateTimeFormat("fr-FR", {
     day: "2-digit", month: "long", year: "numeric",
     hour: "2-digit", minute: "2-digit",
@@ -51,21 +50,12 @@
     try { return TIME_FMT.format(new Date(iso)); } catch { return iso || ""; }
   }
 
-  function getCreds() {
-    return {
-      name: localStorage.getItem(LS_NAME) || "",
-      pwd: localStorage.getItem(LS_PWD) || "",
-    };
+  function getAuthor() {
+    return localStorage.getItem(LS_NAME) || "";
   }
 
-  function setCreds(name, pwd) {
+  function setAuthor(name) {
     if (name) localStorage.setItem(LS_NAME, name);
-    if (pwd != null) localStorage.setItem(LS_PWD, pwd);
-  }
-
-  function clearCreds() {
-    localStorage.removeItem(LS_NAME);
-    localStorage.removeItem(LS_PWD);
   }
 
   async function fetchAll() {
@@ -215,32 +205,28 @@
     return { close, overlay };
   }
 
-  function authFields(creds) {
+  function authorField() {
     const nameInput = el("input", {
       type: "text", required: "true", maxlength: "60",
-      placeholder: "Votre prénom", value: creds.name || "",
+      placeholder: "Ex. : Maman, Papa, Léa…", value: getAuthor(),
     });
-    const pwdInput = el("input", {
-      type: "password", required: "true",
-      placeholder: "Mot de passe famille", value: creds.pwd || "",
-    });
-    const remember = el("input", { type: "checkbox", checked: creds.pwd ? "checked" : null });
-    const wrap = el("div", { className: "dec-form-auth" },
-      el("label", {}, "Votre prénom", nameInput),
-      el("label", {}, "Mot de passe famille", pwdInput),
-      el("label", { className: "dec-checkbox" }, remember, " Mémoriser sur ce navigateur"),
+    const wrap = el("label", { className: "dec-field dec-field-author" },
+      "Votre prénom",
+      nameInput,
     );
-    return { wrap, nameInput, pwdInput, remember };
+    return { wrap, nameInput };
   }
 
   function actionForm({ id, action, title, fields, onSuccess }) {
-    const creds = getCreds();
-    const auth = authFields(creds);
+    const author = authorField();
     const submit = el("button", { type: "submit", className: "btn dec-submit" }, "Confirmer");
     const cancel = el("button", { type: "button", className: "btn btn-secondary" }, "Annuler");
     const error = el("div", { className: "dec-form-error", "aria-live": "polite" });
 
-    const form = el("form", { className: "dec-form", novalidate: "true" }, ...fields, auth.wrap, error,
+    const form = el("form", { className: "dec-form", novalidate: "true" },
+      author.wrap,
+      ...fields,
+      error,
       el("div", { className: "dec-form-actions" }, submit, cancel)
     );
 
@@ -253,12 +239,10 @@
       submit.textContent = "Envoi…";
       error.textContent = "";
       try {
-        const author = auth.nameInput.value.trim();
-        const password = auth.pwdInput.value;
-        if (!author) throw new Error("Votre prénom est requis");
-        if (!password) throw new Error("Mot de passe famille requis");
+        const name = author.nameInput.value.trim();
+        if (!name) throw new Error("Votre prénom est requis");
 
-        const payload = { id, action, author, password };
+        const payload = { id, action, author: name };
         for (const f of fields) {
           if (f.dataset && f.dataset.field) {
             const input = f.querySelector("input,textarea,select");
@@ -267,8 +251,7 @@
         }
 
         const j = await postAction(payload);
-        if (auth.remember.checked) setCreds(author, password);
-        else { setCreds(author, null); /* n'efface pas le mdp si déjà mémorisé */ }
+        setAuthor(name);
         close();
         if (onSuccess) onSuccess(j.state);
       } catch (err) {

@@ -1107,23 +1107,12 @@ body.dec-modal-open { overflow: hidden; }
   border-color: var(--c-blue-lago);
   box-shadow: 0 0 0 3px rgba(80, 140, 180, 0.15);
 }
-.dec-form-auth {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 14px 16px;
+.dec-field-author {
+  padding: 12px 14px;
   background: var(--c-blanc);
   border-radius: 8px;
   border: 1px dashed var(--c-line);
 }
-.dec-checkbox {
-  flex-direction: row !important;
-  align-items: center;
-  gap: 8px !important;
-  font-weight: 400 !important;
-  font-size: 0.85rem !important;
-}
-.dec-checkbox input { width: auto !important; }
 
 .dec-form-error {
   color: #a02020;

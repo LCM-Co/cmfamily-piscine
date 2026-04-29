@@ -41,8 +41,6 @@ Pour les activer :
 4. Dans Vercel → Project → Settings → Environment Variables, ajouter :
    - `UPSTASH_REDIS_REST_URL` (Production + Preview + Development)
    - `UPSTASH_REDIS_REST_TOKEN` (idem)
-   - `FAMILY_PASSWORD` — mot de passe partagé pour valider/rectifier/archiver
-     les décisions (à choisir, simple, ex. `piscine2026`)
    - `ADMIN_SECRET` (optionnel) — pour modérer les commentaires via DELETE
 5. Trigger un redéploiement (Vercel → Deployments → Redeploy)
 
@@ -57,11 +55,11 @@ Sur la page **Décisions**, sous chaque ligne :
 - **✏️ Rectifier** → modifie un champ avec motif (rebascule en « En discussion »)
 - **🗄 Archiver** → met la décision de côté (motif requis)
 - **🔄 Rouvrir** → réactive une décision archivée ou validée
-- **💬 Commenter** → fil de discussion ouvert, sans authentification
+- **💬 Commenter** → fil de discussion ouvert
 
-Toutes les actions mutantes demandent **prénom + mot de passe famille**, mémorisés
-sur le navigateur après la première saisie. L'audit complet (qui, quand, quoi)
-s'affiche sous chaque décision, hors champ de la description statique.
+Pas de mot de passe : seule la famille a l'URL du site. Chaque action demande
+votre prénom (mémorisé sur le navigateur après la première saisie) pour
+attribuer la trace dans l'audit.
 
 Pas de Google Forms : tout est intégré nativement, sans iframe ni service tiers.
 
