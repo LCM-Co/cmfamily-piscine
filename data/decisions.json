@@ -1,0 +1,21 @@
+{
+  "D24": {
+    "audit": [
+      {
+        "action": "archive",
+        "author": "Lennon",
+        "date": "2026-04-29T13:37:31.381Z",
+        "details": {
+          "reason": "Pas utile pour la région de majunga"
+        },
+        "id": "mok3nmyda9vj"
+      }
+    ],
+    "complements": [],
+    "id": "D24",
+    "rectifications": [],
+    "status": "archived",
+    "updated_at": "2026-04-29T13:37:31.381Z",
+    "validation": null
+  }
+}

@@ -63,6 +63,44 @@ attribuer la trace dans l'audit.
 
 Pas de Google Forms : tout est intégré nativement, sans iframe ni service tiers.
 
+## Synchronisation Redis ↔ fichiers locaux
+
+L'état mutable du projet (validations, compléments, rectifications, audit,
+commentaires) vit dans Upstash Redis côté production. Pour pouvoir travailler
+dessus en local — et inversement répliquer des changements faits en local sur
+le site — il y a un script de sync :
+
+```bash
+# Lire l'état du site et l'écrire dans data/
+python3 scripts/sync.py pull
+
+# Pousser data/ vers Redis (admin uniquement)
+python3 scripts/sync.py push
+
+# Inspecter sans rien modifier
+python3 scripts/sync.py status
+```
+
+Les fichiers générés/lus :
+
+```
+site/data/
+├── decisions.json   # état mutable de chaque décision (validations, compléments, audit…)
+├── comments.json    # tous les fils de commentaires
+└── last-sync.json   # méta : date, mode, compteurs
+```
+
+Les **descriptions** des décisions restent dans `decisions.html` (source de
+vérité statique, gérée via Git). Redis ne stocke que ce qui change après coup.
+
+### Variables d'environnement nécessaires côté local
+
+- `PISCINE_SITE_URL` — défaut `https://cmfamily-piscine.vercel.app`
+- `PISCINE_ADMIN_SECRET` — doit correspondre à `ADMIN_SECRET` côté Vercel.
+  Requis pour `push` et pour récupérer les commentaires en bloc avec `pull`.
+
+Le script utilise uniquement la stdlib Python (pas de pip install).
+
 ## Cohérence avec le modèle 3D
 
 Le modèle 3D (`viewer/index.html`) est la **source de vérité** des dimensions.
