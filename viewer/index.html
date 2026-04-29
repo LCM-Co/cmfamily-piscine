@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>Piscine Lennon — Visualisation 3D Plan v29 (v2)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0a0e14; color: #e8eef5; }
+  #app { position: fixed; inset: 0; }
+  canvas { display: block; }
+  .panel {
+    position: fixed; background: rgba(15,22,32,0.85); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px;
+    color: #e8eef5; font-size: 13px; line-height: 1.5;
+  }
+  #info { top: 12px; left: 12px; max-width: 340px; }
+  #info h1 { font-size: 14px; margin-bottom: 4px; color: #7dd3fc; }
+  #info .meta { font-size: 11px; color: #94a3b8; margin-bottom: 8px; }
+  #info .legend { font-size: 11px; }
+  #info .legend div { display: flex; align-items: center; margin: 2px 0; }
+  #info .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 6px; }
+  #info .v2 { display:inline-block; background:#10b981; color:#0a0e14; font-size:10px; font-weight:700; padding:1px 5px; border-radius:3px; margin-left:6px; vertical-align:middle; }
+  #controls { top: 12px; right: 12px; min-width: 220px; max-height: 90vh; overflow-y: auto; }
+  #controls h2 { font-size: 13px; margin-bottom: 8px; color: #7dd3fc; }
+  #controls button {
+    display: block; width: 100%; padding: 6px 10px; margin: 3px 0;
+    background: rgba(125,211,252,0.1); border: 1px solid rgba(125,211,252,0.3);
+    color: #e8eef5; border-radius: 5px; cursor: pointer; font-size: 12px;
+    transition: background 0.15s;
+  }
+  #controls button:hover { background: rgba(125,211,252,0.25); }
+  #controls .toggle-row { display: flex; align-items: center; justify-content: space-between; margin: 6px 0; font-size: 12px; }
+  #controls input[type=checkbox] { accent-color: #7dd3fc; }
+  #stats { bottom: 12px; left: 12px; font-size: 11px; color: #94a3b8; max-width: 60vw; }
+  #help { bottom: 12px; right: 12px; font-size: 11px; color: #94a3b8; max-width: 240px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<div class="panel" id="info">
+  <h1>Piscine Lennon — Mahajanga<span class="v2">v2 plan v29</span></h1>
+  <div class="meta">116,8 m² eau · 166,1 m³ · couloir réduit 13→5 m (commande mosaïque IK97915 limitée à 300 m²)</div>
+  <div class="legend">
+    <div><i style="background:#2c70a3"></i>Grand Bassin (−1,80)</div>
+    <div><i style="background:#4fa8d6"></i>Moyen Bassin / Couloir (−1,40)</div>
+    <div><i style="background:#b8e2f5"></i>Plage californienne (−0,60)</div>
+    <div><i style="background:#d5d7d7"></i>Sunken Lounge B (−1,20 sec)</div>
+    <div><i style="background:#2a2a2c"></i>Granit / lame d'eau / bar</div>
+    <div><i style="background:#7d4f2a"></i>Bois Hintsy</div>
+    <div><i style="background:#4ba868"></i>Espace zen</div>
+    <div><i style="background:#5a8540"></i>Jardin (côté ouest)</div>
+    <div><i style="background:#f29c12"></i>Talus naturel est</div>
+  </div>
+</div>
+
+<div class="panel" id="controls">
+  <h2>Vues</h2>
+  <button data-view="iso">Vue isométrique</button>
+  <button data-view="top">Vue de dessus (plan)</button>
+  <button data-view="west">Vue ouest (jardin)</button>
+  <button data-view="south">Vue sud (terrasse)</button>
+  <button data-view="east">Vue est (talus)</button>
+  <button data-view="north">Vue nord (couloir)</button>
+  <button data-view="lounge">Zoom lounge & bar</button>
+  <button data-view="ilot">Zoom îlot D</button>
+  <button data-view="assis_lounge" style="background:rgba(251,191,36,0.15);border-color:rgba(251,191,36,0.5);">🪑 Assis dans Lounge B</button>
+  <button data-view="swimmer">🏊 Vue nageur GB</button>
+  <h2 style="margin-top:14px;">Affichage</h2>
+  <label class="toggle-row"><span>Eau visible</span><input type="checkbox" id="t-water" checked /></label>
+  <label class="toggle-row"><span>Terrasse / chemin</span><input type="checkbox" id="t-terrace" checked /></label>
+  <label class="toggle-row"><span>Lounge B</span><input type="checkbox" id="t-lounge" checked /></label>
+  <label class="toggle-row"><span>Bar + tabourets</span><input type="checkbox" id="t-bar" checked /></label>
+  <label class="toggle-row"><span>Îlot D</span><input type="checkbox" id="t-ilot" checked /></label>
+  <label class="toggle-row"><span>Murs eau / secs</span><input type="checkbox" id="t-walls" checked /></label>
+  <label class="toggle-row"><span>Étiquettes cotes</span><input type="checkbox" id="t-labels" checked /></label>
+  <label class="toggle-row"><span>Grille (1 m)</span><input type="checkbox" id="t-grid" /></label>
+  <label class="toggle-row"><span>Mode soir</span><input type="checkbox" id="t-night" /></label>
+</div>
+
+<div class="panel" id="stats">
+  GB 7,04×8,00×−1,80 · MB 7,28×4,00×−1,40 · Couloir 2,00×5,00×−1,40 · Plage 3,24×8,00×−0,60 · Lounge 4,35×4,00×−1,05 (sec) · Vestiaire 2,0×3,8 · Rangement 2,0×3,9 · Îlot D 2,20×2,20 (Z=0) · Talus 7,48×10,84
+</div>
+<div class="panel" id="help">
+  🖱️ <b>Glisser</b> = orbite · <b>Molette</b> = zoom · <b>Clic droit + glisser</b> = panoramique
+  <br/>📐 Z=0 = surface eau · Origine = angle SO du Grand Bassin
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ============================================================
+// CONSTANTES — coordonnées RÉELLES extraites du Plan v29 (vecteurs PDF)
+// X = est (positif), Y = nord (positif), Z = vertical (Z=0 = surface eau)
+// Origine (0,0,0) = angle Sud-Ouest du Grand Bassin
+// ============================================================
+const C = {
+  // === BASSINS (cotes exactes extraites des vecteurs PDF) ===
+  GB:      { x0: 0.000, y0: 0.000, x1: 7.040, y1: 7.870, depth: 1.800 },
+  PLAGE:   { x0: 7.040, y0: 0.000, x1: 10.280, y1: 7.870, depth: 0.600 },
+  MB:      { x0: 0.000, y0: 7.870, x1: 7.280, y1: 11.870, depth: 1.400 },
+  COULOIR: { x0: 0.000, y0: 11.870, x1: 2.000, y1: 16.870, depth: 1.400 },  // réduit 13→5 m (économie carrelage + budget)
+
+  // === PENTE GB↔MB === (longueur projetée 1.00 m, dénivelée 0.40 m, angle ~21.8°)
+  PENTE: { y_top: 7.870, y_bot: 6.870, dz: 0.40, x0: 0.000, x1: 7.040 },
+
+  // === MUR DE SAUT Plage↔GB (immergé) ===
+  MUR_SAUT: { x: 7.040, y0: 0.000, y1: 7.870, top: -0.600, bottom: -1.800, thickness: 0.20 },
+
+  // === SUNKEN LOUNGE B === (sec, en creux) — sol remonté à -1.05 pour vue panoramique
+  // Agent 7 : Z_sol=-1.05 + banquette 0.45 + œil assis 0.65 = +0.20 (vue claire au-dessus mur)
+  LOUNGE: {
+    enveloppe: { x0: 7.280, y0: 7.870, x1: 11.630, y1: 11.870, depth: 1.050 },
+    mur_eau_ouest: { x0: 7.040, y0: 7.870, x1: 7.390, y1: 11.870 },
+    mur_eau_sud:   { x0: 7.040, y0: 7.630, x1: 10.630, y1: 7.980 },
+    mur_sec_est:   { x0: 11.390, y0: 7.870, x1: 11.630, y1: 11.870 },
+    mur_sec_nord:  { x0: 8.280, y0: 11.870, x1: 11.630, y1: 12.110 },
+    banquette_ouest: { x0: 7.280, y0: 7.870, x1: 7.720, y1: 10.870, h: 0.450 },
+    banquette_sud:   { x0: 7.720, y0: 7.870, x1: 10.280, y1: 8.310, h: 0.450 },
+    banquette_est:   { x0: 10.950, y0: 8.310, x1: 11.390, y1: 11.430, h: 0.450 },
+    banquette_nord:  { x0: 8.280, y0: 11.430, x1: 11.390, y1: 11.870, h: 0.450 }
+  },
+
+  // === BAR === tablette flush sur face est du mur (x=7.390), déborde uniquement côté piscine MB
+  // Mur lounge/MB : x=7.040..7.390 → tablette x=6.830..7.390 (0.56m de large, 100% côté piscine)
+  // Z=0 (niveau eau)
+  BAR: {
+    tablette: { x0: 6.830, y0: 8.670, x1: 7.390, y1: 11.070, z: 0.000, thickness: 0.030 },
+    // Tabourets reculés à x=6.50 (espace genoux 0.435m de la tablette), h=0.95 sur fond MB
+    // Assise à Z=-0.45 (30cm sous tablette), buveur tête à +0.30 hors d'eau
+    tabourets: [
+      { x: 6.500, y: 9.170, dia: 0.380, h: 0.950 },
+      { x: 6.500, y: 9.870, dia: 0.380, h: 0.950 },
+      { x: 6.500, y: 10.570, dia: 0.380, h: 0.950 }
+    ]
+  },
+
+  // === ÎLOT D === (2.20×2.20 jardinière béton, à cheval sur GB/MB)
+  // Sommet au niveau eau (Z=0), aligné avec les murs classiques (correction utilisateur)
+  ILOT_D: {
+    enveloppe: { x0: 4.840, y0: 5.780, x1: 7.040, y1: 7.980 },
+    jardiniere: { x0: 5.190, y0: 6.130, x1: 6.690, y1: 7.630 },
+    z_base: -1.800,
+    z_top: 0.000,
+    h_total: 1.800
+  },
+
+  // === LAME D'EAU === (mur ouest, s'arrête avec la piscine — couloir réduit à y=16.87)
+  LAME_EAU: {
+    mur_ouest: { x0: -0.350, y0: -0.130, x1: 0.000, y1: 16.870 },  // 17.00 m (au lieu de 25.24)
+    fente_debut: 0.000,
+    fente_fin: 12.000,  // les 12 m linéaires de débordement actif (face GB+MB)
+    fente_largeur: 0.050,
+    granit_top: 0.000  // à Z=0 niveau eau
+  },
+
+  // (CASCADE retirée — correction utilisateur : pas de cascade dans le projet)
+
+  // === ZONES SÈCHES ===
+  TERRASSE: { x0: 0.000, y0: -3.000, x1: 11.280, y1: -0.480, top: 0.030 },
+  CHEMIN: { x0: 10.630, y0: -0.480, x1: 11.630, y1: 6.190, top: 0.030 },
+  ZEN: { x0: 1.997, y0: 11.867, x1: 11.277, y1: 24.867, top: -1.400 },  // au niveau du fond MB/Couloir (correction utilisateur)
+  JARDIN: { x0: -6.163, y0: -2.893, x1: 0.000, y1: 24.867, top: 0.000 },
+  // Pente naturelle 3×12 m à 45° : commence au niveau fond piscine (Z=-1.40), descend sur 3 m horizontaux
+  // → arrive à Z=-4.40 à x=14.63 (correction utilisateur)
+  PENTE_EST: { x0: 11.630, y0: 0.000, x1: 14.630, y1: 12.000, z_top: -1.400, z_bottom: -4.400, longueur_h: 3.000 },
+  // Pente est jardin zen : 4 m horizontal (vs 3 m pour la pente chemin bois) → angle ~36.87° (moins inclinée que 45°)
+  PENTE_ZEN_EST: { x0: 11.277, y0: 11.867, x1: 15.277, y1: 24.867, z_top: -1.400, z_bottom: -4.400, longueur_h: 4.000 },
+  TERRAIN_EST: { x0: 14.630, y0: 0.000, x1: 28.117, y1: 12.000, top: -4.400 }, // terrain plat au pied de la pente
+  TERRAIN_EST_NORD: { x0: 15.277, y0: 12.000, x1: 28.117, y1: 24.867, top: -4.400 }, // terrain plat au pied de la pente zen est
+
+  // === MURS NORD (3 segments avec ouvertures escaliers) ===
+  MUR_NORD: {
+    seg1: { x0: 1.997, y0: 11.870, x1: 7.040, y1: 12.220, h: 1.40 },  // côté MB
+    seg2_lounge: { x0: 8.280, y0: 11.870, x1: 11.630, y1: 12.110, h: 1.20 } // mur sec lounge nord (avec ouv. esc)
+  },
+
+  // === ESCALIERS ===
+  ESC1_PLAGE: { x0: 9.080, y0: 0.000, x1: 10.280, y1: 1.200, marches: 4, h: 0.158, giron: 0.300, z_bas: -0.600, z_haut: 0.030, dir: 'sud' },
+  // Esc #2/#3 ajusté : partie aquatique 9 marches dans MB (de fond -1.40 au niveau bord 0.000), reste dans MB (y=10.27..11.87)
+  // Au-delà du mur nord MB (y=11.87), accès au zen (Z=-1.40) via un autre escalier sec descendant
+  // Option B : escalier longitudinal collé au mur nord MB (axe X), montée Ouest→Est. 8 marches × 0.175 m × giron 0.24 m.
+  ESC2_3: { x0: 2.800, y0: 11.070, x1: 4.720, y1: 11.870, marches: 8, h: 0.175, giron: 0.240, z_bas: -1.400, z_haut: 0.000, dir: 'est', largeur: 0.80 },
+  // Escalier sec dans le zen, axe Y : descend du palier (z=0) vers le nord jusqu'au sol zen (-1.40), 7 marches × 0.20
+  // Aligné sur la dernière marche d'ESC2_3 (x=4.48..5.28) pour jonction propre avec le palier
+  ESC_ZEN_DESCENTE: { x0: 4.480, y0: 12.670, x1: 5.280, y1: 14.070, marches: 7, h: 0.200, giron: 0.200, z_bas: -1.400, z_haut: 0.000, dir: 'nord', largeur: 0.80 },
+  // Esc #4 ajusté : zen au niveau -1.40 (correction utilisateur), lounge à -1.20 → dénivelée 0.20 m = 1 marche unique
+  ESC4_ZEN_LOUNGE: { x0: 7.280, y0: 11.870, x1: 8.280, y1: 12.150, marches: 1, h: 0.200, giron: 0.280, z_bas: -1.400, z_haut: -1.200, dir: 'nord' },
+  ESC5_TERRASSE_LOUNGE: { x0: 10.630, y0: 6.190, x1: 11.630, y1: 7.870, marches: 6, h: 0.200, giron: 0.280, z_bas: -1.200, z_haut: 0.030, dir: 'nord' },
+
+  // === DALLES ===
+  DALLE_HAUTE: 0.030,
+  MUR_EAU_THICKNESS: 0.350,
+  MUR_SEC_THICKNESS: 0.240
+};
+
+// ============================================================
+// MATÉRIAUX
+// ============================================================
+const M = {
+  // Carrelage BLUE LAGO QUARTZ Foshan Ethlon (板岩蓝) — grès cérame imitation ardoise 300×600 matte mould P4
+  // Bleu-gris ardoise marbré avec accents argent/ocre — effet pierre naturelle vieillie style villa méditerranéenne
+  carrelageGB: new THREE.MeshStandardMaterial({ color: 0x4a6478, roughness: 0.60, metalness: 0.05 }),  // ardoise bleu-gris fond GB 1.80m
+  carrelageMB: new THREE.MeshStandardMaterial({ color: 0x556e84, roughness: 0.60, metalness: 0.05 }),  // ardoise intermédiaire MB/Couloir 1.40m
+  carrelagePlage: new THREE.MeshStandardMaterial({ color: 0x6a8094, roughness: 0.60, metalness: 0.05 }), // ardoise plus clair Plage 0.60m
+  carrelageNez: new THREE.MeshStandardMaterial({ color: 0x35485a, roughness: 0.70, metalness: 0.05 }),   // nez marche ardoise très foncée (contraste sécurité)
+  granit: new THREE.MeshStandardMaterial({ color: 0x1a1a1c, roughness: 0.20, metalness: 0.6, envMapIntensity: 1.2 }),  // Agent 11: granit poli
+  beton: new THREE.MeshStandardMaterial({ color: 0xbcb0a3, roughness: 0.85 }),
+  betonClair: new THREE.MeshStandardMaterial({ color: 0xd4cabd, roughness: 0.9 }),
+  betonEnduit: new THREE.MeshStandardMaterial({ color: 0xbfa888, roughness: 0.85 }),
+  bois: new THREE.MeshStandardMaterial({ color: 0x8a6f55, roughness: 0.75 }),  // bois Hintsy vieilli 6-12 mois (A23) — moins rouge, plus minéral
+  boisFonce: new THREE.MeshStandardMaterial({ color: 0x5a3a1f, roughness: 0.7 }),
+  basalte: new THREE.MeshStandardMaterial({ color: 0x383a3c, roughness: 0.6, metalness: 0.15 }),  // sous-ton froid (A26: cohérence ardoise)
+  // Eau bleu-vert lagon froid — teinte obtenue par fond ardoise BLUE LAGO (effet villa méditerranéenne)
+  eau: new THREE.MeshPhysicalMaterial({
+    color: 0x6a9bb0, transparent: true, opacity: 0.55,
+    roughness: 0.05, metalness: 0.10, transmission: 0.82,
+    side: THREE.DoubleSide
+  }),
+  herbe: new THREE.MeshStandardMaterial({ color: 0x6b8e4e, roughness: 0.95 }),  // vert sauge-prairie désaturé (A14, A17)
+  zen: new THREE.MeshStandardMaterial({ color: 0x4a5a3d, roughness: 0.92 }),  // shibui koke-iro mousse fanée (A7)
+  zenSable: new THREE.MeshStandardMaterial({ color: 0x2d2a26, roughness: 0.95 }),  // gravier basalte concassé fin (cohérence balinaise sombre)
+  inox: new THREE.MeshStandardMaterial({ color: 0xb8b8b8, roughness: 0.30, metalness: 0.85 }),
+  feuillage: new THREE.MeshStandardMaterial({ color: 0x2d5e2d, roughness: 0.85 }),
+  enduitTeinte: new THREE.MeshStandardMaterial({ color: 0x6b6356, roughness: 0.85 }),  // gris-beige (rééquilibré avec carrelage Sodalite bleu)
+  pierreParement: new THREE.MeshStandardMaterial({ color: 0x4a4e52, roughness: 0.7 }),  // gris-bleu froid (A27: cohérence ardoise)
+  sable: new THREE.MeshStandardMaterial({ color: 0xe8d099, roughness: 0.95 }),
+  talus: new THREE.MeshStandardMaterial({ color: 0xb66b3c, roughness: 0.95 }),  // Agent 23/24: latérite Madagascar
+  laterite: new THREE.MeshStandardMaterial({ color: 0xb8623a, roughness: 0.95 }),
+  bois_clair: new THREE.MeshStandardMaterial({ color: 0xc8a878, roughness: 0.85 }),  // Agent 21: latte claire
+  carrelagePiscine: new THREE.MeshStandardMaterial({ color: 0x4a90b8, roughness: 0.15, metalness: 0.05 }),  // Agent 27
+  bandeJaune: new THREE.MeshStandardMaterial({ color: 0xf2c14e, roughness: 0.4, emissive: 0x4a3a10 }),  // jaune vif sécurité (contraste fort avec carrelage bleu)
+  ligneSombre: new THREE.MeshStandardMaterial({ color: 0x0a2540, roughness: 0.6 }),  // bleu nuit (cohérence ligne nage / carrelage bleu)
+  feuillagePalmier: new THREE.MeshStandardMaterial({ color: 0x5a7c5a, roughness: 0.85 }),
+  bougainvillier: [
+    new THREE.MeshStandardMaterial({ color: 0xc71585, roughness: 0.85 }),
+    new THREE.MeshStandardMaterial({ color: 0x8a2be2, roughness: 0.85 }),
+    new THREE.MeshStandardMaterial({ color: 0xff1493, roughness: 0.85 })
+  ],
+  baobab_tronc: new THREE.MeshStandardMaterial({ color: 0x8a6a4a, roughness: 0.9 }),
+  coussin: new THREE.MeshStandardMaterial({ color: 0xe8dcc4, roughness: 0.92 }),  // Agent 10: lin écru
+  galet: new THREE.MeshStandardMaterial({ color: 0x6b6359, roughness: 0.85 }),
+  // (galetsBasalteNoir retiré — inutilisé après remplacement lame est par karesansui)
+  blocBasalteAccent: new THREE.MeshStandardMaterial({ color: 0x252528, roughness: 0.50, metalness: 0.05 }),  // ishi-gumi rochers verticaux
+  gravierClair: new THREE.MeshStandardMaterial({ color: 0xc4bba8, roughness: 0.95, metalness: 0.02 }),       // gravier granit clair karesansui (sekitei)
+  corten: new THREE.MeshStandardMaterial({ color: 0xa8a8a0, roughness: 0.80, metalness: 0.05 }),             // pierre claire grise (A34: élimine corten qui jure avec ardoise froide)
+  blancPiscine: new THREE.MeshStandardMaterial({ color: 0xeae8e4, roughness: 0.80, metalness: 0.05 }),       // blanc neutre tiède (A25: murs verticaux piscine + bâtiment)
+  margelleTravertin: new THREE.MeshStandardMaterial({ color: 0xd7d2c8, roughness: 0.75, metalness: 0.05 }),  // travertin gris clair (A40: margelles/rebords horizontaux — distinction murs/dalles)
+  terracotta: new THREE.MeshStandardMaterial({ color: 0xb55e3c, roughness: 0.85, metalness: 0.02 }),         // terre cuite Belrive (convergence 12 agents — accent chaud signature)
+  linBleuGris: new THREE.MeshStandardMaterial({ color: 0xb8c0c8, roughness: 0.92 }),                         // lin lavé bleu-gris (A28: liant textile)
+  jardiniereBeton: new THREE.MeshStandardMaterial({ color: 0xc8c4be, roughness: 0.85 })                      // béton gris pâle îlot D (A33)
+};
+
+// ============================================================
+// SCÈNE
+// ============================================================
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xcde4f0);
+scene.fog = new THREE.Fog(0xcde4f0, 35, 100);
+
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.05, 250);
+camera.up.set(0, 0, 1);
+camera.position.set(22, -16, 18);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+document.getElementById('app').appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.target.set(5.5, 10, -0.5);
+controls.maxDistance = 100;
+controls.minDistance = 1;
+
+// ============================================================
+// LUMIÈRES
+// ============================================================
+const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+scene.add(ambient);
+const sun = new THREE.DirectionalLight(0xfff4e0, 1.6);
+sun.position.set(28, -14, 32);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -20;
+sun.shadow.camera.right = 30;
+sun.shadow.camera.top = 30;
+sun.shadow.camera.bottom = -10;
+sun.shadow.camera.near = 0.5;
+sun.shadow.camera.far = 100;
+sun.shadow.bias = -0.0004;
+scene.add(sun);
+const fillLight = new THREE.HemisphereLight(0xb8d8f0, 0x6a5a4a, 0.4);
+scene.add(fillLight);
+
+// ============================================================
+// HELPERS
+// ============================================================
+function rectBox(x0, y0, x1, y1, h, mat, z = 0) {
+  const w = x1 - x0;
+  const l = y1 - y0;
+  const g = new THREE.BoxGeometry(Math.abs(w), Math.abs(l), Math.abs(h));
+  const m = new THREE.Mesh(g, mat);
+  m.position.set((x0 + x1) / 2, (y0 + y1) / 2, z + h / 2);
+  m.castShadow = true; m.receiveShadow = true;
+  return m;
+}
+
+const groups = {
+  bassins: new THREE.Group(),
+  murs: new THREE.Group(),
+  eau: new THREE.Group(),
+  lameEau: new THREE.Group(),
+  escaliers: new THREE.Group(),
+  lounge: new THREE.Group(),
+  bar: new THREE.Group(),
+  ilotD: new THREE.Group(),
+  terrasse: new THREE.Group(),
+  zen: new THREE.Group(),
+  jardin: new THREE.Group(),
+  talus: new THREE.Group(),
+  labels: new THREE.Group(),
+  grille: new THREE.Group()
+};
+Object.values(groups).forEach(g => scene.add(g));
+
+// ============================================================
+// SOL ENVIRONNANT
+// ============================================================
+{
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(80, 80),
+    new THREE.MeshStandardMaterial({ color: 0x9a8e72, roughness: 0.95 })
+  );
+  ground.position.set(8, 10, -2.5);
+  ground.receiveShadow = true;
+  scene.add(ground);
+}
+
+// ============================================================
+// 4 BASSINS — fond + parois (carrelage)
+// ============================================================
+function buildBassinShell(b, fondMat) {
+  const w = b.x1 - b.x0;
+  const l = b.y1 - b.y0;
+  const t = 0.025;  // épaisseur carrelage paroi
+  // fond
+  groups.bassins.add(rectBox(b.x0, b.y0, b.x1, b.y1, 0.04, fondMat, -b.depth));
+  // parois carrelées (intérieur)
+  groups.bassins.add(rectBox(b.x0, b.y0, b.x0 + t, b.y1, b.depth, fondMat, -b.depth));        // ouest
+  groups.bassins.add(rectBox(b.x1 - t, b.y0, b.x1, b.y1, b.depth, fondMat, -b.depth));        // est
+  groups.bassins.add(rectBox(b.x0, b.y0, b.x1, b.y0 + t, b.depth, fondMat, -b.depth));        // sud
+  groups.bassins.add(rectBox(b.x0, b.y1 - t, b.x1, b.y1, b.depth, fondMat, -b.depth));        // nord
+}
+
+buildBassinShell(C.GB, M.carrelageGB);
+buildBassinShell(C.MB, M.carrelageMB);
+buildBassinShell(C.COULOIR, M.carrelageMB);
+buildBassinShell(C.PLAGE, M.carrelagePlage);
+
+// ============================================================
+// PENTE GB↔MB (plan incliné, sur toute la largeur 7.04 m)
+// ============================================================
+{
+  const pProj = 1.000;
+  const pDz = 0.400;
+  const pLen = Math.sqrt(pProj * pProj + pDz * pDz);
+  const angle = Math.atan2(pDz, pProj);
+  const slope = new THREE.Mesh(
+    new THREE.PlaneGeometry(C.GB.x1 - C.GB.x0, pLen),
+    M.carrelageGB
+  );
+  slope.rotation.x = -(Math.PI / 2 - angle);
+  slope.position.set((C.GB.x0 + C.GB.x1) / 2, C.GB.y1 - pProj / 2, -1.60);
+  slope.receiveShadow = true;
+  groups.bassins.add(slope);
+}
+
+// ============================================================
+// MUR DE SAUT Plage↔GB (immergé, sommet à -0.60)
+// ============================================================
+{
+  const ms = C.MUR_SAUT;
+  const h = ms.bottom - ms.top;
+  // mur de 0.20 d'épaisseur centré sur x=7.04
+  groups.bassins.add(rectBox(ms.x - ms.thickness/2, ms.y0, ms.x + ms.thickness/2, ms.y1, Math.abs(h), M.carrelageGB, ms.bottom));
+}
+
+// ============================================================
+// MURS EAU EXTERNES (35 cm, couleur béton/granit ouest)
+// ============================================================
+
+// Mur ouest = lame d'eau (couleur granit) sur toute la longueur 25.24 m
+groups.murs.add(rectBox(-0.350, -0.130, 0.000, 16.870, 1.80, M.granit, -1.80));
+
+// Mur sud GB+Plage — harmonisé blancPiscine (cohérence bâtiment local)
+groups.murs.add(rectBox(0.000, -0.350, 10.280, 0.000, 1.80, M.blancPiscine, -1.80));
+
+// Mur sud Plage (à -0.60 fond plage = mur de saut côté est ?)
+// Le mur sud de la plage à hauteur 0.60 m (par rapport au fond)
+// déjà inclus dans bassin plage
+
+// Mur EST plage (vers chemin bois) — harmonisé blancPiscine
+groups.murs.add(rectBox(10.280, 0.000, 10.630, 7.870, 0.60, M.blancPiscine, -0.60));
+
+// Mur EST couloir (vers zen) — couloir réduit 13→5 m (y=11.87..16.87) — harmonisé blancPiscine
+groups.murs.add(rectBox(2.000, 11.870, 2.350, 16.870, 1.40, M.blancPiscine, -1.40));
+
+// Mur NORD couloir — supprimé : remplacé par le mur sud du bâtiment local (h=2.40 depuis sol zen)
+// La lame d'eau ouest s'arrête à y=16.87 (fin de la piscine, après réduction couloir).
+
+// Mur entre MB et Lounge (35 cm, coté ouest du lounge) — harmonisé blancPiscine
+groups.murs.add(rectBox(7.040, 7.870, 7.390, 11.870, 1.40, M.blancPiscine, -1.40));
+
+// Mur entre Plage et Lounge (35 cm, sud du lounge) — harmonisé blancPiscine
+groups.murs.add(rectBox(7.040, 7.630, 10.630, 7.980, 0.60, M.blancPiscine, -0.60));
+
+// Mur sec EST du lounge (24 cm) — h=0.80 : banquette 0.45 + dossier coussin 0.35
+// Sol lounge -1.05 → sommet mur -0.25 (juste sous niveau eau)
+groups.murs.add(rectBox(11.390, 7.870, 11.630, 11.870, 0.80, M.enduitTeinte, -1.05));
+
+// Mur sec NORD lounge (avec ouverture esc x=7.28..8.28) — h=0.80 idem
+groups.murs.add(rectBox(8.280, 11.870, 11.630, 12.110, 0.80, M.pierreParement, -1.05));
+
+// Mur NORD MB — harmonisé blancPiscine (mur plein continu x=2.0..7.04, 1 seule ouverture couloir x=0..2)
+groups.murs.add(rectBox(2.000, 11.870, 7.040, 12.220, 1.40, M.blancPiscine, -1.40));
+// petit retour 35 cm angle (jonction mur ouest lounge) — harmonisé
+groups.murs.add(rectBox(7.040, 11.870, 7.390, 12.220, 1.40, M.blancPiscine, -1.40));
+
+// ============================================================
+// LOCAUX PISCINE (vestiaire + stockage) — sol au niveau du jardin zen (-1.40)
+// Murs blanc cassé (cohérence bord piscine), toit bois Hintsy débordant
+// 2 portes plein-pied côté est (zen), une par local, sans détails intérieurs
+// ============================================================
+{
+  const lx0 = 0.000, lx1 = 2.000;
+  const ly0 = 17.220, ly1 = 24.870;
+  const sepY = 21.000;
+  const sol = -1.400;           // sol au niveau zen
+  const hMur = 2.400;
+  const sommet = sol + hMur;    // +1.00
+  const epExt = 0.200;
+  const epInt = 0.100;
+
+  // Sol intérieur — dalle 4 cm posée sur le sol zen
+  groups.murs.add(rectBox(lx0, ly0, lx1, ly1, 0.04, M.blancPiscine, sol));
+
+  // Mur sud (façade piscine, englobe l'ancien mur nord couloir)
+  groups.murs.add(rectBox(lx0, 16.870, lx1, 17.220, hMur, M.blancPiscine, sol));
+  // Margelle de fin de couloir (z=0) — débord 10 cm côté piscine + 5 cm côté nord, marque la fin de course du nageur
+  groups.murs.add(rectBox(lx0, 16.770, lx1, 17.270, 0.04, M.margelleTravertin, -0.02));
+
+  // Mur nord (limite propriété)
+  groups.murs.add(rectBox(lx0, 24.870, lx1, 24.870 + epExt, hMur, M.blancPiscine, sol));
+
+  // Mur ouest (côté jardin)
+  groups.murs.add(rectBox(lx0 - epExt, ly0, lx0, ly1 + epExt, hMur, M.blancPiscine, sol));
+
+  // Mur est (côté zen) — plein, percé visuellement par les 2 portes
+  groups.murs.add(rectBox(lx1, ly0, lx1 + epExt, ly1 + epExt, hMur, M.blancPiscine, sol));
+
+  // Cloison séparation vestiaire / stockage
+  groups.murs.add(rectBox(lx0, sepY, lx1, sepY + epInt, hMur, M.blancPiscine, sol));
+
+  // Toit plat bois Hintsy, débordant 25 cm
+  groups.murs.add(rectBox(lx0 - 0.25 - epExt, ly0 - 0.25, lx1 + 0.25 + epExt, ly1 + 0.25 + epExt, 0.08, M.bois, sommet));
+
+  // PORTE VESTIAIRE (côté est, plein-pied avec sol zen, centrée sur le vestiaire y≈19.0)
+  {
+    const py = 19.000, pw = 0.80, ph = 2.10;
+    groups.murs.add(rectBox(lx1 + epExt - 0.04, py - pw / 2, lx1 + epExt, py + pw / 2, ph, M.bois, sol));
+  }
+
+  // PORTE STOCKAGE (côté est, plein-pied, centrée sur le stockage y≈22.95)
+  {
+    const py = 22.950, pw = 0.80, ph = 2.10;
+    groups.murs.add(rectBox(lx1 + epExt - 0.04, py - pw / 2, lx1 + epExt, py + pw / 2, ph, M.bois, sol));
+  }
+}
+
+// ============================================================
+// LAME D'EAU — REBORD GRANIT (Z = 0)
+// ============================================================
+{
+  // Plaques granit sur le haut du mur ouest
+  groups.lameEau.add(rectBox(-0.350, -0.130, 0.000, 16.870, 0.04, M.granit, -0.02));
+  // Petit reflet d'eau qui coule (cosmétique) — épaisseur très fine, 12 m face GB+MB
+  const water_overflow = new THREE.Mesh(
+    new THREE.BoxGeometry(0.05, 12.0, 0.005),
+    new THREE.MeshPhysicalMaterial({ color: 0x9ed5f0, transparent: true, opacity: 0.4, transmission: 0.85, roughness: 0.05 })
+  );
+  water_overflow.position.set(-0.025, 6.0, -0.003);
+  groups.lameEau.add(water_overflow);
+}
+
+// (Cascade retirée — correction utilisateur : pas de cascade, mur nord MB plein)
+
+// ============================================================
+// EAU (volume + surface, 4 bassins)
+// ============================================================
+function addWater(b) {
+  groups.eau.add(rectBox(b.x0 + 0.025, b.y0 + 0.025, b.x1 - 0.025, b.y1 - 0.025, b.depth - 0.05, M.eau, -b.depth + 0.025));
+}
+addWater(C.GB);
+addWater(C.MB);
+addWater(C.COULOIR);
+addWater(C.PLAGE);
+
+// ============================================================
+// SUNKEN LOUNGE B (sec, fond -1.20)
+// ============================================================
+{
+  const L = C.LOUNGE;
+  const E = L.enveloppe;
+  // Sol basalte
+  groups.lounge.add(rectBox(E.x0, E.y0, E.x1, E.y1, 0.04, M.basalte, -E.depth));
+
+  // Banquettes 4 côtés (béton + bois Hintsy en revêtement)
+  const addBanquette = (b) => {
+    groups.lounge.add(rectBox(b.x0, b.y0, b.x1, b.y1, b.h, M.beton, -E.depth));
+    // revêtement bois sur dessus
+    groups.lounge.add(rectBox(b.x0, b.y0, b.x1, b.y1, 0.02, M.bois, -E.depth + b.h));
+  };
+  addBanquette(L.banquette_ouest);
+  addBanquette(L.banquette_sud);
+  addBanquette(L.banquette_est);
+  addBanquette(L.banquette_nord);
+}
+
+// ============================================================
+// BAR — tablette PILE AU-DESSUS DU MUR séparation lounge/MB (centrée x=7.215)
+// Tabourets immergés dans le MB côté ouest, h=0.95, assise à Z=-0.45
+// ============================================================
+{
+  const T = C.BAR.tablette;
+  // Tablette granit noir poli (Agent 11 : metalness 0.6, roughness 0.2)
+  groups.bar.add(rectBox(T.x0, T.y0, T.x1, T.y1, T.thickness, M.granit, T.z));
+
+  // Tabourets DANS le MB — pied inox 316 + assise teck huilé (Agent 9)
+  C.BAR.tabourets.forEach(tb => {
+    // Pied inox
+    const pied = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.04, 0.05, tb.h - 0.05, 12),
+      M.inox
+    );
+    pied.rotation.x = Math.PI / 2;
+    pied.position.set(tb.x, tb.y, -1.40 + (tb.h - 0.05) / 2);
+    pied.castShadow = true;
+    groups.bar.add(pied);
+    // Assise teck Ø 0.38
+    const assise = new THREE.Mesh(
+      new THREE.CylinderGeometry(tb.dia / 2, tb.dia / 2, 0.05, 20),
+      M.bois
+    );
+    assise.rotation.x = Math.PI / 2;
+    assise.position.set(tb.x, tb.y, -1.40 + tb.h);
+    assise.castShadow = true;
+    groups.bar.add(assise);
+  });
+}
+
+// ============================================================
+// ÎLOT D — Jardinière béton 2.20×2.20 ext, 1.50×1.50 int, +0.80 hors d'eau
+// ============================================================
+{
+  const I = C.ILOT_D;
+  const E = I.enveloppe;
+  const J = I.jardiniere;
+  // Enveloppe béton gris pâle (A33: cohérence palette froide, met la plante en valeur)
+  groups.ilotD.add(rectBox(E.x0, E.y0, E.x1, E.y1, I.h_total, M.jardiniereBeton, I.z_base));
+  // Jardinière creuse (cavité supérieure pour terre)
+  groups.ilotD.add(rectBox(J.x0, J.y0, J.x1, J.y1, 0.30, M.sable, I.z_top - 0.30));
+
+  // SATRANA (palmier malgache endémique, Medemia argun / Bismarckia) — tronc 2 m + couronne en éventail jusqu'à 4 m
+  const cx = (J.x0 + J.x1) / 2;
+  const cy = (J.y0 + J.y1) / 2;
+  const sol = I.z_top; // 0
+
+  // Tronc 2 m, légèrement conique, écorce gris-beige typique
+  const tronc = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.13, 0.20, 2.00, 14),
+    new THREE.MeshStandardMaterial({ color: 0x8a8378, roughness: 0.88 })
+  );
+  tronc.rotation.x = Math.PI / 2;
+  tronc.position.set(cx, cy, sol + 1.00);
+  tronc.castShadow = true;
+  groups.ilotD.add(tronc);
+
+  // Couronne globale en éventail (z=2 à z=4) — sphère aplatie évasée vert argenté
+  const palmeMat = new THREE.MeshStandardMaterial({ color: 0x6a8a78, roughness: 0.88 });
+  const couronne = new THREE.Mesh(
+    new THREE.SphereGeometry(1.00, 18, 12),
+    palmeMat
+  );
+  couronne.position.set(cx, cy, sol + 3.00);
+  couronne.scale.set(1.30, 1.30, 1.00); // largeur ~2.6 m, hauteur 2 m (sommet à z=4 ✓)
+  couronne.castShadow = true;
+  groups.ilotD.add(couronne);
+
+  // 8 frondes radiales pointant vers l'extérieur (effet éventail palmier)
+  for (let i = 0; i < 8; i++) {
+    const angle = (i / 8) * Math.PI * 2;
+    const fronde = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.015, 0.05, 1.30, 5),
+      palmeMat
+    );
+    // Centre fronde à ~0.7 m du tronc, à mi-hauteur de la couronne
+    fronde.position.set(cx + Math.cos(angle) * 0.70, cy + Math.sin(angle) * 0.70, sol + 2.70);
+    // Orientation : axe long du cylindre orienté radialement vers le haut
+    fronde.lookAt(cx + Math.cos(angle) * 1.50, cy + Math.sin(angle) * 1.50, sol + 3.80);
+    fronde.rotateX(Math.PI / 2);
+    groups.ilotD.add(fronde);
+  }
+}
+
+// ============================================================
+// TERRASSE BOIS (sud, sur poteaux béton armé)
+// ============================================================
+{
+  const T = C.TERRASSE;
+  const w = T.x1 - T.x0;
+  const l = T.y1 - T.y0;
+  // Plancher
+  groups.terrasse.add(rectBox(T.x0, T.y0, T.x1, T.y1, 0.06, M.bois, T.top));
+  // Lattes simulées
+  const nLattes = Math.floor(l / 0.13);
+  for (let i = 0; i < nLattes; i++) {
+    if (i % 2 === 0) continue;
+    groups.terrasse.add(rectBox(T.x0, T.y0 + i * 0.13, T.x1, T.y0 + i * 0.13 + 0.01, 0.062, M.boisFonce, T.top));
+  }
+  // 12 poteaux béton armé (entraxe ~2 m, 6 × 2)
+  const nbX = 6, nbY = 2;
+  for (let i = 0; i < nbX; i++) {
+    for (let j = 0; j < nbY; j++) {
+      const px = T.x0 + (i + 0.5) * w / nbX - 0.10;
+      const py = T.y0 + (j === 0 ? 0.10 : l - 0.30);
+      groups.terrasse.add(rectBox(px, py, px + 0.20, py + 0.20, 1.00, M.beton, T.top - 1.00));
+    }
+  }
+}
+
+// ============================================================
+// CHEMIN BOIS (1.00 × 6.67)
+// ============================================================
+{
+  const Ch = C.CHEMIN;
+  groups.terrasse.add(rectBox(Ch.x0, Ch.y0, Ch.x1, Ch.y1, 0.06, M.bois, Ch.top));
+}
+
+// ============================================================
+// ESPACE ZEN (nord, sec paysager) — au niveau du fond piscine (-1.40 m, en creux)
+// ============================================================
+{
+  const Z = C.ZEN;
+  // Sol zen à -1.40 (= fond MB/Couloir) — en creux par rapport au terrain
+  groups.zen.add(rectBox(Z.x0, Z.y0, Z.x1, Z.y1, 0.04, M.zen, Z.top - 0.04));
+  // Cailloux décoratifs (au sol zen)
+  for (let i = 0; i < 8; i++) {
+    const sx = Z.x0 + 1 + Math.random() * (Z.x1 - Z.x0 - 2);
+    const sy = Z.y0 + 1 + Math.random() * (Z.y1 - Z.y0 - 2);
+    const sphere = new THREE.Mesh(
+      new THREE.SphereGeometry(0.15 + Math.random() * 0.15, 6, 5),
+      M.basalte
+    );
+    sphere.position.set(sx, sy, Z.top + 0.10);
+    sphere.castShadow = true;
+    groups.zen.add(sphere);
+  }
+  // (pas de mur autour du zen — correction utilisateur : zen ouvert, sans mur de soutènement)
+}
+
+// ============================================================
+// JARDIN (ouest)
+// ============================================================
+{
+  const J = C.JARDIN;
+  groups.jardin.add(rectBox(J.x0, J.y0, J.x1, J.y1, 0.02, M.herbe, -0.03));
+  // Arbustes
+  const positions = [[-3, 1], [-4, 4], [-2.5, 7], [-5, 10], [-3.5, 14], [-2, 18], [-4.5, 22]];
+  positions.forEach(([px, py]) => {
+    const arb = new THREE.Mesh(
+      new THREE.SphereGeometry(0.5 + Math.random() * 0.3, 8, 6),
+      M.feuillage
+    );
+    arb.position.set(px, py, 0.5);
+    arb.castShadow = true;
+    groups.jardin.add(arb);
+  });
+}
+
+// ============================================================
+// PENTE NATURELLE EST (45°, commence au niveau fond piscine -1.40, descente 3 m × 12 m)
+// + terrain plat au pied
+// ============================================================
+{
+  const P = C.PENTE_EST;
+  const lenIncline = Math.sqrt(P.longueur_h * P.longueur_h + (P.z_top - P.z_bottom) * (P.z_top - P.z_bottom)); // 4.243 m
+  const angle = Math.atan2(P.z_top - P.z_bottom, P.longueur_h); // 45° = π/4
+  // Plan incliné 4.243 (incliné) × 12 (N-S) — latérite Madagascar
+  const slopeMesh = new THREE.Mesh(
+    new THREE.BoxGeometry(lenIncline, P.y1 - P.y0, 0.08),
+    M.herbe
+  );
+  // Rotation autour de Y de +45° : le bord ouest (x=11.63) reste haut (Z=-1.40),
+  // le bord est (x=14.63) descend (Z=-4.40)
+  slopeMesh.rotation.y = angle;
+  // Centre : x = (x0+x1)/2, y = (y0+y1)/2, z = (z_top+z_bottom)/2
+  slopeMesh.position.set(
+    (P.x0 + P.x1) / 2,
+    (P.y0 + P.y1) / 2,
+    (P.z_top + P.z_bottom) / 2
+  );
+  slopeMesh.castShadow = true;
+  slopeMesh.receiveShadow = true;
+  groups.talus.add(slopeMesh);
+
+  // (pas de mur de soutènement — pente ouverte sans paroi)
+
+  // Terrain plat au pied de la pente (gazon, à Z=-4.40)
+  groups.talus.add(rectBox(C.TERRAIN_EST.x0, C.TERRAIN_EST.y0, C.TERRAIN_EST.x1, C.TERRAIN_EST.y1, 0.10, M.herbe, C.TERRAIN_EST.top));
+}
+
+// ============================================================
+// PENTE EST JARDIN ZEN (4 m horizontal, 3 m vertical, ~36.87° — moins inclinée que pente chemin bois)
+// ============================================================
+{
+  const P = C.PENTE_ZEN_EST;
+  const lenIncline = Math.sqrt(P.longueur_h * P.longueur_h + (P.z_top - P.z_bottom) * (P.z_top - P.z_bottom)); // 5.0 m
+  const angle = Math.atan2(P.z_top - P.z_bottom, P.longueur_h); // ~36.87°
+  const slopeMesh = new THREE.Mesh(
+    new THREE.BoxGeometry(lenIncline, P.y1 - P.y0, 0.08),
+    M.herbe
+  );
+  slopeMesh.rotation.y = angle;
+  slopeMesh.position.set(
+    (P.x0 + P.x1) / 2,
+    (P.y0 + P.y1) / 2,
+    (P.z_top + P.z_bottom) / 2
+  );
+  slopeMesh.castShadow = true;
+  slopeMesh.receiveShadow = true;
+  groups.talus.add(slopeMesh);
+
+  // Terrain plat au pied de la pente zen est (gazon)
+  groups.talus.add(rectBox(C.TERRAIN_EST_NORD.x0, C.TERRAIN_EST_NORD.y0, C.TERRAIN_EST_NORD.x1, C.TERRAIN_EST_NORD.y1, 0.10, M.herbe, C.TERRAIN_EST_NORD.top));
+}
+
+// ============================================================
+// KARESANSUI (jardin sec japonais le long du couloir est, 5 m après réduction couloir)
+// Gravier granit clair ratissé + 3 rochers ishi-gumi + chōzubachi à mi-couloir
+// ============================================================
+{
+  // Margelle travertin sur arête mur est couloir (5 m, y=11.87..16.87) — distinction rebord vs murs verticaux
+  groups.zen.add(rectBox(2.000, 11.870, 2.350, 16.870, 0.04, M.margelleTravertin, -0.02));
+
+  // Lit gravier granit clair Antsirabe ratissé : 0.80 m × 5 m × 0.05 m
+  groups.zen.add(rectBox(2.350, 11.870, 3.150, 16.870, 0.05, M.gravierClair, -1.40));
+
+  // Bordure acier corten : 5 m
+  groups.zen.add(rectBox(3.150, 11.870, 3.200, 16.870, 0.10, M.corten, -1.40));
+
+  // 3 rochers ishi-gumi basalte vertical (composition asymétrique resserrée sur 5 m)
+  const rochers = [
+    { x: 2.65, y: 12.60, h: 0.80, r: 0.22 },
+    { x: 2.85, y: 14.20, h: 0.60, r: 0.18 },
+    { x: 2.55, y: 16.10, h: 0.40, r: 0.15 }
+  ];
+  rochers.forEach(r => {
+    const rocher = new THREE.Mesh(
+      new THREE.CylinderGeometry(r.r * 0.7, r.r, r.h, 8),
+      M.blocBasalteAccent
+    );
+    rocher.rotation.x = Math.PI / 2;
+    rocher.position.set(r.x, r.y, -1.40 + r.h / 2);
+    rocher.castShadow = true;
+    groups.zen.add(rocher);
+  });
+
+  // CHŌZUBACHI à mi-karesansui (x=2.75, y=15.0)
+  const chozubachi = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.20, 0.22, 0.80, 16),
+    M.blocBasalteAccent
+  );
+  chozubachi.rotation.x = Math.PI / 2;
+  chozubachi.position.set(2.75, 15.00, -1.00);
+  chozubachi.castShadow = true;
+  groups.zen.add(chozubachi);
+  const cuvette = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.13, 0.13, 0.06, 16),
+    new THREE.MeshPhysicalMaterial({ color: 0x2a5560, transparent: true, opacity: 0.85, transmission: 0.6, roughness: 0.05 })
+  );
+  cuvette.rotation.x = Math.PI / 2;
+  cuvette.position.set(2.75, 15.00, -0.60);
+  groups.zen.add(cuvette);
+
+  // Bambou cascade (kakehi)
+  const bambou = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.025, 0.030, 0.55, 12),
+    new THREE.MeshStandardMaterial({ color: 0x6b8540, roughness: 0.85 })
+  );
+  bambou.rotation.set(Math.PI / 2, 0, Math.PI / 6);
+  bambou.position.set(2.50, 15.00, -0.45);
+  bambou.castShadow = true;
+  groups.zen.add(bambou);
+  const support = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.025, 0.030, 0.80, 12),
+    new THREE.MeshStandardMaterial({ color: 0x6b8540, roughness: 0.85 })
+  );
+  support.rotation.x = Math.PI / 2;
+  support.position.set(2.40, 15.00, -1.00);
+  groups.zen.add(support);
+
+  const filet = new THREE.Mesh(
+    new THREE.BoxGeometry(0.008, 0.008, 0.10),
+    new THREE.MeshPhysicalMaterial({ color: 0xa8d8e8, transparent: true, opacity: 0.7, transmission: 0.85, roughness: 0.05 })
+  );
+  filet.position.set(2.65, 15.00, -0.62);
+  groups.zen.add(filet);
+}
+
+// ============================================================
+// ESCALIERS (4 ensembles modélisés, le 6e incertain)
+// ============================================================
+function buildEscalierLineaire(esc, mat, axe = 'y', sens = 1) {
+  // axe='y' : montée le long de Y ; axe='x' : montée le long de X (longitudinal). sens=±1 selon orientation.
+  if (axe === 'y') {
+    const startY = sens > 0 ? esc.y0 : esc.y1;
+    for (let i = 0; i < esc.marches; i++) {
+      const z = esc.z_bas + (i + 1) * esc.h;
+      const my = startY + sens * i * esc.giron;
+      const my2 = my + sens * esc.giron;
+      const yMin = Math.min(my, my2);
+      const yMax = Math.max(my, my2);
+      groups.escaliers.add(rectBox(esc.x0, yMin, esc.x1, yMax, 0.04, mat, z - 0.04));
+      groups.escaliers.add(rectBox(esc.x0, sens > 0 ? yMin : yMax - 0.02, esc.x1, sens > 0 ? yMin + 0.02 : yMax, esc.h, mat, z - esc.h));
+    }
+  } else if (axe === 'x') {
+    const startX = sens > 0 ? esc.x0 : esc.x1;
+    for (let i = 0; i < esc.marches; i++) {
+      const z = esc.z_bas + (i + 1) * esc.h;
+      const mx = startX + sens * i * esc.giron;
+      const mx2 = mx + sens * esc.giron;
+      const xMin = Math.min(mx, mx2);
+      const xMax = Math.max(mx, mx2);
+      groups.escaliers.add(rectBox(xMin, esc.y0, xMax, esc.y1, 0.04, mat, z - 0.04));
+      groups.escaliers.add(rectBox(sens > 0 ? xMin : xMax - 0.02, esc.y0, sens > 0 ? xMin + 0.02 : xMax, esc.y1, esc.h, mat, z - esc.h));
+    }
+  }
+}
+
+// Esc #1 Sortie plage (descend du sud au nord, donc montée vers le sud)
+buildEscalierLineaire(C.ESC1_PLAGE, M.carrelageNez, 'y', -1);
+// Esc #2/#3 Piscine→Zen : aquatique longitudinal collé au mur nord MB, monte Ouest→Est de -1.40 à 0 (axe X)
+buildEscalierLineaire(C.ESC2_3, M.carrelageNez, 'x', 1);
+// Escalier sec dans le zen : descend du palier (Z=0) vers le nord jusqu'au sol zen (-1.40), axe Y sens=-1
+buildEscalierLineaire(C.ESC_ZEN_DESCENTE, M.basalte, 'y', -1);
+
+// Dalle de transition (palier) à z=0, alignée sur la dernière marche ESC2_3 (x=4.48..5.28)
+// Palier 0.80 × 0.80 × 0.04 ép. — englobe le sommet du mur (y=11.87..12.22) + débordement console 0.45 m côté zen (y=12.22..12.67)
+groups.escaliers.add(rectBox(4.480, 11.870, 5.280, 12.670, 0.04, M.basalte, -0.04));
+// Esc #4 Zen→Lounge (descend vers sud, monte vers nord)
+buildEscalierLineaire(C.ESC4_ZEN_LOUNGE, M.basalte, 'y', 1);
+// Esc #5 Terrasse→Lounge : descente vers le nord (chemin bois Z=+0.030 → lounge Z=-1.20)
+// sens=-1 pour que la marche haute soit côté sud (chemin) et la marche basse côté nord (lounge)
+buildEscalierLineaire(C.ESC5_TERRASSE_LOUNGE, M.basalte, 'y', -1);
+
+// ============================================================
+// DALLES PÉRIMÉTRIQUES (entre piscine et zones)
+// ============================================================
+{
+  // Bande sud (entre terrasse et bord piscine) — travertin gris clair (cohérence margelles)
+  groups.zen.add(rectBox(0, -0.480, 10.630, 0.000, 0.04, M.margelleTravertin, -0.01));
+  // Bande nord (entre couloir et zen — déjà couverte par zen)
+  // (Bande sable ouest entre lame d'eau et jardin retirée — correction utilisateur)
+}
+
+// ============================================================
+// ENHANCEMENTS V3 — synthèse 30 agents (rendu plus détaillé)
+// ============================================================
+
+// --- Agent 6 : bande sécurité mur de saut (jaune sur arête supérieure) ---
+{
+  const ms = C.MUR_SAUT;
+  groups.bassins.add(rectBox(ms.x - ms.thickness/2, ms.y0, ms.x + ms.thickness/2, ms.y1, 0.05, M.bandeJaune, ms.top - 0.05));
+}
+
+// (Transats immergés retirés — correction utilisateur)
+
+// --- Agent 3 : ligne de nage centrale dans le couloir (réduit 13→5 m) ---
+groups.bassins.add(rectBox(0.90, 12.30, 1.10, 16.50, 0.005, M.ligneSombre, -1.395));
+// T noir aux extrémités
+[12.30, 16.50].forEach(y => {
+  groups.bassins.add(rectBox(0.75, y - 0.10, 1.25, y + 0.10, 0.005, M.ligneSombre, -1.395));
+});
+
+// (Pièces à sceller hydrauliques retirées — correction utilisateur : pas d'éléments saillants dans les bassins)
+
+// --- Agent 19 : bambous + pas japonais + lanterne dans l'espace zen ---
+{
+  // Bambous (7) — décalés à x>3.30 pour ne pas chevaucher le karesansui (x=2.35..3.20)
+  const bambousPos = [
+    [3.40, 13.50, 2.0], [3.55, 14.80, 2.2], [3.30, 16.20, 1.9],
+    [3.65, 17.90, 2.3], [3.40, 19.40, 2.0], [3.55, 21.10, 2.1], [3.35, 22.80, 1.95]
+  ];
+  bambousPos.forEach(([x, y, h]) => {
+    const bambou = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.04, 0.05, h, 8),
+      new THREE.MeshStandardMaterial({ color: 0x4a6b3a, roughness: 0.85 })
+    );
+    bambou.rotation.x = Math.PI / 2;
+    bambou.position.set(x, y, -1.40 + h / 2);
+    bambou.castShadow = true;
+    groups.zen.add(bambou);
+    // Petite touffe au sommet
+    const touffe = new THREE.Mesh(
+      new THREE.SphereGeometry(0.18, 8, 6),
+      M.feuillagePalmier
+    );
+    touffe.position.set(x, y, -1.40 + h);
+    groups.zen.add(touffe);
+  });
+  // Pas japonais (basalte) — tous à y>17.30 pour rester dans le zen vrai (au-delà du karesansui qui finit à y=16.87)
+  const pasPos = [[5.50, 17.50], [6.30, 18.40], [5.80, 19.40], [6.80, 20.50], [6.20, 21.60], [7.10, 22.80], [6.50, 24.00]];
+  pasPos.forEach(([x, y]) => {
+    groups.zen.add(rectBox(x - 0.20, y - 0.20, x + 0.20, y + 0.20, 0.04, M.basalte, -1.40));
+  });
+  // Lanterne pierre (base + pilier + chapeau)
+  groups.zen.add(rectBox(4.70, 12.40, 5.05, 12.75, 0.20, M.galet, -1.40));
+  const pilier = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.60, 8), M.galet);
+  pilier.rotation.x = Math.PI / 2;
+  pilier.position.set(4.875, 12.575, -1.40 + 0.50);
+  groups.zen.add(pilier);
+  groups.zen.add(rectBox(4.65, 12.35, 5.10, 12.80, 0.10, M.galet, -1.40 + 0.85));
+}
+
+// ============================================================
+// DAYBED ZEN — lit de sieste style ryokan tropical
+// Plateforme bois Hintsy 2.2×1.2 + matelas lin + 2 oreillers + 4 poteaux + auvent toit plat
+// Position : zone est du zen libre (x=8.0..10.2, y=18.0..19.2)
+// ============================================================
+{
+  const dx0 = 8.000, dy0 = 18.000, dx1 = 10.200, dy1 = 19.200;
+  const sol = -1.40;
+  const hPlat = 0.40;
+
+  // Plateforme bois Hintsy 2.2 × 1.2 × 0.40 m
+  groups.zen.add(rectBox(dx0, dy0, dx1, dy1, hPlat, M.bois, sol));
+
+  // Matelas lin écru épais 2.0 × 1.0 × 0.12 m, centré
+  groups.zen.add(rectBox(dx0 + 0.10, dy0 + 0.10, dx1 - 0.10, dy1 - 0.10, 0.12, M.coussin, sol + hPlat));
+
+  // 2 oreillers carrés côté ouest (tête) : 1 lin écru + 1 terracotta accent (convergence 12 agents)
+  groups.zen.add(rectBox(dx0 + 0.15, dy0 + 0.20, dx0 + 0.55, dy0 + 0.55, 0.12, M.coussin, sol + hPlat + 0.12));
+  groups.zen.add(rectBox(dx0 + 0.15, dy0 + 0.65, dx0 + 0.55, dy0 + 1.00, 0.12, M.terracotta, sol + hPlat + 0.12));
+  // 1 traversin lin bleu-gris en milieu de matelas (liant textile chaud/froid — A28)
+  groups.zen.add(rectBox(dx0 + 0.10, dy0 + 0.40, dx1 - 0.10, dy0 + 0.60, 0.10, M.linBleuGris, sol + hPlat + 0.12));
+
+  // 4 poteaux bois Hintsy verticaux aux 4 coins, hauteur 2.40 m, section 0.08×0.08
+  const hPoteau = 2.40;
+  const sectPot = 0.08;
+  const corners = [
+    [dx0, dy0], [dx1 - sectPot, dy0],
+    [dx0, dy1 - sectPot], [dx1 - sectPot, dy1 - sectPot]
+  ];
+  corners.forEach(([cx, cy]) => {
+    groups.zen.add(rectBox(cx, cy, cx + sectPot, cy + sectPot, hPoteau, M.bois, sol));
+  });
+
+  // Auvent toit plat bois Hintsy, légèrement débordant 15 cm sur les 4 côtés
+  groups.zen.add(rectBox(dx0 - 0.15, dy0 - 0.15, dx1 + 0.15, dy1 + 0.15, 0.06, M.bois, sol + hPoteau));
+
+  // 4 traverses horizontales sous l'auvent (cohérence structure ryokan)
+  const sectTr = 0.05;
+  groups.zen.add(rectBox(dx0, dy0, dx1, dy0 + sectTr, sectTr, M.bois, sol + hPoteau - sectTr));
+  groups.zen.add(rectBox(dx0, dy1 - sectTr, dx1, dy1, sectTr, M.bois, sol + hPoteau - sectTr));
+  groups.zen.add(rectBox(dx0, dy0, dx0 + sectTr, dy1, sectTr, M.bois, sol + hPoteau - sectTr));
+  groups.zen.add(rectBox(dx1 - sectTr, dy0, dx1, dy1, sectTr, M.bois, sol + hPoteau - sectTr));
+}
+
+// --- Agent 20 : palmiers Bismarckia + bougainvilliers + frangipaniers dans le jardin ---
+{
+  // 4 palmiers Bismarckia (endémiques Madagascar)
+  const palmiersPos = [[-5.5, 2.0], [-5.6, 10.5], [-5.5, 18.0], [-5.6, 23.5]];
+  palmiersPos.forEach(([x, y]) => {
+    const tronc = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.18, 0.22, 4.0, 12),
+      new THREE.MeshStandardMaterial({ color: 0x8b6f47, roughness: 0.9 })
+    );
+    tronc.rotation.x = Math.PI / 2;
+    tronc.position.set(x, y, 2.0);
+    tronc.castShadow = true;
+    groups.jardin.add(tronc);
+    const palmes = new THREE.Mesh(
+      new THREE.SphereGeometry(1.3, 16, 12),
+      M.feuillagePalmier
+    );
+    palmes.position.set(x, y, 4.2);
+    palmes.castShadow = true;
+    groups.jardin.add(palmes);
+  });
+  // (bougainvilliers retirés — correction utilisateur)
+  // 2 frangipaniers
+  [[-2.5, 7.0], [-2.5, 16.5]].forEach(([x, y]) => {
+    const tronc = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.12, 0.15, 1.2, 10),
+      new THREE.MeshStandardMaterial({ color: 0xa0826d, roughness: 0.9 })
+    );
+    tronc.rotation.x = Math.PI / 2;
+    tronc.position.set(x, y, 0.6);
+    groups.jardin.add(tronc);
+    const feuilles = new THREE.Mesh(
+      new THREE.SphereGeometry(0.9, 14, 10),
+      new THREE.MeshStandardMaterial({ color: 0x6b8e23, roughness: 0.85 })
+    );
+    feuilles.position.set(x, y, 1.7);
+    feuilles.castShadow = true;
+    groups.jardin.add(feuilles);
+  });
+  // (allée centrale retirée — correction utilisateur)
+}
+
+// --- Agent 24 : baobabs + buissons + rochers dans le terrain bas ---
+{
+  // 3 baobabs (Adansonia, endémiques Madagascar)
+  [[17.5, 4], [24.5, 8], [20, 11]].forEach(([x, y]) => {
+    const tronc = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.5, 0.7, 2.2, 10),
+      M.baobab_tronc
+    );
+    tronc.rotation.x = Math.PI / 2;
+    tronc.position.set(x, y, -4.40 + 1.1);
+    tronc.castShadow = true;
+    groups.talus.add(tronc);
+    const cime = new THREE.Mesh(
+      new THREE.SphereGeometry(1.1, 10, 8),
+      M.feuillagePalmier
+    );
+    cime.scale.set(1.3, 1.3, 0.6);
+    cime.position.set(x, y, -4.40 + 2.6);
+    cime.castShadow = true;
+    groups.talus.add(cime);
+  });
+  // Buissons éparses
+  [[16, 1.2], [18.5, 3], [17, 5.5], [22.5, 2], [24, 4.8], [26, 6.5], [19, 9.5], [23, 10.8], [27, 9]].forEach(([x, y]) => {
+    const buisson = new THREE.Mesh(
+      new THREE.SphereGeometry(0.35 + Math.random() * 0.25, 8, 6),
+      new THREE.MeshStandardMaterial({ color: 0x3d5a2b, roughness: 0.95 })
+    );
+    buisson.position.set(x, y, -4.40 + 0.4);
+    groups.talus.add(buisson);
+  });
+  // Rochers
+  [[15.5, 8.5, 0.6], [26.5, 3.2, 0.8]].forEach(([x, y, r]) => {
+    const rocher = new THREE.Mesh(
+      new THREE.DodecahedronGeometry(r, 0),
+      new THREE.MeshStandardMaterial({ color: 0x6b5a4a, roughness: 1.0 })
+    );
+    rocher.position.set(x, y, -4.40 + r);
+    rocher.rotation.set(Math.random(), Math.random(), Math.random());
+    groups.talus.add(rocher);
+  });
+}
+
+// (Pandanus + racines aériennes retirés — remplacé par olivier dans la section îlot D ci-dessus)
+
+// --- Agent 22 : garde-corps inox 316 sur le côté est du chemin bois ---
+{
+  // 5 poteaux + 5 lisses horizontales
+  const yPoteaux = [-0.48, 1.19, 2.85, 4.52, 6.19];
+  yPoteaux.forEach(y => {
+    const poteau = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.025, 0.025, 1.10, 8),
+      M.inox
+    );
+    poteau.rotation.x = Math.PI / 2;
+    poteau.position.set(11.63, y, 0.030 + 0.55);
+    groups.terrasse.add(poteau);
+  });
+  // Lisse horizontale haut
+  groups.terrasse.add(rectBox(11.605, -0.48, 11.655, 6.19, 0.04, M.inox, 0.030 + 1.06));
+}
+
+// (Mobilier terrasse retiré — correction utilisateur)
+
+// --- Agent 10 : coussins lounge — mix textiles 50% lin écru + 30% lin bleu-gris + 20% terracotta accent (A28) ---
+{
+  const Z_coussin = -1.05 + 0.45;  // sommet banquette
+  const coussins = [
+    { box: [7.28, 7.87, 7.72, 10.87], mat: M.coussin },        // ouest — lin écru (banquette longue)
+    { box: [7.72, 7.87, 10.28, 8.31], mat: M.linBleuGris },    // sud — lin bleu-gris (liant froid)
+    { box: [10.95, 8.31, 11.39, 11.43], mat: M.coussin },      // est — lin écru
+    { box: [8.28, 11.43, 11.39, 11.87], mat: M.terracotta }    // nord — terracotta accent (paroi du fond)
+  ];
+  coussins.forEach(({ box, mat }) => {
+    const [x0, y0, x1, y1] = box;
+    groups.lounge.add(rectBox(x0 + 0.02, y0 + 0.02, x1 - 0.02, y1 - 0.02, 0.06, mat, Z_coussin));
+  });
+}
+
+// (Projecteurs encastrés retirés — éclairage piscine assuré par lampes amovibles à ventouse, non modélisées)
+
+// ============================================================
+// LABELS COTES — sprites textuels positionnés en 3D
+// ============================================================
+function makeLabel(text, position, color = '#7dd3fc', size = 1.0) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'rgba(15,22,32,0.88)';
+  ctx.fillRect(0, 0, 256, 64);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.strokeRect(1, 1, 254, 62);
+  ctx.fillStyle = color;
+  ctx.font = 'bold 22px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, 128, 32);
+  const tex = new THREE.CanvasTexture(canvas);
+  const mat = new THREE.SpriteMaterial({ map: tex, depthTest: false, depthWrite: false });
+  const sprite = new THREE.Sprite(mat);
+  sprite.position.copy(position);
+  sprite.scale.set(2.0 * size, 0.5 * size, 1);
+  return sprite;
+}
+
+groups.labels.add(makeLabel('GB 7,04×8,00 −1,80', new THREE.Vector3(3.5, 4, 1.0)));
+groups.labels.add(makeLabel('MB 7,28×4,00 −1,40', new THREE.Vector3(3.5, 9.8, 1.0)));
+groups.labels.add(makeLabel('Couloir 2×5 −1,40', new THREE.Vector3(1.0, 14.5, 1.0)));
+groups.labels.add(makeLabel('Vestiaire 2,0×3,8', new THREE.Vector3(1.0, 19.1, 1.3), '#fbbf24'));
+groups.labels.add(makeLabel('Stockage piscine 2,0×3,9', new THREE.Vector3(1.0, 22.9, 1.3), '#fbbf24'));
+groups.labels.add(makeLabel('Plage 3,24×8 −0,60', new THREE.Vector3(8.7, 4, 0.6)));
+groups.labels.add(makeLabel('Lounge B 4,35×4 −1,05 sec', new THREE.Vector3(9.4, 9.8, 1.0)));
+groups.labels.add(makeLabel('Bar tablette granit (Z=0)', new THREE.Vector3(7.215, 9.87, 0.6), '#fbbf24'));
+groups.labels.add(makeLabel('3 tabourets immergés (Z=−0,45)', new THREE.Vector3(6.50, 9.87, -0.10), '#fbbf24'));
+groups.labels.add(makeLabel('Lame d\'eau 17 m mur ouest', new THREE.Vector3(-1.5, 8, 0.8)));
+groups.labels.add(makeLabel('Karesansui 5 m + chōzubachi', new THREE.Vector3(2.8, 14.5, 0.4), '#c4bba8'));
+groups.labels.add(makeLabel('Daybed bois Hintsy', new THREE.Vector3(9.10, 18.60, 1.4), '#d4c4a8'));
+groups.labels.add(makeLabel('Mur saut −0,60', new THREE.Vector3(7.30, 4, -0.30)));
+groups.labels.add(makeLabel('Pente 21,8°', new THREE.Vector3(3.5, 7.4, -1.0)));
+groups.labels.add(makeLabel('Îlot D 2,20×2,20 (Z=0)', new THREE.Vector3(5.94, 6.88, 0.7), '#fb923c'));
+groups.labels.add(makeLabel('Terrasse bois Hintsy', new THREE.Vector3(5.65, -1.74, 0.5)));
+groups.labels.add(makeLabel('Chemin bois', new THREE.Vector3(11.13, 2.85, 0.4)));
+groups.labels.add(makeLabel('Espace zen 9,3×13 (sol −1,40)', new THREE.Vector3(6.5, 18, -0.4), '#a3e635'));
+groups.labels.add(makeLabel('Jardin', new THREE.Vector3(-3, 13, 1.2)));
+groups.labels.add(makeLabel('Pente 45° (3×12 m)', new THREE.Vector3(13.13, 6, -1.5), '#f97316'));
+groups.labels.add(makeLabel('Pente 36,87° (4×13 m)', new THREE.Vector3(13.5, 18.0, -1.5), '#f97316'));
+groups.labels.add(makeLabel('Terrain bas −4,40', new THREE.Vector3(20, 6, -3.8), '#f97316'));
+
+// ============================================================
+// GRILLE 1 m
+// ============================================================
+{
+  const grid = new THREE.GridHelper(50, 50, 0x556677, 0x334455);
+  grid.rotation.x = Math.PI / 2;
+  grid.position.set(8, 10, 0.001);
+  grid.material.opacity = 0.4;
+  grid.material.transparent = true;
+  groups.grille.add(grid);
+  groups.grille.visible = false;
+}
+
+// ============================================================
+// VUES PRÉDÉFINIES
+// ============================================================
+const views = {
+  iso:    { pos: [22, -16, 18], target: [5.5, 10, -0.3] },
+  top:    { pos: [5.5, 10, 35], target: [5.5, 10, 0] },
+  west:   { pos: [-16, 10, 6], target: [3, 10, -0.5] },
+  south:  { pos: [5.5, -22, 5], target: [5.5, 8, -0.3] },
+  east:   { pos: [30, 6, 6], target: [10, 6, -0.5] },
+  north:  { pos: [5.5, 36, 8], target: [5.5, 18, -0.5] },
+  lounge: { pos: [13, 5, 3.5], target: [9, 10, -0.5] },
+  ilot:   { pos: [3, 4, 2.5], target: [6, 7, 0] },
+  // Vue "Assis Lounge B" : POV buveur sur banquette est, œil à Z=+0.20 (sol -1.05 + banq 0.45 + œil 0.65 = 0.05 -> +0.20 marge)
+  assis_lounge: { pos: [11.0, 9.87, 0.20], target: [-2, 9.87, -0.30] },
+  // Vue nageur dans le GB
+  swimmer: { pos: [4.0, 5.0, -1.20], target: [6.5, 5.0, -1.80] }
+};
+
+document.querySelectorAll('#controls button[data-view]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const v = views[btn.dataset.view];
+    if (!v) return;
+    animateCamera(v.pos, v.target);
+  });
+});
+
+function animateCamera(pos, target) {
+  const startPos = camera.position.clone();
+  const startTarget = controls.target.clone();
+  const endPos = new THREE.Vector3(...pos);
+  const endTarget = new THREE.Vector3(...target);
+  const dur = 800;
+  const t0 = performance.now();
+  function step() {
+    const t = Math.min(1, (performance.now() - t0) / dur);
+    const ease = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;
+    camera.position.lerpVectors(startPos, endPos, ease);
+    controls.target.lerpVectors(startTarget, endTarget, ease);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  step();
+}
+
+// ============================================================
+// TOGGLES
+// ============================================================
+document.getElementById('t-water').addEventListener('change', e => groups.eau.visible = e.target.checked);
+document.getElementById('t-terrace').addEventListener('change', e => groups.terrasse.visible = e.target.checked);
+document.getElementById('t-lounge').addEventListener('change', e => groups.lounge.visible = e.target.checked);
+document.getElementById('t-bar').addEventListener('change', e => groups.bar.visible = e.target.checked);
+document.getElementById('t-ilot').addEventListener('change', e => groups.ilotD.visible = e.target.checked);
+document.getElementById('t-walls').addEventListener('change', e => groups.murs.visible = e.target.checked);
+document.getElementById('t-labels').addEventListener('change', e => groups.labels.visible = e.target.checked);
+document.getElementById('t-grid').addEventListener('change', e => groups.grille.visible = e.target.checked);
+document.getElementById('t-night').addEventListener('change', e => {
+  if (e.target.checked) {
+    scene.background = new THREE.Color(0x0a1830);
+    scene.fog = new THREE.Fog(0x0a1830, 35, 100);
+    sun.intensity = 0.3; sun.color.setHex(0x6080c0);
+    ambient.intensity = 0.15;
+  } else {
+    scene.background = new THREE.Color(0xcde4f0);
+    scene.fog = new THREE.Fog(0xcde4f0, 35, 100);
+    sun.intensity = 1.6; sun.color.setHex(0xfff4e0);
+    ambient.intensity = 0.55;
+  }
+});
+
+// ============================================================
+// LOOP
+// ============================================================
+function resize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+window.addEventListener('resize', resize);
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>

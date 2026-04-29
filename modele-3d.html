@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modèle 3D — Piscine Lennon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        Piscine Lennon
+        <small>Mahajanga · Madagascar</small>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">Accueil</a>
+        <a href="modele-3d.html" class="active">Modèle 3D</a>
+        <a href="specifications.html">Spécifications</a>
+        <a href="plans.html">Plan</a>
+        <a href="decisions.html">Décisions</a>
+        <a href="chantier.html">Chantier</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Modèle 3D interactif</h1>
+      <p class="subtitle" style="color: var(--c-fg-soft); font-size: 1.05rem;">
+        Vue 3D de la piscine et de toutes ses zones. Faites tourner avec la souris,
+        zoomez avec la molette, déplacez avec clic droit. Le modèle est mis à jour
+        à chaque évolution validée du plan.
+      </p>
+
+      <iframe
+        src="viewer/index.html"
+        class="viewer-frame"
+        title="Modèle 3D Three.js de la piscine Lennon"
+        loading="lazy"
+        allow="fullscreen"
+      ></iframe>
+
+      <h2>Légende des zones</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <span class="tag">7×8 m</span>
+          <h3>Grand bassin (GB)</h3>
+          <p>Bassin principal, 1,80 m de profondeur, sud-ouest.
+            Carrelé BLUE LAGO ardoise.</p>
+        </div>
+        <div class="card">
+          <span class="tag">3×8 m</span>
+          <h3>Plage (Beach Pool)</h3>
+          <p>Bassin peu profond 0,60 m côté est, avec bar tablette
+            granit noir et 3 tabourets immergés.</p>
+        </div>
+        <div class="card">
+          <span class="tag">7×4 m</span>
+          <h3>Moyen bassin (MB)</h3>
+          <p>Au nord du grand bassin, 1,40 m de profondeur.
+            Connecté au GB par une rampe douce.</p>
+        </div>
+        <div class="card">
+          <span class="tag">2×5 m</span>
+          <h3>Couloir de nage</h3>
+          <p>Couloir étroit 1,40 m de profondeur, longe le mur ouest
+            avec lame d'eau infinity edge.</p>
+        </div>
+        <div class="card">
+          <span class="tag">2,2×2,2 m</span>
+          <h3>Îlot D + Satrana</h3>
+          <p>Îlot central avec jardinière béton et palmier
+            Bismarckia nobilis (Satrana endémique).</p>
+        </div>
+        <div class="card">
+          <span class="tag">4,35×4 m</span>
+          <h3>Sunken Lounge</h3>
+          <p>Pit sec creusé à -1,05 m côté est. Sol basalte,
+            banquettes Hintsy avec coussins lin.</p>
+        </div>
+        <div class="card">
+          <span class="tag">9×13 m</span>
+          <h3>Jardin zen (karesansui)</h3>
+          <p>Jardin sec côté nord avec sable de quartz blanc ratissé,
+            3 rochers basalte (ishi-gumi) et daybed Hintsy.</p>
+        </div>
+        <div class="card">
+          <span class="tag">2× 2×3,8 m</span>
+          <h3>Locaux techniques</h3>
+          <p>Vestiaire + rangement, façades blanches limewash,
+            au nord du jardin zen.</p>
+        </div>
+        <div class="card">
+          <span class="tag">12 m</span>
+          <h3>Lame d'eau ouest</h3>
+          <p>Mur infinity edge sur 12 m, débordement en
+            rigole arrière vers bac tampon.</p>
+        </div>
+        <div class="card">
+          <span class="tag">Hintsy</span>
+          <h3>Terrasse + chemin</h3>
+          <p>Terrasse en bois Hintsy huilé sud + est,
+            chemin contournant la plage côté est.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Astuce :</strong> sur mobile, faites pivoter votre téléphone en
+        mode paysage pour une meilleure vue. Si la 3D se charge lentement,
+        c'est normal au premier affichage — Three.js télécharge les composants
+        depuis un CDN.
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Piscine Lennon · Mahajanga · Suivi de projet familial</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Décisions — Piscine Lennon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        Piscine Lennon
+        <small>Mahajanga · Madagascar</small>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">Accueil</a>
+        <a href="modele-3d.html">Modèle 3D</a>
+        <a href="specifications.html">Spécifications</a>
+        <a href="plans.html">Plan</a>
+        <a href="decisions.html" class="active">Décisions</a>
+        <a href="chantier.html">Chantier</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container-narrow">
+      <h1>Journal des décisions</h1>
+      <p style="color: var(--c-fg-soft); font-size: 1.05rem;">
+        Toutes les décisions tranchées sur le projet, classées par catégorie.
+        Chaque décision indique le choix fait, le rationale, et les détails techniques.
+        <strong>25 décisions consolidées au 27 avril 2026.</strong>
+      </p>
+
+      <h2>Géométrie et structure</h2>
+
+      <div class="decision">
+        <span class="num">D01</span>
+        <h4>Mur de saut Plage / Grand Bassin</h4>
+        <div class="body">
+          Épaisseur <strong>0,200 m</strong>, mode constructif <strong>béton banché ferraillé</strong>.
+          Compromis sécurité/esthétique optimal — ferraillage soigné requis (8 m × 1,20 m, immergé, chocs nageurs).
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D02</span>
+        <h4>Niveau des dalles hautes</h4>
+        <div class="body">
+          <strong>+0,030 m</strong> uniformément au-dessus du niveau eau (Z = 0).
+          Compromis effet « eau au ras du sol » et protection contre éclaboussures.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D03</span>
+        <h4>Pylônes terrasse → poteaux béton armé</h4>
+        <div class="body">
+          Substitution acier galvanisé → <strong>poteaux béton armé classique</strong>.
+          La galvanisation à chaud n'est pas disponible localement. Le béton armé
+          est en réalité plus durable en climat marin et plus résistant aux cyclones.
+          Specs : 0,20×0,20 m, entraxe ≤ 2 m, ancrage radier béton armé.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D04</span>
+        <h4>Pas de margelles</h4>
+        <div class="body">
+          <strong>Aucune margelle</strong> sur tout le pourtour. Le carrelage piscine
+          remonte directement sur les 30 cm de haut de mur en finition.
+        </div>
+      </div>
+
+      <h2>Escaliers</h2>
+
+      <div class="decision">
+        <span class="num">D05</span>
+        <h4>Hauteur de marche escalier piscine → zen</h4>
+        <div class="body">
+          <strong>0,156 m</strong> par marche × 9 marches = 1,404 m (correspond exactement à la dénivelée MB → dalle haute zen).
+          Légèrement au-dessus de la limite NF 0,15 m, admissible vu l'absence d'opposabilité à Madagascar.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D06</span>
+        <h4>Girons des escaliers</h4>
+        <div class="body">
+          Sortie plage : <strong>0,30 m</strong> (×4 marches × 1,20 m large).
+          Escaliers secs (#4, #5, #6) : <strong>0,28 m</strong>. Ratio 2h+g respecté pour confort.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D07</span>
+        <h4>Conformité escaliers secs</h4>
+        <div class="body">
+          <strong>Hauteur 0,200 m assumée</strong> (NF P01-012 limite 0,180 m mais norme non opposable).
+          Évite 0,30 m d'emprise au sol supplémentaire par escalier.
+        </div>
+      </div>
+
+      <h2>Hydraulique et équipements</h2>
+
+      <div class="decision">
+        <span class="num">D08</span>
+        <h4>Cascade depuis Moyen Bassin</h4>
+        <div class="body">
+          Type : <strong>lame d'eau (sheet)</strong> — voile continu zen.
+          Position : paroi nord du MB. Largeur déversoir <strong>1,50 m centré</strong>,
+          hauteur de chute <strong>0,40 m</strong>. Éclairage LED encastré sous le déversoir.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D09</span>
+        <h4>Bac tampon lame d'eau</h4>
+        <div class="body">
+          Volume <strong>~20 m³</strong> (à affiner par calcul précis volume rigole + montée pompe à l'arrêt).
+          Position : <strong>intégré au local technique</strong>, accès maintenance trappe min. 60×60 cm.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D10</span>
+        <h4>Local technique</h4>
+        <div class="body">
+          Position : <strong>côté est, enterré dédié</strong>, à proximité du sunken lounge.
+          Dimensions <strong>3,00 × 2,50 × 2,00 m utiles</strong> (+ bac tampon mutualisé).
+          Ventilation haute + basse obligatoire. Distance bassin &lt;10 m.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D11</span>
+        <h4>Architecture filtration</h4>
+        <div class="body">
+          Système <strong>mix débordement + skimmers</strong>.
+          Skimmers complémentaires : <strong>2 unités</strong> côté est.
+          Filtre <strong>sable + média verre filtrant</strong> (finesse 15-20 µm).
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D12</span>
+        <h4>Pompe principale</h4>
+        <div class="body">
+          <strong>Pompe à variation de vitesse Pentair Intelliflo</strong> (ou équivalent dispo).
+          Débit nominal ~47 m³/h (recyclage en 4 h). Mode économique 70% du temps (~25-30 m³/h).
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D13</span>
+        <h4>Traitement de l'eau</h4>
+        <div class="body">
+          <strong>Électrolyse au sel</strong> (sel marin local Mahajanga = sourcing facile)
+          + <strong>régulation pH automatique</strong>. Pas de chlore manuel en routine.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D14</span>
+        <h4>Pas de chauffage</h4>
+        <div class="body">
+          Mahajanga, eau de la piscine entre <strong>27 et 30°C toute l'année</strong>, en plein soleil.
+          PAC inutile.
+        </div>
+      </div>
+
+      <h2>Pièces à sceller et électricité</h2>
+
+      <div class="decision">
+        <span class="num">D15</span>
+        <h4>Pièces à sceller (marque Hayward)</h4>
+        <div class="body">
+          <strong>3</strong> bondes de fond, <strong>12</strong> buses de refoulement
+          (GB×6, MB×2, Couloir×2, Plage×2), <strong>2</strong> prises balai,
+          <strong>2</strong> skimmers (côté est), <strong>2-3</strong> buses cascade,
+          <strong>4</strong> bondes/buses bac tampon. Marque Hayward, fiable et standard,
+          dispo via importateurs Réunion.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D16</span>
+        <h4>Éclairage immergé</h4>
+        <div class="body">
+          <strong>8 projecteurs LED RGB CW</strong> (color + warm white) :
+          GB ×5, MB ×1, Couloir ×1, Plage ×1.
+          Position 0,60-0,80 m sous niveau eau. Cascade et lame d'eau aussi éclairées.
+          Transformateur 12V dans local technique.
+        </div>
+      </div>
+
+      <h2>Aménagements lounge</h2>
+
+      <div class="decision">
+        <span class="num">D17</span>
+        <h4>Banquettes Sunken Lounge</h4>
+        <div class="body">
+          Hauteur d'assise <strong>0,420 m</strong> depuis sol lounge.
+          Largeur 0,440 à 0,500 m sur les 4 côtés.
+          Structure <strong>béton coulé</strong>, revêtement <strong>bois Hintsy</strong>.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D18</span>
+        <h4>Tablette bar</h4>
+        <div class="body">
+          Hauteur <strong>1,050 m</strong>, dimensions 0,560 × 2,400 m.
+          Matériau <strong>granit noir malgache poli</strong> (cohérence avec rebord lame d'eau).
+          3 tabourets Ø 38 cm sous tablette, espacement 0,70 m axe-à-axe.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D19</span>
+        <h4>Sol et murs Sunken Lounge</h4>
+        <div class="body">
+          Sol <strong>basalte naturel</strong> (sourcing local Madagascar).
+          Murs nord+est secs : enduit teinté + <strong>un mur en parement pierre</strong>
+          pour créer un accent visuel.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D20</span>
+        <h4>Îlot D décoratif</h4>
+        <div class="body">
+          Fonction décorative (jardinière + point lumineux).
+          Dimensions <strong>0,60 × 0,60 × 0,80 m</strong> hors d'eau.
+          Construction muret béton + finition cohérente lounge.
+          Équipement jardinière intégrée + spot LED encastré direction lame d'eau.
+        </div>
+      </div>
+
+      <h2>Sourcing des matériaux</h2>
+
+      <div class="decision">
+        <span class="num">D21</span>
+        <h4>Carrelage piscine — BLUE LAGO QUARTZ</h4>
+        <div class="body">
+          <strong>Foshan Ethlon — The QUARTZ series — BLUE LAGO 板岩蓝</strong>,
+          format 300×600 mm, 9,5 mm d'épaisseur, surface mate moulée P4 antidérapant,
+          ardoise gris-bleu profond. <strong>300 m² commandés</strong>.
+          Sourcing importateur Réunion. Délai 2-3 mois.
+          Colle <strong>C2TE époxy</strong> + joints époxy 2 mm gris foncé.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D22</span>
+        <h4>Granit lame d'eau et tablette bar</h4>
+        <div class="body">
+          <strong>Carrière région Antsirabe</strong>, granit noir uniforme.
+          Finition <strong>polie</strong> (lame d'eau) + flammée si zones piétinables.
+          Épaisseur 30 mm minimum. <strong>~6,5 m²</strong> total avec chutes.
+          Tolérance ± 1 mm sur plaques (calage ± 2 mm sur 12 m pour la lame d'eau).
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D23</span>
+        <h4>Bois Hintsy</h4>
+        <div class="body">
+          Essence <strong>Hintsy (Intsia bijuga)</strong>.
+          Quantité 28,25 m² terrasse + 6,67 m² chemin + ~12 m² banquettes = <strong>~47 m²</strong>.
+          Sourcing scierie Antananarivo. Traitement <strong>saturateur huile teck</strong>
+          application annuelle.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D24</span>
+        <h4>Couverture</h4>
+        <div class="body">
+          <strong>Bâche à bulles manuelle</strong>, surface couvrante 132,8 m².
+          Économies eau (évaporation -90 % = critique en climat tropical chaud).
+          Coût indicatif ~10 €/m² × 133 = ~1 300 €.
+        </div>
+      </div>
+
+      <div class="decision">
+        <span class="num">D25</span>
+        <h4>Localisation Mahajanga & implications climat</h4>
+        <div class="body">
+          <strong>Mahajanga confirmé</strong> (côte nord-ouest, climat tropical chaud,
+          zone cyclonique janvier-mars). Aucun chauffage. Air salin : équipements
+          proches du bassin <strong>inox 316</strong> ou polymère.
+          Cyclones : ancrage terrasse poteaux béton armé renforcé, vis inox 316,
+          possibilité couvre-piscine rabattable en saison cyclonique.
+        </div>
+      </div>
+
+      <hr>
+
+      <h2>Décisions complémentaires (post-26)</h2>
+
+      <div class="decision" style="border-left-color: var(--c-hintsy);">
+        <span class="num" style="background: var(--c-hintsy);">D26</span>
+        <h4>Carrelage final BLUE LAGO QUARTZ</h4>
+        <div class="body">
+          Choix définitif : <strong>Foshan Ethlon — The QUARTZ series — BLUE LAGO 板岩蓝</strong>,
+          format <strong>300×600 mm</strong>, surface mate moulée P4. Le 30×30 mosaïque IK97915
+          initialement envisagé est remplacé par ce format ardoise pour un rendu plus contemporain.
+          <em>Validé le 28/04/2026.</em>
+        </div>
+      </div>
+
+      <div class="decision" style="border-left-color: var(--c-hintsy);">
+        <span class="num" style="background: var(--c-hintsy);">D27</span>
+        <h4>Couloir de nage réduit 13 m → 5 m</h4>
+        <div class="body">
+          Pour respecter le budget carrelage de 300 m² et économiser sur le total,
+          le couloir de nage est réduit. Le delta libère l'espace au nord pour les
+          <strong>2 locaux techniques + vestiaire</strong> et un agrandissement du
+          jardin zen. <em>Validé le 28/04/2026.</em>
+        </div>
+      </div>
+
+      <div class="decision" style="border-left-color: var(--c-hintsy);">
+        <span class="num" style="background: var(--c-hintsy);">D28</span>
+        <h4>Satrana (Bismarckia nobilis) sur îlot D</h4>
+        <div class="body">
+          Le palmier de l'îlot central est un <strong>Satrana</strong> (Bismarckia nobilis),
+          espèce endémique de Madagascar à frondes rigides en éventail argenté.
+          Tronc 2 m + couronne 2 m = 4 m total. <em>Validé le 28/04/2026.</em>
+        </div>
+      </div>
+
+      <div class="decision" style="border-left-color: var(--c-hintsy);">
+        <span class="num" style="background: var(--c-hintsy);">D29</span>
+        <h4>Pas de cascade nord MB</h4>
+        <div class="body">
+          La paroi nord du moyen bassin est <strong>un mur plein</strong>, sans
+          cascade. La D08 initiale est annulée. La lame d'eau ouest 12 m suffit pour
+          l'effet zen. <em>Validé le 28/04/2026.</em>
+        </div>
+      </div>
+
+      <div class="decision" style="border-left-color: var(--c-hintsy);">
+        <span class="num" style="background: var(--c-hintsy);">D30</span>
+        <h4>Pas de PAC réversible</h4>
+        <div class="body">
+          Confirmation : <strong>aucune installation pré-équipée pour PAC</strong>.
+          Pas nécessaire pour Mahajanga. Économie significative sur le coffret électrique
+          et les pré-équipements. <em>Validé le 28/04/2026.</em>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Piscine Lennon · Mahajanga · Suivi de projet familial</p>
+    </div>
+  </footer>
+</body>
+</html>

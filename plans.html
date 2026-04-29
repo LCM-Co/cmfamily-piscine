@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan architecte — Piscine Lennon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        Piscine Lennon
+        <small>Mahajanga · Madagascar</small>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">Accueil</a>
+        <a href="modele-3d.html">Modèle 3D</a>
+        <a href="specifications.html">Spécifications</a>
+        <a href="plans.html" class="active">Plan</a>
+        <a href="decisions.html">Décisions</a>
+        <a href="chantier.html">Chantier</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Plan architecte</h1>
+      <p style="color: var(--c-fg-soft); font-size: 1.05rem;">
+        Plan v29 final, validé le 9 avril 2026. PDF complet avec cotes
+        et détails techniques. Vous pouvez zoomer et naviguer dans le PDF
+        directement, ou le télécharger pour l'imprimer.
+      </p>
+
+      <p style="margin: 24px 0;">
+        <a href="assets/pdf/plan-piscine.pdf" class="btn" download>
+          📥 Télécharger le PDF synthèse (4 pages)
+        </a>
+        <a href="assets/pdf/plan-v29.pdf" class="btn btn-secondary" download style="margin-left: 12px;">
+          📥 Télécharger le plan v29 complet
+        </a>
+      </p>
+
+      <h2>Plan synthèse — 4 pages</h2>
+      <p>Document de référence avec implantation, cotes, détails techniques et coupes.</p>
+
+      <iframe
+        src="assets/pdf/plan-piscine.pdf#view=Fit"
+        class="pdf-frame"
+        title="Plan synthèse de la piscine Lennon"
+        loading="lazy">
+        <p>Votre navigateur ne peut pas afficher ce PDF.
+          <a href="assets/pdf/plan-piscine.pdf">Téléchargez-le directement</a>.
+        </p>
+      </iframe>
+
+      <h2 style="margin-top: 3em;">Plan v29 — version originale</h2>
+      <p>Plan d'origine de l'architecte, avec toutes les pages et annotations.</p>
+
+      <iframe
+        src="assets/pdf/plan-v29.pdf#view=Fit"
+        class="pdf-frame"
+        title="Plan v29 complet"
+        loading="lazy">
+        <p>Votre navigateur ne peut pas afficher ce PDF.
+          <a href="assets/pdf/plan-v29.pdf">Téléchargez-le directement</a>.
+        </p>
+      </iframe>
+
+      <hr>
+
+      <h2>Légende rapide du plan</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <h3>Coordonnées</h3>
+          <p>X = est, Y = nord, Z = vertical. Z=0 correspond à la surface
+            de l'eau. L'origine (0,0,0) est l'angle sud-ouest du grand bassin.</p>
+        </div>
+        <div class="card">
+          <h3>Cotes</h3>
+          <p>Toutes les cotes sont en mètres. Les épaisseurs murales sont
+            indiquées en mm pour les murs eau (350 mm) et secs (240 mm).</p>
+        </div>
+        <div class="card">
+          <h3>Niveaux</h3>
+          <p>+0,030 m = dalles hautes, 0 = surface eau, -1,40 m = sol zen,
+            -1,80 m = fond grand bassin, -4,40 m = terrain naturel est.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Piscine Lennon · Mahajanga · Suivi de projet familial</p>
+    </div>
+  </footer>
+</body>
+</html>
