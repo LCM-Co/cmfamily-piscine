@@ -25,10 +25,15 @@ git push
 
 Vercel rebuild automatique en 30 s.
 
-## Activer les commentaires natifs (Upstash Redis)
+## Activer les commentaires et la prise de décision (Upstash Redis)
 
-Le site embarque un système de commentaires natifs (API serverless Vercel +
-Upstash Redis). Pour l'activer :
+Le site embarque deux systèmes natifs branchés sur la même base Redis :
+
+- **Commentaires** (`/api/comments`) — fil de discussion par décision
+- **Prise de décision** (`/api/decisions`) — valider, compléter, rectifier,
+  archiver, rouvrir, avec audit complet
+
+Pour les activer :
 
 1. Créer un compte sur https://upstash.com (gratuit, 30 secondes)
 2. Créer une base **Redis** (free tier — 10 000 commandes/jour suffisent largement)
@@ -36,10 +41,27 @@ Upstash Redis). Pour l'activer :
 4. Dans Vercel → Project → Settings → Environment Variables, ajouter :
    - `UPSTASH_REDIS_REST_URL` (Production + Preview + Development)
    - `UPSTASH_REDIS_REST_TOKEN` (idem)
+   - `FAMILY_PASSWORD` — mot de passe partagé pour valider/rectifier/archiver
+     les décisions (à choisir, simple, ex. `piscine2026`)
+   - `ADMIN_SECRET` (optionnel) — pour modérer les commentaires via DELETE
 5. Trigger un redéploiement (Vercel → Deployments → Redeploy)
 
 Tant que ces variables ne sont pas définies, le site affiche un message
-d'erreur clair dans chaque section commentaires expliquant la procédure.
+d'erreur clair dans chaque action expliquant la procédure.
+
+### Comment ça fonctionne côté famille
+
+Sur la page **Décisions**, sous chaque ligne :
+- **✅ Valider** → marque la décision comme tranchée (date + nom + note)
+- **➕ Compléter** → ajoute une annotation chronologique
+- **✏️ Rectifier** → modifie un champ avec motif (rebascule en « En discussion »)
+- **🗄 Archiver** → met la décision de côté (motif requis)
+- **🔄 Rouvrir** → réactive une décision archivée ou validée
+- **💬 Commenter** → fil de discussion ouvert, sans authentification
+
+Toutes les actions mutantes demandent **prénom + mot de passe famille**, mémorisés
+sur le navigateur après la première saisie. L'audit complet (qui, quand, quoi)
+s'affiche sous chaque décision, hors champ de la description statique.
 
 Pas de Google Forms : tout est intégré nativement, sans iframe ni service tiers.
 
