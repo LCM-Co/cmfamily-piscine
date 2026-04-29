@@ -43,6 +43,22 @@ d'erreur clair dans chaque section commentaires expliquant la procédure.
 
 Pas de Google Forms : tout est intégré nativement, sans iframe ni service tiers.
 
+## Cohérence avec le modèle 3D
+
+Le modèle 3D (`viewer/index.html`) est la **source de vérité** des dimensions.
+Toutes les pages doivent rester cohérentes avec lui.
+
+À lancer après toute modification du modèle 3D :
+
+```bash
+python3 scripts/check-coherence.py
+```
+
+Le script extrait les coordonnées des bassins depuis le code Three.js,
+recalcule surfaces et volumes, et signale les divergences sur les pages
+HTML (anciennes valeurs, dimensions imprécises, mentions de « 5 bassins », etc.).
+Exit code 0 si OK, 1 sinon.
+
 ## Hébergement
 
 Site déployé sur Vercel : https://cmfamily-piscine.vercel.app
