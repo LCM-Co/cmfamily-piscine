@@ -34,10 +34,55 @@
   #controls input[type=checkbox] { accent-color: #7dd3fc; }
   #stats { bottom: 12px; left: 12px; font-size: 11px; color: #94a3b8; max-width: 60vw; }
   #help { bottom: 12px; right: 12px; font-size: 11px; color: #94a3b8; max-width: 240px; }
+
+  /* Barre de boutons flottants pour toggler chaque panneau */
+  #ui-toggles {
+    position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 6px; z-index: 100;
+  }
+  #ui-toggles button {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(15,22,32,0.85); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #e8eef5; font-size: 16px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #ui-toggles button:hover,
+  #ui-toggles button.active { background: rgba(125,211,252,0.25); border-color: rgba(125,211,252,0.5); }
+  #ui-toggles button[data-toggle="all"] { background: rgba(15,22,32,0.92); }
+
+  /* État masqué — un panneau ferme totalement */
+  .panel.hidden { display: none !important; }
+  body.ui-hidden #info,
+  body.ui-hidden #controls,
+  body.ui-hidden #stats,
+  body.ui-hidden #help { display: none !important; }
+  body.ui-hidden #ui-toggles button:not([data-toggle="all"]) { display: none; }
+
+  /* MOBILE — panneaux fermés par défaut, plein écran 3D, contrôles compactés */
+  @media (max-width: 768px) {
+    #info { max-width: calc(100vw - 24px); top: 60px; left: 12px; right: 12px; display: none; }
+    #controls { top: 60px; right: 12px; left: 12px; min-width: 0; max-height: 70vh; display: none; }
+    #stats { font-size: 10px; max-width: 90vw; bottom: 8px; left: 8px; display: none; }
+    #help { display: none; }
+    #info.show, #controls.show, #stats.show { display: block; }
+    #ui-toggles { top: 10px; }
+    #ui-toggles button { width: 42px; height: 42px; font-size: 18px; }
+  }
 </style>
 </head>
 <body>
 <div id="app"></div>
+
+<div id="ui-toggles">
+  <button data-toggle="info" title="Infos / légende" aria-label="Infos">ℹ️</button>
+  <button data-toggle="controls" title="Vues et affichage" aria-label="Vues">⚙️</button>
+  <button data-toggle="stats" title="Cotes des bassins" aria-label="Cotes">📐</button>
+  <button data-toggle="all" title="Masquer / afficher l'interface" aria-label="Masquer">👁</button>
+  <button data-toggle="fullscreen" title="Plein écran" aria-label="Plein écran">⛶</button>
+</div>
 
 <div class="panel" id="info">
   <h1>Chan Ming POOL — Mahajanga<span class="v2">v2 plan v29</span></h1>
@@ -1261,6 +1306,82 @@ function animate() {
   renderer.render(scene, camera);
 }
 animate();
+
+// ============================================================
+// UI MOBILE — toggles, plein écran, tap pour masquer l'interface
+// ============================================================
+(function() {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const togglesBar = document.getElementById('ui-toggles');
+  const panels = {
+    info: document.getElementById('info'),
+    controls: document.getElementById('controls'),
+    stats: document.getElementById('stats'),
+  };
+
+  // Sur mobile : tous les panneaux masqués au démarrage (la 3D occupe tout l'écran)
+  // Sur desktop : panneaux visibles, le bouton "all" ne fait que tout masquer
+  function setPanel(name, shown) {
+    const el = panels[name];
+    if (!el) return;
+    if (isMobile) {
+      el.classList.toggle('show', shown);
+    } else {
+      el.classList.toggle('hidden', !shown);
+    }
+    const btn = togglesBar.querySelector(`[data-toggle="${name}"]`);
+    if (btn) btn.classList.toggle('active', shown);
+  }
+
+  // État initial
+  if (isMobile) {
+    Object.keys(panels).forEach(n => setPanel(n, false));
+  } else {
+    Object.keys(panels).forEach(n => {
+      const btn = togglesBar.querySelector(`[data-toggle="${n}"]`);
+      if (btn) btn.classList.add('active');
+    });
+  }
+
+  togglesBar.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const t = btn.dataset.toggle;
+
+    if (t === 'all') {
+      document.body.classList.toggle('ui-hidden');
+      btn.classList.toggle('active', document.body.classList.contains('ui-hidden'));
+      return;
+    }
+
+    if (t === 'fullscreen') {
+      const elem = document.documentElement;
+      if (!document.fullscreenElement) {
+        (elem.requestFullscreen || elem.webkitRequestFullscreen || (() => {})).call(elem);
+      } else {
+        (document.exitFullscreen || document.webkitExitFullscreen || (() => {})).call(document);
+      }
+      return;
+    }
+
+    const el = panels[t];
+    if (!el) return;
+    const shown = isMobile
+      ? !el.classList.contains('show')
+      : el.classList.contains('hidden');
+    setPanel(t, shown);
+  });
+
+  // Double-tap sur le canvas masque/affiche toute l'UI (pratique mobile)
+  let lastTap = 0;
+  document.getElementById('app').addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTap < 300 && e.touches.length === 0) {
+      document.body.classList.toggle('ui-hidden');
+    }
+    lastTap = now;
+  });
+})();
 </script>
 </body>
 </html>
