@@ -37,7 +37,7 @@ export default async function handler(req, res) {
     if (resource === "threads" && req.method === "GET") {
       const { data, error } = await sb
         .from("tech_threads")
-        .select("id, title, domain, status, is_public, last_message_at, created_at")
+        .select("id, title, domain, status, is_public, last_message_at, created_at, pinned_message_id, pinned_at, pinned_by")
         .order("last_message_at", { ascending: false, nullsFirst: false });
       if (error) throw error;
       // Compteur messages par thread
@@ -66,7 +66,36 @@ export default async function handler(req, res) {
         .eq("thread_id", id)
         .order("created_at", { ascending: true });
       if (e2) throw e2;
-      return res.status(200).json({ thread: t, messages: msgs || [] });
+      const pinned = t.pinned_message_id
+        ? (msgs || []).find(m => m.id === t.pinned_message_id) || null
+        : null;
+      return res.status(200).json({ thread: t, messages: msgs || [], pinned });
+    }
+
+    // ─── Épingler / désépingler un message comme conclusion du thread ───
+    if (resource === "pin" && req.method === "POST") {
+      const body = req.body || {};
+      const threadId = String(body.thread_id || "");
+      const messageId = body.message_id ? String(body.message_id) : null;
+      const author = safeStr(body.author, MAX_AUTHOR);
+      if (!threadId) return res.status(400).json({ error: "thread_id requis" });
+      // Vérifier que le message appartient bien au thread (si on épingle)
+      if (messageId) {
+        const { data: m } = await sb
+          .from("tech_messages").select("id, thread_id").eq("id", messageId).maybeSingle();
+        if (!m || m.thread_id !== threadId) {
+          return res.status(400).json({ error: "Message ne fait pas partie du thread" });
+        }
+      }
+      const update = {
+        pinned_message_id: messageId,
+        pinned_at: messageId ? new Date().toISOString() : null,
+        pinned_by: messageId ? (author || "Lennon") : null,
+      };
+      const { data, error } = await sb
+        .from("tech_threads").update(update).eq("id", threadId).select("*").single();
+      if (error) throw error;
+      return res.status(200).json({ thread: data });
     }
 
     if (resource === "thread" && req.method === "POST") {

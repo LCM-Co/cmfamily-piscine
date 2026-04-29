@@ -128,11 +128,13 @@
     for (const t of filtered) {
       const card = el("div", {
         className: "thread-card" + (t.is_public ? " public-thread" : " private")
-                 + (t.status === "closed" ? " closed" : ""),
+                 + (t.status === "closed" ? " closed" : "")
+                 + (t.pinned_message_id ? " has-pinned" : ""),
         onclick: () => openThread(t.id),
       },
         el("span", { className: "domain-tag" }, DOMAIN_LABEL[t.domain] || t.domain),
         el("span", { className: "title" }, t.title),
+        t.pinned_message_id ? el("span", { className: "pin-flag", title: "Conclusion épinglée" }, "📌 Conclusion") : null,
         el("span", { className: "meta" },
           (t.message_count ? `${t.message_count} message${t.message_count > 1 ? "s" : ""} · ` : "") +
           (t.last_message_at ? "Dernier : " + fmtDate(t.last_message_at) : "Jamais ouvert")
@@ -166,15 +168,56 @@
   async function openThread(id) {
     try {
       const j = await api("?resource=thread&id=" + encodeURIComponent(id));
-      showThreadModal(j.thread, j.messages);
+      showThreadModal(j.thread, j.messages, j.pinned);
     } catch (e) {
       alert("Erreur : " + e.message);
     }
   }
 
-  function showThreadModal(thread, messages) {
+  function showThreadModal(thread, messages, pinned) {
     const overlay = el("div", { className: "thread-detail", onclick: e => { if (e.target === overlay) close(); } });
+    const pinnedWrap = el("div", { className: "pinned-block" });
     const messagesWrap = el("div", { className: "messages-stream" });
+    let _thread = thread;
+
+    async function togglePin(messageId) {
+      const isUnpin = _thread.pinned_message_id === messageId;
+      try {
+        const author = localStorage.getItem(LS_AUTHOR) || "Lennon";
+        const j = await api("?resource=pin", { method: "POST",
+          body: { thread_id: _thread.id, message_id: isUnpin ? null : messageId, author } });
+        _thread = j.thread;
+        const newPinned = _thread.pinned_message_id
+          ? messages.find(m => m.id === _thread.pinned_message_id) || null
+          : null;
+        renderPinned(newPinned);
+        renderMessages(messages);
+      } catch (err) {
+        alert("Erreur : " + err.message);
+      }
+    }
+
+    function renderPinned(pinnedMsg) {
+      pinnedWrap.innerHTML = "";
+      if (!pinnedMsg) return;
+      pinnedWrap.append(el("div", { className: "pinned-block-inner" },
+        el("div", { className: "pinned-head" },
+          el("span", { className: "pinned-icon" }, "📌"),
+          el("strong", {}, "Conclusion qui fait foi"),
+          el("span", { className: "pinned-meta" },
+            "épinglée par " + (_thread.pinned_by || "?") + " · " + fmtDate(_thread.pinned_at)),
+          el("button", { className: "btn-unpin",
+            title: "Désépingler", onclick: () => togglePin(pinnedMsg.id) }, "✕"),
+        ),
+        el("div", { className: "pinned-author" },
+          el("strong", {}, pinnedMsg.author),
+          " · ",
+          el("span", {}, fmtDate(pinnedMsg.created_at))
+        ),
+        el("div", { className: "pinned-body", html: mdToHtml(pinnedMsg.body_md) })
+      ));
+    }
+
     function renderMessages(msgs) {
       messagesWrap.innerHTML = "";
       if (!msgs.length) {
@@ -183,10 +226,18 @@
       }
       for (const m of msgs) {
         const fromLennon = (m.author || "").toLowerCase().includes("lennon");
-        const card = el("div", { className: "message-card " + (fromLennon ? "from-lennon" : "from-claude") },
+        const isPinned = _thread.pinned_message_id === m.id;
+        const card = el("div", {
+          className: "message-card " + (fromLennon ? "from-lennon" : "from-claude") + (isPinned ? " is-pinned" : "")
+        },
           el("div", { className: "head" },
             el("strong", {}, m.author),
-            el("span", {}, fmtDate(m.created_at))
+            el("span", {}, fmtDate(m.created_at)),
+            el("button", {
+              className: "btn-pin" + (isPinned ? " active" : ""),
+              title: isPinned ? "Désépingler ce message" : "Épingler ce message comme conclusion du thread",
+              onclick: e => { e.stopPropagation(); togglePin(m.id); }
+            }, isPinned ? "📌 Épinglé" : "📌")
           ),
           el("div", { className: "body", html: mdToHtml(m.body_md) })
         );
@@ -194,6 +245,7 @@
       }
       messagesWrap.scrollTop = messagesWrap.scrollHeight;
     }
+    renderPinned(pinned);
     renderMessages(messages);
 
     const nameInput = el("input", {
@@ -235,7 +287,7 @@
         el("span", { className: "privacy" }, thread.is_public ? "👁 Public" : "🔒 Privé"),
         el("button", { className: "thread-detail-close", onclick: close, "aria-label": "Fermer" }, "×"),
       ),
-      messagesWrap, form,
+      pinnedWrap, messagesWrap, form,
     );
     overlay.append(inner);
     document.body.append(overlay);

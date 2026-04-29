@@ -186,6 +186,121 @@
   height: 32px;
 }
 
+/* — Bloc message épinglé (conclusion qui fait foi) — */
+.pinned-block {
+  background: white;
+}
+.pinned-block:empty { display: none; }
+
+.pinned-block-inner {
+  background: linear-gradient(135deg, #f0f7ec 0%, #f8faf5 100%);
+  border-bottom: 2px solid #a8c89a;
+  padding: 14px 24px 16px;
+  position: relative;
+}
+
+.pinned-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: #2a5a2a;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.pinned-head .pinned-icon { font-size: 1.1rem; }
+.pinned-head strong { font-weight: 700; letter-spacing: 0.3px; }
+.pinned-head .pinned-meta {
+  font-weight: 400;
+  color: var(--c-fg-soft);
+  margin-left: auto;
+  font-size: 0.82rem;
+}
+.btn-unpin {
+  background: transparent;
+  border: 1px solid #a8c89a;
+  color: #2a5a2a;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.92rem;
+  line-height: 1;
+  margin-left: 8px;
+}
+.btn-unpin:hover { background: #d8e8c8; }
+
+.pinned-author {
+  font-size: 0.84rem;
+  color: var(--c-fg-soft);
+  margin-bottom: 8px;
+}
+.pinned-author strong { color: var(--c-fg); }
+
+.pinned-body {
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--c-fg);
+}
+.pinned-body p:first-child { margin-top: 0; }
+.pinned-body p:last-child { margin-bottom: 0; }
+.pinned-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0;
+  font-size: 0.88em;
+}
+.pinned-body th, .pinned-body td {
+  border: 1px solid #c8dcb8;
+  padding: 4px 8px;
+  text-align: left;
+}
+.pinned-body th { background: #e8f0e3; font-weight: 600; }
+
+/* Bouton 📌 sur chaque message */
+.btn-pin {
+  background: transparent;
+  border: 1px solid var(--c-line);
+  color: var(--c-fg-soft);
+  padding: 2px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.74rem;
+  font-family: inherit;
+  margin-left: 8px;
+  opacity: 0.5;
+  transition: all 0.15s;
+}
+.btn-pin:hover { opacity: 1; border-color: #a8c89a; color: #2a5a2a; }
+.btn-pin.active {
+  opacity: 1;
+  background: #e8f0e3;
+  border-color: #a8c89a;
+  color: #2a5a2a;
+  font-weight: 600;
+}
+
+/* Message épinglé dans le flux : bordure verte + ombre */
+.message-card.is-pinned {
+  border-left-color: #6a9a4a !important;
+  box-shadow: 0 2px 8px rgba(106, 154, 74, 0.2);
+}
+
+/* Indicateur "Conclusion épinglée" sur les cartes thread */
+.thread-card.has-pinned {
+  border-left-color: #6a9a4a;
+}
+.pin-flag {
+  background: #e8f0e3;
+  color: #2a5a2a;
+  border: 1px solid #a8c89a;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
 .messages-stream {
   flex: 1;
   overflow-y: auto;
