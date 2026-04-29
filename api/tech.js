@@ -134,14 +134,20 @@ export default async function handler(req, res) {
     }
 
     if (resource === "thread" && req.method === "DELETE") {
-      const adm = checkAdmin(req);
-      if (!adm.ok) return res.status(adm.code).json({ error: adm.error });
+      // Suppression ouverte (zone interne) — confirmer côté front
       if (!id) return res.status(400).json({ error: "id requis" });
       await sb.from("tech_threads").delete().eq("id", id);
       return res.status(200).json({ ok: true, deleted: id });
     }
 
     // ─── MESSAGES ────────────────────────────────────────────────────
+    if (resource === "message" && req.method === "DELETE") {
+      if (!id) return res.status(400).json({ error: "id requis" });
+      // Si ce message était épinglé, le pin sera automatiquement remis à null par la FK on delete set null
+      await sb.from("tech_messages").delete().eq("id", id);
+      return res.status(200).json({ ok: true, deleted: id });
+    }
+
     if (resource === "message" && req.method === "POST") {
       const body = req.body || {};
       const threadId = String(body.thread_id || "");
@@ -164,6 +170,38 @@ export default async function handler(req, res) {
       // Mise à jour last_message_at
       await sb.from("tech_threads").update({ last_message_at: data.created_at }).eq("id", threadId);
       return res.status(200).json({ message: data });
+    }
+
+    // ─── ACTIVITÉ (polling pour notifications) ───────────────────────
+    if (resource === "activity" && req.method === "GET") {
+      const since = req.query.since ? String(req.query.since) : null;
+      let q = sb.from("tech_messages")
+        .select("id, thread_id, author, body_md, created_at")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      if (since) q = q.gt("created_at", since);
+      const { data: msgs, error } = await q;
+      if (error) throw error;
+
+      // Joindre les titres et statuts des threads concernés
+      const threadIds = [...new Set((msgs || []).map(m => m.thread_id))];
+      let threadsMap = {};
+      if (threadIds.length) {
+        const { data: ts } = await sb.from("tech_threads")
+          .select("id, title, domain, status").in("id", threadIds);
+        for (const t of ts || []) threadsMap[t.id] = t;
+      }
+      const enriched = (msgs || []).map(m => ({
+        id: m.id,
+        thread_id: m.thread_id,
+        thread_title: threadsMap[m.thread_id]?.title || "?",
+        thread_domain: threadsMap[m.thread_id]?.domain || null,
+        thread_status: threadsMap[m.thread_id]?.status || null,
+        author: m.author,
+        preview: (m.body_md || "").slice(0, 240),
+        created_at: m.created_at,
+      }));
+      return res.status(200).json({ messages: enriched, count: enriched.length });
     }
 
     // ─── STUDIES ─────────────────────────────────────────────────────

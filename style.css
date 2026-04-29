@@ -99,6 +99,30 @@ html, body {
 .site-nav a:hover { opacity: 1; background: rgba(255,255,255,0.08); }
 .site-nav a.active { opacity: 1; background: rgba(255,255,255,0.14); font-weight: 500; }
 
+/* Badge "messages non vus" sur le lien Technique */
+.site-nav a { position: relative; }
+.tech-nav-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #d18a3a;
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 10px;
+  margin-left: 6px;
+  vertical-align: middle;
+  box-shadow: 0 0 0 2px var(--c-blue-lago);
+  animation: pulse-badge 2s infinite;
+}
+@keyframes pulse-badge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
 /* — Conteneurs — */
 .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
 .container-narrow { max-width: 880px; margin: 0 auto; padding: 0 24px; }

@@ -225,6 +225,22 @@
       pinnedWrap.append(inner);
     }
 
+    async function deleteMessage(messageId) {
+      if (!confirm("Supprimer définitivement ce message ?")) return;
+      try {
+        await api("?resource=message&id=" + encodeURIComponent(messageId), { method: "DELETE" });
+        const idx = messages.findIndex(m => m.id === messageId);
+        if (idx >= 0) messages.splice(idx, 1);
+        // Si c'était le message épinglé, désépingler côté local
+        if (_thread.pinned_message_id === messageId) {
+          _thread.pinned_message_id = null;
+          renderPinned(null);
+        }
+        renderMessages(messages);
+        loadThreads();
+      } catch (err) { alert("Erreur : " + err.message); }
+    }
+
     function renderMessages(msgs) {
       messagesWrap.innerHTML = "";
       if (!msgs.length) {
@@ -244,7 +260,12 @@
               className: "btn-pin" + (isPinned ? " active" : ""),
               title: isPinned ? "Désépingler ce message" : "Épingler ce message comme conclusion du thread",
               onclick: e => { e.stopPropagation(); togglePin(m.id); }
-            }, isPinned ? "📌 Épinglé" : "📌")
+            }, isPinned ? "📌 Épinglé" : "📌"),
+            el("button", {
+              className: "btn-msg-delete",
+              title: "Supprimer ce message",
+              onclick: e => { e.stopPropagation(); deleteMessage(m.id); }
+            }, "🗑")
           ),
           el("div", { className: "body", html: mdToHtml(m.body_md) })
         );
@@ -287,11 +308,45 @@
       el("div", { className: "message-form-row" }, nameInput, bodyInput, sendBtn)
     );
 
+    async function archiveThread() {
+      const newStatus = _thread.status === "closed" ? "open" : "closed";
+      if (newStatus === "closed" && !confirm("Fermer cette discussion ? Elle restera consultable mais grisée dans la liste.")) return;
+      try {
+        const j = await api("?resource=thread&id=" + encodeURIComponent(_thread.id), {
+          method: "PATCH", body: { status: newStatus } });
+        _thread = j.thread;
+        statusBtn.textContent = _thread.status === "closed" ? "🔓 Rouvrir" : "🗄 Fermer";
+        loadThreads();
+      } catch (err) { alert("Erreur : " + err.message); }
+    }
+
+    async function deleteThread() {
+      if (!confirm("⚠ SUPPRIMER DÉFINITIVEMENT cette discussion et tous ses messages ?\n\nCette action est irréversible.")) return;
+      try {
+        await api("?resource=thread&id=" + encodeURIComponent(_thread.id), { method: "DELETE" });
+        close();
+        loadThreads();
+      } catch (err) { alert("Erreur : " + err.message); }
+    }
+
+    const statusBtn = el("button", {
+      className: "btn-thread-action",
+      title: _thread.status === "closed" ? "Rouvrir cette discussion" : "Fermer (archiver) cette discussion",
+      onclick: archiveThread
+    }, _thread.status === "closed" ? "🔓 Rouvrir" : "🗄 Fermer");
+
+    const deleteBtn = el("button", {
+      className: "btn-thread-action btn-thread-delete",
+      title: "Supprimer définitivement la discussion",
+      onclick: deleteThread
+    }, "🗑 Supprimer");
+
     const inner = el("div", { className: "thread-detail-inner" },
       el("div", { className: "thread-detail-head" },
         el("h3", {}, thread.title),
         el("span", { className: "domain-tag" }, DOMAIN_LABEL[thread.domain] || thread.domain),
         el("span", { className: "privacy" }, thread.is_public ? "👁 Public" : "🔒 Privé"),
+        statusBtn, deleteBtn,
         el("button", { className: "thread-detail-close", onclick: close, "aria-label": "Fermer" }, "×"),
       ),
       pinnedWrap, messagesWrap, form,
