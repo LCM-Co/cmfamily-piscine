@@ -25,10 +25,23 @@ git push
 
 Vercel rebuild automatique en 30 s.
 
-## Configurer les Google Forms
+## Activer les commentaires natifs (Upstash Redis)
 
-Dans `specifications.html`, remplacer les trois `PLACEHOLDER_FORM_ID_X` par les
-URLs `src` de tes Google Forms (Envoyer → onglet `</>` → copier le `src`).
+Le site embarque un système de commentaires natifs (API serverless Vercel +
+Upstash Redis). Pour l'activer :
+
+1. Créer un compte sur https://upstash.com (gratuit, 30 secondes)
+2. Créer une base **Redis** (free tier — 10 000 commandes/jour suffisent largement)
+3. Copier les valeurs `UPSTASH_REDIS_REST_URL` et `UPSTASH_REDIS_REST_TOKEN`
+4. Dans Vercel → Project → Settings → Environment Variables, ajouter :
+   - `UPSTASH_REDIS_REST_URL` (Production + Preview + Development)
+   - `UPSTASH_REDIS_REST_TOKEN` (idem)
+5. Trigger un redéploiement (Vercel → Deployments → Redeploy)
+
+Tant que ces variables ne sont pas définies, le site affiche un message
+d'erreur clair dans chaque section commentaires expliquant la procédure.
+
+Pas de Google Forms : tout est intégré nativement, sans iframe ni service tiers.
 
 ## Hébergement
 
