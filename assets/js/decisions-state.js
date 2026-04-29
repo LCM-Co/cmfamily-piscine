@@ -396,14 +396,30 @@
   }
 
   function updateCounters(states) {
-    const todoIds = ["P02", "D24", "D31", "D32"];
-    const stillTodo = todoIds.filter(id => {
-      const s = states[id];
-      return !s || s.status === "todo" || s.status === "discussing";
-    });
-    const lead = document.querySelector(".action-required .lead");
-    if (lead) {
-      lead.firstChild && (lead.firstChild.textContent = `${stillTodo.length} décision${stillTodo.length > 1 ? "s" : ""} ouverte${stillTodo.length > 1 ? "s" : ""}. Cliquez sur une carte pour y aller directement. `);
+    // Recompte les compteurs des bandeaux famille / constructeur d'après l'état Redis
+    const decisions = Array.from(document.querySelectorAll('.decision[data-decideur]'));
+    const stats = { famille: { todo: 0, discussing: 0, done: 0, archived: 0 },
+                    constructeur: { todo: 0, discussing: 0, done: 0, archived: 0 } };
+    for (const d of decisions) {
+      const decideur = d.dataset.decideur;
+      if (!stats[decideur]) continue;
+      const id = (d.id || "").replace(/^dec-/, "");
+      const override = states[id];
+      let st;
+      if (override && override.status) st = override.status;
+      else st = effectiveStatus(d, null);
+      if (stats[decideur][st] === undefined) stats[decideur].discussing++;
+      else stats[decideur][st]++;
+    }
+    const fam = stats.famille;
+    const con = stats.constructeur;
+    const famLead = document.querySelector(".action-famille .lead");
+    if (famLead) {
+      famLead.textContent = `${fam.todo} décision${fam.todo > 1 ? "s" : ""} ouverte${fam.todo > 1 ? "s" : ""} — choix d'ambiance, de matériaux, de budget ou de vie quotidienne. Cliquez sur une carte pour voir le détail.`;
+    }
+    const conLead = document.querySelector(".action-constructeur .lead");
+    if (conLead) {
+      conLead.textContent = `${con.todo} décision${con.todo > 1 ? "s" : ""} ouverte${con.todo > 1 ? "s" : ""} — structure, hydraulique, électricité, dimensions techniques.`;
     }
   }
 

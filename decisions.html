@@ -33,62 +33,70 @@
     <div class="container-narrow">
       <h1>Décisions du projet</h1>
       <p style="color: var(--c-fg-soft); font-size: 1.05rem;">
-        Système complet de prise de décision : pour chaque ligne vous pouvez
+        Deux types de décisions : celles que <strong>la famille tranche</strong>
+        (esthétique, matériaux visibles, ambiance, budget, confort) et celles
+        à <strong>arbitrer avec le constructeur</strong> (structure, hydraulique,
+        électricité, dimensions techniques). Pour chaque ligne :
         <strong>✅ valider</strong>, <strong>➕ compléter</strong>,
         <strong>✏️ rectifier</strong>, <strong>🗄 archiver</strong>,
-        <strong>🔄 rouvrir</strong> ou simplement <strong>💬 commenter</strong>.
-        Toutes les actions sont <strong>tracées</strong> (auteur, date, motif)
-        sous chaque décision. Indiquez juste votre prénom à la première action,
-        il est mémorisé pour la suite.
+        <strong>🔄 rouvrir</strong> ou <strong>💬 commenter</strong>.
       </p>
 
-      <!-- ─── ACTION REQUISE ─── -->
-      <section class="action-required">
-        <h2>🔔 Action requise — votre avis attendu</h2>
+      <section class="action-required action-famille">
+        <h2>🔔 À trancher en famille</h2>
         <p class="lead">
-          4 décisions ouvertes. Cliquez sur une carte pour y aller directement.
-          Le fil de commentaires s’ouvre tout seul.
+          3 décisions ouvertes — choix d'ambiance, de matériaux,
+          de budget ou de vie quotidienne. Cliquez sur une carte pour voir le détail.
         </p>
         <div class="action-cards">
           <a href="#dec-P02" class="action-card">
             <span class="arrow">→</span>
             <span class="num">P02</span>
-            <h3>Carrelage piscine BLUE LAGO QUARTZ</h3>
-            <span class="hint">Format 300×600 mm — validation finale</span>
+            <h3>Choix du carrelage de la piscine</h3>
           </a>
           <a href="#dec-D24" class="action-card">
             <span class="arrow">→</span>
             <span class="num">D24</span>
             <h3>Couverture du bassin</h3>
-            <span class="hint">Bâche à bulles, volet automatique ou rien ?</span>
           </a>
           <a href="#dec-D31" class="action-card">
             <span class="arrow">→</span>
             <span class="num">D31</span>
-            <h3>Vestiaire</h3>
-            <span class="hint">Cabines, douche, WC, finitions</span>
-          </a>
-          <a href="#dec-D32" class="action-card">
-            <span class="arrow">→</span>
-            <span class="num">D32</span>
-            <h3>Local piscine (technique)</h3>
-            <span class="hint">1 ou 2 locaux, accès, ventilation, stockage</span>
+            <h3>Vestiaire — dimensions, équipements, finitions</h3>
           </a>
         </div>
       </section>
 
-      <!-- ─── DÉCISIONS À TRANCHER ─── -->
-      <div class="section-title">
-        <h2>🟠 À trancher</h2>
-        <span class="count">4 décisions ouvertes</span>
-      </div>
+      <section class="action-required action-constructeur">
+        <h2>🔨 À trancher avec le constructeur</h2>
+        <p class="lead">
+          Décisions techniques — structure, hydraulique, électricité, dimensions.
+        </p>
+        <div class="action-cards">
+          <a href="#dec-D32" class="action-card">
+            <span class="arrow">→</span>
+            <span class="num">D32</span>
+            <h3>Local piscine (technique) — aménagement, accès, équipements</h3>
+          </a>
+        </div>
+      </section>
+      <section class="section-decideur">
+        <div class="section-title">
+          <h2>👨‍👩‍👧 Décisions famille</h2>
+          <span class="count">20 décisions · 3 à trancher · 17 en discussion</span>
+        </div>
+        <p class="section-intro">
+          Choix qui dépendent de la famille : esthétique, matériaux visibles,
+          ambiance, budget, confort. Validez, complétez, rectifiez ou commentez
+          chaque ligne directement ici.
+        </p>
 
-      <!-- P02 — Carrelage -->
-      <div class="decision is-todo" id="dec-P02">
+      <div class="decision is-todo" data-decideur="famille" id="dec-P02">
         <div class="head">
           <span class="num">P02</span>
           <h4>Choix du carrelage de la piscine</h4>
           <span class="status-tag todo">🟠 À trancher</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
         </div>
         <div class="meta" style="font-size: 0.82rem; color: var(--c-fg-soft); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
           Ouverte le 29 avril 2026 · Avis de la famille attendu
@@ -140,13 +148,12 @@
           <div class="comments-section" data-comments="P02-carrelage"></div>
         </div>
       </div>
-
-      <!-- D24 — Couverture -->
-      <div class="decision is-todo" id="dec-D24">
+      <div class="decision is-todo" data-decideur="famille" id="dec-D24">
         <div class="head">
           <span class="num">D24</span>
           <h4>Couverture du bassin</h4>
           <span class="status-tag todo">🟠 À trancher</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
         </div>
         <div class="body">
           <p>
@@ -173,13 +180,12 @@
           <div class="comments-section" data-comments="D24-couverture"></div>
         </div>
       </div>
-
-      <!-- D31 — Vestiaire -->
-      <div class="decision is-todo" id="dec-D31">
+      <div class="decision is-todo" data-decideur="famille" id="dec-D31">
         <div class="head">
           <span class="num">D31</span>
           <h4>Vestiaire — dimensions, équipements, finitions</h4>
           <span class="status-tag todo">🟠 À trancher</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
         </div>
         <div class="body">
           <p>
@@ -210,13 +216,368 @@
           <div class="comments-section" data-comments="D31-vestiaire"></div>
         </div>
       </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D26">
+        <div class="head">
+          <span class="num">D26</span>
+          <h4>Carrelage final BLUE LAGO QUARTZ</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          Choix définitif : <strong>Foshan Ethlon — QUARTZ — BLUE LAGO 板岩蓝</strong>,
+          format <strong>300×600 mm</strong>, surface mate moulée P4. Le 30×30 mosaïque
+          IK97915 initialement envisagé est remplacé par ce format ardoise pour un
+          rendu plus contemporain.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D26"
+                  data-open-label="💬 Commenter / poser une question"
+                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
+            💬 Commenter / poser une question
+          </button>
+        </div>
+        <div id="comments-D26" class="comments-panel"><div class="comments-section" data-comments="D26-carrelage-final"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D27">
+        <div class="head">
+          <span class="num">D27</span>
+          <h4>Couloir de nage réduit 13 m → 5 m</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          Pour respecter le budget carrelage de 300 m², le couloir de nage est
+          réduit. L’espace libéré au nord accueille les <strong>2 locaux
+          techniques + vestiaire</strong> et un agrandissement du jardin zen.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D27"
+                  data-open-label="💬 Commenter / poser une question"
+                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
+            💬 Commenter / poser une question
+          </button>
+        </div>
+        <div id="comments-D27" class="comments-panel"><div class="comments-section" data-comments="D27-couloir"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D28">
+        <div class="head">
+          <span class="num">D28</span>
+          <h4>Satrana (Bismarckia nobilis) sur îlot D</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          Le palmier de l’îlot central est un <strong>Satrana</strong>
+          (Bismarckia nobilis), espèce endémique de Madagascar à frondes rigides
+          en éventail argenté. Tronc 2 m + couronne 2 m = 4 m total.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D28"
+                  data-open-label="💬 Commenter / poser une question"
+                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
+            💬 Commenter / poser une question
+          </button>
+        </div>
+        <div id="comments-D28" class="comments-panel"><div class="comments-section" data-comments="D28-satrana"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D29">
+        <div class="head">
+          <span class="num">D29</span>
+          <h4>Pas de cascade nord MB</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          La paroi nord du moyen bassin est <strong>un mur plein</strong>, sans
+          cascade. La D08 initiale est annulée. La lame d’eau ouest 12 m suffit
+          pour l’effet zen.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D29"
+                  data-open-label="💬 Commenter / poser une question"
+                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
+            💬 Commenter / poser une question
+          </button>
+        </div>
+        <div id="comments-D29" class="comments-panel"><div class="comments-section" data-comments="D29-pas-cascade"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D30">
+        <div class="head">
+          <span class="num">D30</span>
+          <h4>Pas de PAC réversible</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          <strong>Aucune installation pré-équipée pour PAC.</strong> Pas
+          nécessaire pour Mahajanga (eau 27–30 °C toute l’année). Économie
+          significative sur le coffret électrique et les pré-équipements.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D30"
+                  data-open-label="💬 Commenter / poser une question"
+                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
+            💬 Commenter / poser une question
+          </button>
+        </div>
+        <div id="comments-D30" class="comments-panel"><div class="comments-section" data-comments="D30-pas-pac"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D04">
+        <div class="head">
+          <span class="num">D04</span>
+          <h4>Margelles travertin (révision)</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          <strong>Margelles travertin crème, 30 cm de large, finition honed mat</strong>
+          autour de tous les bassins. La proposition initiale (« aucune margelle,
+          carrelage remontant directement ») a été abandonnée pour des raisons de
+          confort pieds nus, sécurité antidérapante en zone humide et cohérence
+          avec le bois Hintsy de la terrasse.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D04"
+                  data-open-label="💬 Commenter / poser une question"
+                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
+            💬 Commenter / poser une question
+          </button>
+        </div>
+        <div id="comments-D04" class="comments-panel"><div class="comments-section" data-comments="D04-margelles"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D05">
+        <div class="head">
+          <span class="num">D05</span>
+          <h4>Escalier piscine → zen (axe longitudinal)</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          <strong>8 marches × 0,175 m × 0,240 m de giron</strong> (largeur 0,80 m).
+          Dénivelée MB (Z=−1,40) → niveau eau (Z=0). Escalier longitudinal collé
+          au mur nord MB, axe X, montée Ouest→Est. Palier 0,80 × 0,80 m au sommet
+          sur mur plein, puis escalier sec descendant 7 marches × 0,200 × 0,200,
+          axe Y, redescend dans le zen.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D05"
+                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
+        </div>
+        <div id="comments-D05" class="comments-panel"><div class="comments-section" data-comments="D05-esc-piscine-zen"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D13">
+        <div class="head">
+          <span class="num">D13</span>
+          <h4>Traitement de l’eau</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          <strong>Électrolyse au sel</strong> (sel marin local Mahajanga = sourcing
+          facile) + <strong>régulation pH automatique</strong>. Pas de chlore manuel
+          en routine.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D13"
+                  data-open-label="💬 Donner mon avis" data-close-label="🙈 Masquer le fil" aria-expanded="false">
+            💬 Donner mon avis
+          </button>
+        </div>
+        <div id="comments-D13" class="comments-panel"><div class="comments-section" data-comments="D13-traitement"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D14">
+        <div class="head">
+          <span class="num">D14</span>
+          <h4>Pas de chauffage</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          Mahajanga, eau de la piscine entre <strong>27 et 30 °C toute l’année</strong>
+          en plein soleil. PAC inutile. Confirmée définitivement par D30.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D14"
+                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
+        </div>
+        <div id="comments-D14" class="comments-panel"><div class="comments-section" data-comments="D14-pas-chauffage"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D16">
+        <div class="head">
+          <span class="num">D16</span>
+          <h4>Éclairage immergé</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          <strong>8 projecteurs LED RGB CW</strong> (color + warm white) :
+          GB ×5, MB ×1, Couloir ×1, Plage ×1. Position 0,60-0,80 m sous niveau eau.
+          Cascade et lame d’eau aussi éclairées. Transformateur 12V dans local technique.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D16"
+                  data-open-label="💬 Donner mon avis" data-close-label="🙈 Masquer le fil" aria-expanded="false">
+            💬 Donner mon avis
+          </button>
+        </div>
+        <div id="comments-D16" class="comments-panel"><div class="comments-section" data-comments="D16-eclairage"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D17">
+        <div class="head">
+          <span class="num">D17</span>
+          <h4>Banquettes Sunken Lounge</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          Hauteur structure <strong>0,450 m</strong> depuis sol lounge (avec coussin
+          5 cm dessus, l’assise nette est à environ 0,50 m). Largeur 0,440 m sur les
+          4 côtés. Structure <strong>béton coulé</strong>, revêtement
+          <strong>bois Hintsy</strong>, coussins en lin lavé épais 600 g/m².
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D17"
+                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
+        </div>
+        <div id="comments-D17" class="comments-panel"><div class="comments-section" data-comments="D17-banquettes"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D18">
+        <div class="head">
+          <span class="num">D18</span>
+          <h4>Tablette bar</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          Hauteur <strong>1,050 m</strong>, dimensions 0,560 × 2,400 m.
+          Matériau <strong>granit noir Antsirabe finition honed mat</strong>.
+          3 tabourets Ø 38 cm sous tablette, espacement 0,70 m axe-à-axe.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D18"
+                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
+        </div>
+        <div id="comments-D18" class="comments-panel"><div class="comments-section" data-comments="D18-tablette-bar"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D19">
+        <div class="head">
+          <span class="num">D19</span>
+          <h4>Sol et murs Sunken Lounge</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          Sol <strong>basalte naturel</strong> (sourcing local Madagascar) au niveau
+          <strong>−1,05 m</strong> sous la dalle haute. Cote canonique qui détermine
+          l’assise des banquettes (D17), la hauteur de la tablette bar (D18) et la
+          jonction des escaliers ESC4 et ESC5. Murs nord+est secs : enduit teinté
+          + <strong>un mur en parement pierre</strong>.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D19"
+                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
+        </div>
+        <div id="comments-D19" class="comments-panel"><div class="comments-section" data-comments="D19-lounge-sol-murs"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D20">
+        <div class="head">
+          <span class="num">D20</span>
+          <h4>Îlot D — îlot central avec Satrana</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          <strong>Jardinière centrale</strong> portant le palmier Satrana
+          (Bismarckia nobilis), à cheval sur la limite GB / MB.
+          Dimensions <strong>2,20 × 2,20 m enveloppe</strong> · jardinière
+          intérieure 1,50 × 1,50 m · sommet au niveau eau (Z = 0). Construction :
+          muret béton armé limewash blanc + jardinière béton intégrée. Spot LED
+          encastré en pied dirigé vers la lame d’eau ouest.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D20"
+                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
+        </div>
+        <div id="comments-D20" class="comments-panel"><div class="comments-section" data-comments="D20-ilot-d"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D22">
+        <div class="head">
+          <span class="num">D22</span>
+          <h4>Granit lame d’eau et tablette bar</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          <strong>Carrière Andranomanelatra, région Antsirabe</strong>, granit noir
+          uniforme. Finition <strong>honed mat (satiné)</strong> partout — uniforme
+          avec la tablette bar. Épaisseur 30 mm minimum. <strong>~6,5 m²</strong>
+          total avec chutes. Tolérance ± 1 mm sur plaques (calage ± 2 mm sur 12 m
+          pour la lame d’eau).
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D22"
+                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
+        </div>
+        <div id="comments-D22" class="comments-panel"><div class="comments-section" data-comments="D22-granit"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D23">
+        <div class="head">
+          <span class="num">D23</span>
+          <h4>Bois Hintsy</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          Essence <strong>Hintsy (Intsia bijuga)</strong>. Quantité 28,25 m² terrasse
+          + 6,67 m² chemin + ~12 m² banquettes = <strong>~47 m²</strong>. Sourcing
+          scierie Antananarivo. Traitement <strong>saturateur huile teck</strong>
+          application annuelle.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D23"
+                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
+        </div>
+        <div id="comments-D23" class="comments-panel"><div class="comments-section" data-comments="D23-hintsy"></div></div>
+      </div>
+      <div class="decision is-todo" data-decideur="famille" id="dec-D25">
+        <div class="head">
+          <span class="num">D25</span>
+          <h4>Localisation Mahajanga &amp; implications climat</h4>
+          <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag famille">👨‍👩‍👧 Famille</span>
+        </div>
+        <div class="body">
+          <strong>Mahajanga confirmé</strong> (côte nord-ouest, climat tropical
+          chaud, zone cyclonique janvier-mars). Aucun chauffage. Air salin :
+          équipements proches du bassin <strong>inox 316</strong> ou polymère.
+          Cyclones : ancrage terrasse poteaux béton armé renforcé, vis inox 316,
+          possibilité couvre-piscine rabattable en saison cyclonique.
+        </div>
+        <div class="actions">
+          <button class="comments-toggle" data-toggle-comments data-target="#comments-D25"
+                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
+        </div>
+        <div id="comments-D25" class="comments-panel"><div class="comments-section" data-comments="D25-mahajanga"></div></div>
+      </div>
+      </section>
+      <section class="section-decideur">
+        <div class="section-title">
+          <h2>🔨 Décisions constructeur</h2>
+          <span class="count">11 décisions · 1 à trancher · 10 en discussion</span>
+        </div>
+        <p class="section-intro">
+          Décisions à arbitrer avec l'équipe technique : structure,
+          ferraillage, hydraulique, électricité, dimensions précises.
+          La famille peut commenter pour exprimer une préférence ou poser
+          une question.
+        </p>
 
-      <!-- D32 — Local piscine -->
-      <div class="decision is-todo" id="dec-D32">
+      <div class="decision is-todo" data-decideur="constructeur" id="dec-D32">
         <div class="head">
           <span class="num">D32</span>
           <h4>Local piscine (technique) — aménagement, accès, équipements</h4>
           <span class="status-tag todo">🟠 À trancher</span>
+          <span class="decider-tag constructeur">🔨 Constructeur</span>
         </div>
         <div class="body">
           <p>
@@ -248,153 +609,12 @@
           <div class="comments-section" data-comments="D32-local-piscine"></div>
         </div>
       </div>
-
-      <!-- ─── RÉCEMMENT VALIDÉES ─── -->
-      <div class="section-title">
-        <h2>🔵 Propositions à valider</h2>
-        <span class="count">6 propositions, aucune encore tranchée</span>
-      </div>
-
-      <div class="decision is-todo" id="dec-D26">
-        <div class="head">
-          <span class="num">D26</span>
-          <h4>Carrelage final BLUE LAGO QUARTZ</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          Choix définitif : <strong>Foshan Ethlon — QUARTZ — BLUE LAGO 板岩蓝</strong>,
-          format <strong>300×600 mm</strong>, surface mate moulée P4. Le 30×30 mosaïque
-          IK97915 initialement envisagé est remplacé par ce format ardoise pour un
-          rendu plus contemporain.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D26"
-                  data-open-label="💬 Commenter / poser une question"
-                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
-            💬 Commenter / poser une question
-          </button>
-        </div>
-        <div id="comments-D26" class="comments-panel"><div class="comments-section" data-comments="D26-carrelage-final"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D27">
-        <div class="head">
-          <span class="num">D27</span>
-          <h4>Couloir de nage réduit 13 m → 5 m</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          Pour respecter le budget carrelage de 300 m², le couloir de nage est
-          réduit. L’espace libéré au nord accueille les <strong>2 locaux
-          techniques + vestiaire</strong> et un agrandissement du jardin zen.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D27"
-                  data-open-label="💬 Commenter / poser une question"
-                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
-            💬 Commenter / poser une question
-          </button>
-        </div>
-        <div id="comments-D27" class="comments-panel"><div class="comments-section" data-comments="D27-couloir"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D28">
-        <div class="head">
-          <span class="num">D28</span>
-          <h4>Satrana (Bismarckia nobilis) sur îlot D</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          Le palmier de l’îlot central est un <strong>Satrana</strong>
-          (Bismarckia nobilis), espèce endémique de Madagascar à frondes rigides
-          en éventail argenté. Tronc 2 m + couronne 2 m = 4 m total.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D28"
-                  data-open-label="💬 Commenter / poser une question"
-                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
-            💬 Commenter / poser une question
-          </button>
-        </div>
-        <div id="comments-D28" class="comments-panel"><div class="comments-section" data-comments="D28-satrana"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D29">
-        <div class="head">
-          <span class="num">D29</span>
-          <h4>Pas de cascade nord MB</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          La paroi nord du moyen bassin est <strong>un mur plein</strong>, sans
-          cascade. La D08 initiale est annulée. La lame d’eau ouest 12 m suffit
-          pour l’effet zen.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D29"
-                  data-open-label="💬 Commenter / poser une question"
-                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
-            💬 Commenter / poser une question
-          </button>
-        </div>
-        <div id="comments-D29" class="comments-panel"><div class="comments-section" data-comments="D29-pas-cascade"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D30">
-        <div class="head">
-          <span class="num">D30</span>
-          <h4>Pas de PAC réversible</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          <strong>Aucune installation pré-équipée pour PAC.</strong> Pas
-          nécessaire pour Mahajanga (eau 27–30 °C toute l’année). Économie
-          significative sur le coffret électrique et les pré-équipements.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D30"
-                  data-open-label="💬 Commenter / poser une question"
-                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
-            💬 Commenter / poser une question
-          </button>
-        </div>
-        <div id="comments-D30" class="comments-panel"><div class="comments-section" data-comments="D30-pas-pac"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D04">
-        <div class="head">
-          <span class="num">D04</span>
-          <h4>Margelles travertin (révision)</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          <strong>Margelles travertin crème, 30 cm de large, finition honed mat</strong>
-          autour de tous les bassins. La proposition initiale (« aucune margelle,
-          carrelage remontant directement ») a été abandonnée pour des raisons de
-          confort pieds nus, sécurité antidérapante en zone humide et cohérence
-          avec le bois Hintsy de la terrasse.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D04"
-                  data-open-label="💬 Commenter / poser une question"
-                  data-close-label="🙈 Masquer le fil" aria-expanded="false">
-            💬 Commenter / poser une question
-          </button>
-        </div>
-        <div id="comments-D04" class="comments-panel"><div class="comments-section" data-comments="D04-margelles"></div></div>
-      </div>
-
-      <!-- ─── GÉOMÉTRIE & STRUCTURE ─── -->
-      <div class="section-title">
-        <h2>📐 Géométrie et structure</h2>
-        <span class="count">3 propositions à valider</span>
-      </div>
-
-      <div class="decision is-todo" id="dec-D01">
+      <div class="decision is-todo" data-decideur="constructeur" id="dec-D01">
         <div class="head">
           <span class="num">D01</span>
           <h4>Mur de saut Plage / Grand Bassin</h4>
           <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag constructeur">🔨 Constructeur</span>
         </div>
         <div class="body">
           Épaisseur <strong>0,200 m</strong>, mode constructif <strong>béton banché ferraillé</strong>.
@@ -407,12 +627,12 @@
         </div>
         <div id="comments-D01" class="comments-panel"><div class="comments-section" data-comments="D01-mur-saut"></div></div>
       </div>
-
-      <div class="decision is-todo" id="dec-D02">
+      <div class="decision is-todo" data-decideur="constructeur" id="dec-D02">
         <div class="head">
           <span class="num">D02</span>
           <h4>Niveau des dalles hautes</h4>
           <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag constructeur">🔨 Constructeur</span>
         </div>
         <div class="body">
           <strong>+0,030 m</strong> uniformément au-dessus du niveau eau (Z = 0).
@@ -424,12 +644,12 @@
         </div>
         <div id="comments-D02" class="comments-panel"><div class="comments-section" data-comments="D02-niveau-dalles"></div></div>
       </div>
-
-      <div class="decision is-todo" id="dec-D03">
+      <div class="decision is-todo" data-decideur="constructeur" id="dec-D03">
         <div class="head">
           <span class="num">D03</span>
           <h4>Pylônes terrasse → poteaux béton armé</h4>
           <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag constructeur">🔨 Constructeur</span>
         </div>
         <div class="body">
           Substitution acier galvanisé → <strong>poteaux béton armé classique</strong>.
@@ -443,38 +663,12 @@
         </div>
         <div id="comments-D03" class="comments-panel"><div class="comments-section" data-comments="D03-pylones"></div></div>
       </div>
-
-      <!-- ─── ESCALIERS ─── -->
-      <div class="section-title">
-        <h2>🪜 Escaliers</h2>
-        <span class="count">3 propositions à valider</span>
-      </div>
-
-      <div class="decision is-todo" id="dec-D05">
-        <div class="head">
-          <span class="num">D05</span>
-          <h4>Escalier piscine → zen (axe longitudinal)</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          <strong>8 marches × 0,175 m × 0,240 m de giron</strong> (largeur 0,80 m).
-          Dénivelée MB (Z=−1,40) → niveau eau (Z=0). Escalier longitudinal collé
-          au mur nord MB, axe X, montée Ouest→Est. Palier 0,80 × 0,80 m au sommet
-          sur mur plein, puis escalier sec descendant 7 marches × 0,200 × 0,200,
-          axe Y, redescend dans le zen.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D05"
-                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
-        </div>
-        <div id="comments-D05" class="comments-panel"><div class="comments-section" data-comments="D05-esc-piscine-zen"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D06">
+      <div class="decision is-todo" data-decideur="constructeur" id="dec-D06">
         <div class="head">
           <span class="num">D06</span>
           <h4>Girons des escaliers</h4>
           <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag constructeur">🔨 Constructeur</span>
         </div>
         <div class="body">
           Sortie plage : <strong>0,30 m</strong> (×4 marches × 1,20 m large).
@@ -488,12 +682,12 @@
         </div>
         <div id="comments-D06" class="comments-panel"><div class="comments-section" data-comments="D06-girons"></div></div>
       </div>
-
-      <div class="decision is-todo" id="dec-D07">
+      <div class="decision is-todo" data-decideur="constructeur" id="dec-D07">
         <div class="head">
           <span class="num">D07</span>
           <h4>Conformité escaliers secs</h4>
           <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag constructeur">🔨 Constructeur</span>
         </div>
         <div class="body">
           <strong>Hauteur 0,200 m assumée</strong> (NF P01-012 limite 0,180 m mais
@@ -505,23 +699,12 @@
         </div>
         <div id="comments-D07" class="comments-panel"><div class="comments-section" data-comments="D07-escaliers-secs"></div></div>
       </div>
-
-      <!-- ─── HYDRAULIQUE ─── -->
-      <div class="section-title">
-        <h2>💧 Hydraulique et équipements</h2>
-        <span class="count">6 propositions à valider · 1 alternative écartée</span>
-      </div>
-      <p style="color: var(--c-fg-soft); font-size: 0.92rem; margin-top: -2px;">
-        Les décisions D09 à D13 sont des <strong>propositions de l’équipe technique
-        à valider par la famille</strong>. Cliquez sur « Donner mon avis » pour
-        commenter ou approuver.
-      </p>
-
-      <div class="decision is-todo" id="dec-D09">
+      <div class="decision is-todo" data-decideur="constructeur" id="dec-D09">
         <div class="head">
           <span class="num">D09</span>
           <h4>Bac tampon lame d’eau</h4>
           <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag constructeur">🔨 Constructeur</span>
         </div>
         <div class="body">
           Volume <strong>~10 à 12 m³</strong> (rigole débordement 1,05 m³ + montée
@@ -537,12 +720,12 @@
         </div>
         <div id="comments-D09" class="comments-panel"><div class="comments-section" data-comments="D09-bac-tampon"></div></div>
       </div>
-
-      <div class="decision is-todo" id="dec-D10">
+      <div class="decision is-todo" data-decideur="constructeur" id="dec-D10">
         <div class="head">
           <span class="num">D10</span>
           <h4>Local technique</h4>
           <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag constructeur">🔨 Constructeur</span>
         </div>
         <div class="body">
           Position : <strong>côté est, enterré dédié</strong>, à proximité du
@@ -558,12 +741,12 @@
         </div>
         <div id="comments-D10" class="comments-panel"><div class="comments-section" data-comments="D10-local-technique"></div></div>
       </div>
-
-      <div class="decision is-todo" id="dec-D11">
+      <div class="decision is-todo" data-decideur="constructeur" id="dec-D11">
         <div class="head">
           <span class="num">D11</span>
           <h4>Architecture filtration</h4>
           <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag constructeur">🔨 Constructeur</span>
         </div>
         <div class="body">
           Système <strong>mix débordement + skimmers</strong>. Skimmers complémentaires :
@@ -578,12 +761,12 @@
         </div>
         <div id="comments-D11" class="comments-panel"><div class="comments-section" data-comments="D11-filtration"></div></div>
       </div>
-
-      <div class="decision is-todo" id="dec-D12">
+      <div class="decision is-todo" data-decideur="constructeur" id="dec-D12">
         <div class="head">
           <span class="num">D12</span>
           <h4>Pompe principale</h4>
           <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag constructeur">🔨 Constructeur</span>
         </div>
         <div class="body">
           <strong>Pompe à variation de vitesse Pentair Intelliflo</strong>
@@ -598,55 +781,12 @@
         </div>
         <div id="comments-D12" class="comments-panel"><div class="comments-section" data-comments="D12-pompe"></div></div>
       </div>
-
-      <div class="decision is-todo" id="dec-D13">
-        <div class="head">
-          <span class="num">D13</span>
-          <h4>Traitement de l’eau</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          <strong>Électrolyse au sel</strong> (sel marin local Mahajanga = sourcing
-          facile) + <strong>régulation pH automatique</strong>. Pas de chlore manuel
-          en routine.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D13"
-                  data-open-label="💬 Donner mon avis" data-close-label="🙈 Masquer le fil" aria-expanded="false">
-            💬 Donner mon avis
-          </button>
-        </div>
-        <div id="comments-D13" class="comments-panel"><div class="comments-section" data-comments="D13-traitement"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D14">
-        <div class="head">
-          <span class="num">D14</span>
-          <h4>Pas de chauffage</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          Mahajanga, eau de la piscine entre <strong>27 et 30 °C toute l’année</strong>
-          en plein soleil. PAC inutile. Confirmée définitivement par D30.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D14"
-                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
-        </div>
-        <div id="comments-D14" class="comments-panel"><div class="comments-section" data-comments="D14-pas-chauffage"></div></div>
-      </div>
-
-      <!-- ─── ÉLECTRICITÉ ─── -->
-      <div class="section-title">
-        <h2>⚡ Pièces à sceller et électricité</h2>
-        <span class="count">2 propositions techniques</span>
-      </div>
-
-      <div class="decision is-todo" id="dec-D15">
+      <div class="decision is-todo" data-decideur="constructeur" id="dec-D15">
         <div class="head">
           <span class="num">D15</span>
           <h4>Pièces à sceller (marque Hayward)</h4>
           <span class="status-tag discussing">🔵 En discussion</span>
+          <span class="decider-tag constructeur">🔨 Constructeur</span>
         </div>
         <div class="body">
           <strong>3</strong> bondes de fond, <strong>12</strong> buses de refoulement
@@ -663,190 +803,22 @@
         </div>
         <div id="comments-D15" class="comments-panel"><div class="comments-section" data-comments="D15-pieces-sceller"></div></div>
       </div>
+      </section>
+      <section class="section-decideur">
+        <div class="section-title">
+          <h2>🗄 Archivées</h2>
+          <span class="count">2 décisions remplacées ou annulées</span>
+        </div>
+        <p class="section-intro">
+          Conservées pour traçabilité historique. Ne plus prendre en compte.
+        </p>
 
-      <div class="decision is-todo" id="dec-D16">
-        <div class="head">
-          <span class="num">D16</span>
-          <h4>Éclairage immergé</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          <strong>8 projecteurs LED RGB CW</strong> (color + warm white) :
-          GB ×5, MB ×1, Couloir ×1, Plage ×1. Position 0,60-0,80 m sous niveau eau.
-          Cascade et lame d’eau aussi éclairées. Transformateur 12V dans local technique.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D16"
-                  data-open-label="💬 Donner mon avis" data-close-label="🙈 Masquer le fil" aria-expanded="false">
-            💬 Donner mon avis
-          </button>
-        </div>
-        <div id="comments-D16" class="comments-panel"><div class="comments-section" data-comments="D16-eclairage"></div></div>
-      </div>
-
-      <!-- ─── AMÉNAGEMENTS LOUNGE ─── -->
-      <div class="section-title">
-        <h2>🏛 Aménagements lounge</h2>
-        <span class="count">4 propositions à valider</span>
-      </div>
-
-      <div class="decision is-todo" id="dec-D17">
-        <div class="head">
-          <span class="num">D17</span>
-          <h4>Banquettes Sunken Lounge</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          Hauteur structure <strong>0,450 m</strong> depuis sol lounge (avec coussin
-          5 cm dessus, l’assise nette est à environ 0,50 m). Largeur 0,440 m sur les
-          4 côtés. Structure <strong>béton coulé</strong>, revêtement
-          <strong>bois Hintsy</strong>, coussins en lin lavé épais 600 g/m².
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D17"
-                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
-        </div>
-        <div id="comments-D17" class="comments-panel"><div class="comments-section" data-comments="D17-banquettes"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D18">
-        <div class="head">
-          <span class="num">D18</span>
-          <h4>Tablette bar</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          Hauteur <strong>1,050 m</strong>, dimensions 0,560 × 2,400 m.
-          Matériau <strong>granit noir Antsirabe finition honed mat</strong>.
-          3 tabourets Ø 38 cm sous tablette, espacement 0,70 m axe-à-axe.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D18"
-                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
-        </div>
-        <div id="comments-D18" class="comments-panel"><div class="comments-section" data-comments="D18-tablette-bar"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D19">
-        <div class="head">
-          <span class="num">D19</span>
-          <h4>Sol et murs Sunken Lounge</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          Sol <strong>basalte naturel</strong> (sourcing local Madagascar) au niveau
-          <strong>−1,05 m</strong> sous la dalle haute. Cote canonique qui détermine
-          l’assise des banquettes (D17), la hauteur de la tablette bar (D18) et la
-          jonction des escaliers ESC4 et ESC5. Murs nord+est secs : enduit teinté
-          + <strong>un mur en parement pierre</strong>.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D19"
-                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
-        </div>
-        <div id="comments-D19" class="comments-panel"><div class="comments-section" data-comments="D19-lounge-sol-murs"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D20">
-        <div class="head">
-          <span class="num">D20</span>
-          <h4>Îlot D — îlot central avec Satrana</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          <strong>Jardinière centrale</strong> portant le palmier Satrana
-          (Bismarckia nobilis), à cheval sur la limite GB / MB.
-          Dimensions <strong>2,20 × 2,20 m enveloppe</strong> · jardinière
-          intérieure 1,50 × 1,50 m · sommet au niveau eau (Z = 0). Construction :
-          muret béton armé limewash blanc + jardinière béton intégrée. Spot LED
-          encastré en pied dirigé vers la lame d’eau ouest.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D20"
-                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
-        </div>
-        <div id="comments-D20" class="comments-panel"><div class="comments-section" data-comments="D20-ilot-d"></div></div>
-      </div>
-
-      <!-- ─── SOURCING ─── -->
-      <div class="section-title">
-        <h2>🪨 Sourcing des matériaux</h2>
-        <span class="count">3 propositions à valider</span>
-      </div>
-
-      <div class="decision is-todo" id="dec-D22">
-        <div class="head">
-          <span class="num">D22</span>
-          <h4>Granit lame d’eau et tablette bar</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          <strong>Carrière Andranomanelatra, région Antsirabe</strong>, granit noir
-          uniforme. Finition <strong>honed mat (satiné)</strong> partout — uniforme
-          avec la tablette bar. Épaisseur 30 mm minimum. <strong>~6,5 m²</strong>
-          total avec chutes. Tolérance ± 1 mm sur plaques (calage ± 2 mm sur 12 m
-          pour la lame d’eau).
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D22"
-                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
-        </div>
-        <div id="comments-D22" class="comments-panel"><div class="comments-section" data-comments="D22-granit"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D23">
-        <div class="head">
-          <span class="num">D23</span>
-          <h4>Bois Hintsy</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          Essence <strong>Hintsy (Intsia bijuga)</strong>. Quantité 28,25 m² terrasse
-          + 6,67 m² chemin + ~12 m² banquettes = <strong>~47 m²</strong>. Sourcing
-          scierie Antananarivo. Traitement <strong>saturateur huile teck</strong>
-          application annuelle.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D23"
-                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
-        </div>
-        <div id="comments-D23" class="comments-panel"><div class="comments-section" data-comments="D23-hintsy"></div></div>
-      </div>
-
-      <div class="decision is-todo" id="dec-D25">
-        <div class="head">
-          <span class="num">D25</span>
-          <h4>Localisation Mahajanga &amp; implications climat</h4>
-          <span class="status-tag discussing">🔵 En discussion</span>
-        </div>
-        <div class="body">
-          <strong>Mahajanga confirmé</strong> (côte nord-ouest, climat tropical
-          chaud, zone cyclonique janvier-mars). Aucun chauffage. Air salin :
-          équipements proches du bassin <strong>inox 316</strong> ou polymère.
-          Cyclones : ancrage terrasse poteaux béton armé renforcé, vis inox 316,
-          possibilité couvre-piscine rabattable en saison cyclonique.
-        </div>
-        <div class="actions">
-          <button class="comments-toggle" data-toggle-comments data-target="#comments-D25"
-                  data-open-label="💬 Commenter" data-close-label="🙈 Masquer" aria-expanded="false">💬 Commenter</button>
-        </div>
-        <div id="comments-D25" class="comments-panel"><div class="comments-section" data-comments="D25-mahajanga"></div></div>
-      </div>
-
-      <!-- ─── ARCHIVÉES ─── -->
-      <div class="section-title">
-        <h2>🗄 Archivées</h2>
-        <span class="count">2 décisions remplacées ou annulées</span>
-      </div>
-      <p style="color: var(--c-fg-soft); font-size: 0.92rem; margin-top: -2px;">
-        Conservées pour traçabilité historique. Ne plus prendre en compte.
-      </p>
-
-      <div class="decision is-archived" id="dec-D08">
+      <div class="decision is-archived" data-decideur="archived" id="dec-D08">
         <div class="head">
           <span class="num">D08</span>
           <h4>Cascade depuis Moyen Bassin</h4>
           <span class="status-tag archived">⛔ Annulée</span>
+          <span class="decider-tag" style="background:#efefef;color:#666;border:1px solid #ccc;">🗄 Archivée</span>
         </div>
         <div class="body">
           <strong style="color: #a02020;">⛔ ANNULÉE — voir D29 (28/04/2026).</strong>
@@ -859,12 +831,12 @@
         </div>
         <div id="comments-D08" class="comments-panel"><div class="comments-section" data-comments="D08-cascade-archive"></div></div>
       </div>
-
-      <div class="decision is-archived" id="dec-D21">
+      <div class="decision is-archived" data-decideur="archived" id="dec-D21">
         <div class="head">
           <span class="num">D21</span>
           <h4>Carrelage piscine — proposition Mapei</h4>
           <span class="status-tag archived">⛔ Remplacée</span>
+          <span class="decider-tag" style="background:#efefef;color:#666;border:1px solid #ccc;">🗄 Archivée</span>
         </div>
         <div class="body">
           <strong style="color: #a02020;">⛔ REMPLACÉE — voir D26 (28/04/2026).</strong>
@@ -877,6 +849,7 @@
         </div>
         <div id="comments-D21" class="comments-panel"><div class="comments-section" data-comments="D21-mapei-archive"></div></div>
       </div>
+      </section>
 
     </div>
   </main>
