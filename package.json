@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Site de suivi de projet Chan Ming POOL — Mahajanga, Madagascar",
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
     "@upstash/redis": "^1.34.3"
   },
   "engines": {
