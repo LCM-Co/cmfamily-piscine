@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logistique — Chan Ming POOL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/technique.css">
+  <link rel="stylesheet" href="assets/css/logistique.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        Chan Ming POOL
+        <small>Mahajanga · Madagascar</small>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">Accueil</a>
+        <a href="modele-3d.html">Modèle 3D</a>
+        <a href="specifications.html">Spécifications</a>
+        <a href="plans.html">Plan</a>
+        <a href="decisions.html">Décisions</a>
+        <a href="technique.html">Technique</a>
+        <a href="chantier.html">Chantier</a>
+        <a href="logistique.html" class="active">Logistique</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container-narrow">
+      <h1>Logistique</h1>
+      <p style="color: var(--c-fg-soft); font-size: 1.05rem;">
+        Gestion des fournisseurs, commandes, livraisons et stock chantier.
+        <strong>Anti-vol</strong> : tracer les matériaux à risque (ciment, fer
+        à béton, cuivre, outillage) — chaque mouvement entrée/sortie est daté
+        et permet de repérer les écarts.
+      </p>
+
+      <div class="tech-tabs" role="tablist">
+        <button class="tech-tab active" data-tab="suppliers" role="tab" aria-selected="true">
+          🏢 Fournisseurs <span class="badge-count" id="suppliers-count"></span>
+        </button>
+        <button class="tech-tab" data-tab="orders" role="tab" aria-selected="false">
+          📝 Commandes <span class="badge-count" id="orders-count"></span>
+        </button>
+        <button class="tech-tab" data-tab="deliveries" role="tab" aria-selected="false">
+          📦 Livraisons <span class="badge-count" id="deliveries-count"></span>
+        </button>
+        <button class="tech-tab" data-tab="stock" role="tab" aria-selected="false">
+          📊 Stock <span class="badge-count" id="stock-count"></span>
+        </button>
+      </div>
+
+      <section class="tech-panel" id="panel-suppliers" role="tabpanel">
+        <div class="tech-panel-head">
+          <h2>Fournisseurs</h2>
+          <button class="btn" id="btn-new-supplier">➕ Nouveau fournisseur</button>
+        </div>
+        <div class="suppliers-list" id="suppliers-list"><p class="empty-state">Chargement…</p></div>
+      </section>
+
+      <section class="tech-panel" id="panel-orders" role="tabpanel" hidden>
+        <div class="tech-panel-head">
+          <h2>Commandes</h2>
+          <button class="btn" id="btn-new-order">➕ Nouvelle commande</button>
+        </div>
+        <p class="hint" style="margin-top:-8px;">
+          Devis acceptés et bons de commande. Suivi du statut : brouillon →
+          envoyée → confirmée → en transit → douanes → livrée. Statut « douane »
+          libre pour saisir un blocage Tamatave si nécessaire.
+        </p>
+        <div class="orders-list" id="orders-list"><p class="empty-state">Chargement…</p></div>
+      </section>
+
+      <section class="tech-panel" id="panel-deliveries" role="tabpanel" hidden>
+        <div class="tech-panel-head">
+          <h2>Livraisons reçues</h2>
+          <button class="btn" id="btn-new-delivery">➕ Nouvelle livraison</button>
+        </div>
+        <p class="hint" style="margin-top:-8px;">
+          Réception détaillée : qui, quand, conformité, écarts éventuels. Crée
+          automatiquement les mouvements de stock entrant pour les items
+          déclarés.
+        </p>
+        <div class="deliveries-list" id="deliveries-list"><p class="empty-state">Chargement…</p></div>
+      </section>
+
+      <section class="tech-panel" id="panel-stock" role="tabpanel" hidden>
+        <div class="tech-panel-head">
+          <h2>Stock courant</h2>
+          <button class="btn" id="btn-new-movement">➕ Mouvement stock</button>
+        </div>
+        <p class="hint" style="margin-top:-8px;">
+          Quantité actuelle par item, calculée à partir de tous les mouvements
+          (entrée / sortie / ajustement / perte). 🚨 Items à risque mis en
+          évidence — toute perte ou écart d'inventaire à signaler dans
+          <a href="chantier.html">Incidents</a>.
+        </p>
+        <div class="inventory-list" id="inventory-list"><p class="empty-state">Chargement…</p></div>
+
+        <h3 style="margin-top: 2em;">Historique des mouvements (200 derniers)</h3>
+        <div class="movements-list" id="movements-list"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Chan Ming POOL · Mahajanga · Suivi de projet familial</p>
+    </div>
+  </footer>
+  <script src="assets/js/notify.js" defer></script>
+  <script src="assets/js/logistique.js" defer></script>
+  <script src="assets/js/tech-notify.js" defer></script>
+</body>
+</html>
