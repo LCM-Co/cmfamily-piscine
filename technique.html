@@ -9,6 +9,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="assets/css/technique.css">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#2d4f5c">
+  <link rel="apple-touch-icon" href="/favicon.png">
 </head>
 <body>
   <header class="site-header">
@@ -26,6 +29,8 @@
         <a href="technique.html" class="active">Technique</a>
         <a href="chantier.html">Chantier</a>
         <a href="logistique.html">Logistique</a>
+        <a href="finance.html">Finance</a>
+        <a href="dashboard.html">Tableau de bord</a>
       </nav>
     </div>
   </header>
@@ -108,5 +113,7 @@
   <script src="assets/js/notify.js" defer></script>
   <script src="assets/js/technique.js" defer></script>
   <script src="assets/js/tech-notify.js" defer></script>
+  <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));}</script>
+  <script src="assets/js/auth-widget.js" type="module" defer></script>
 </body>
 </html>

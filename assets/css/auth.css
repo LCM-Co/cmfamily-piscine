@@ -1,0 +1,198 @@
+/* Chan Ming POOL — Auth widget styles
+ *
+ * Variables alignées sur la palette du site (#2d4f5c teal, #f5f1e8 cream).
+ */
+
+:root {
+  --cmpool-auth-teal: #2d4f5c;
+  --cmpool-auth-teal-dark: #1f3a44;
+  --cmpool-auth-cream: #f5f1e8;
+  --cmpool-auth-danger: #b03a2e;
+  --cmpool-auth-radius: 10px;
+}
+
+/* ─── Bouton header ─── */
+.cmpool-auth-btn {
+  background: transparent;
+  color: inherit;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 12px;
+  font-family: inherit;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cmpool-auth-btn:hover {
+  background: var(--cmpool-auth-teal);
+  color: var(--cmpool-auth-cream);
+  border-color: var(--cmpool-auth-teal);
+}
+
+/* ─── Overlay ─── */
+.cmpool-auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 30, 35, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: cmpool-fade-in 0.18s ease;
+}
+@keyframes cmpool-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+body.cmpool-auth-open { overflow: hidden; }
+
+/* ─── Card ─── */
+.cmpool-auth-card {
+  background: var(--cmpool-auth-cream);
+  color: var(--cmpool-auth-teal);
+  border-radius: var(--cmpool-auth-radius);
+  padding: 28px 26px 22px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 18px 48px rgba(0,0,0,0.25);
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.cmpool-auth-card h2 {
+  margin: 0 0 8px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+.cmpool-auth-card h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.cmpool-auth-card p {
+  margin: 0 0 14px;
+  line-height: 1.5;
+  font-size: 0.92rem;
+  color: var(--cmpool-auth-teal);
+  opacity: 0.9;
+}
+.cmpool-auth-card p.cmpool-auth-meta {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-bottom: 18px;
+}
+
+.cmpool-auth-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: transparent;
+  border: 0;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--cmpool-auth-teal);
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+.cmpool-auth-close:hover { background: rgba(45,79,92,0.08); }
+
+/* ─── Form ─── */
+.cmpool-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cmpool-auth-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid rgba(45,79,92,0.25);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--cmpool-auth-teal);
+  font-size: 1rem;
+  font-family: inherit;
+  margin-bottom: 8px;
+}
+.cmpool-auth-input:focus {
+  outline: none;
+  border-color: var(--cmpool-auth-teal);
+  box-shadow: 0 0 0 3px rgba(45,79,92,0.15);
+}
+
+/* ─── Buttons ─── */
+.cmpool-auth-btn-primary,
+.cmpool-auth-btn-secondary,
+.cmpool-auth-btn-danger {
+  display: inline-block;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s ease;
+  margin-top: 4px;
+}
+.cmpool-auth-btn-primary {
+  background: var(--cmpool-auth-teal);
+  color: var(--cmpool-auth-cream);
+}
+.cmpool-auth-btn-primary:hover { background: var(--cmpool-auth-teal-dark); }
+.cmpool-auth-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.cmpool-auth-btn-secondary {
+  background: transparent;
+  color: var(--cmpool-auth-teal);
+  border: 1px solid var(--cmpool-auth-teal);
+}
+.cmpool-auth-btn-secondary:hover { background: rgba(45,79,92,0.08); }
+
+.cmpool-auth-btn-danger {
+  background: var(--cmpool-auth-danger);
+  color: #fff;
+  margin-top: 16px;
+  width: 100%;
+}
+.cmpool-auth-btn-danger:hover { background: #8a2c24; }
+
+/* ─── Section ─── */
+.cmpool-auth-section {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(45,79,92,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ─── Status messages ─── */
+.cmpool-auth-status {
+  margin-top: 10px;
+  font-size: 0.88rem;
+  min-height: 1.2em;
+  color: var(--cmpool-auth-teal);
+}
+.cmpool-auth-status.ok { color: #1a6b3a; }
+.cmpool-auth-status.err { color: var(--cmpool-auth-danger); }
+
+/* ─── Mobile ─── */
+@media (max-width: 480px) {
+  .cmpool-auth-card { padding: 22px 18px 18px; }
+  .cmpool-auth-btn { font-size: 0.8rem; padding: 5px 10px; max-width: 160px; }
+}

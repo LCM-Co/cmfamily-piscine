@@ -1,0 +1,405 @@
+/* Finance — styles dédiés (budget, dépenses, cash flow, paie) */
+
+/* ─── FX bar ──────────────────────────────────────────────────────── */
+.fx-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: #f5f8fb;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  padding: 8px 14px;
+  margin-bottom: 16px;
+  font-size: 0.88rem;
+}
+.fx-label { color: var(--c-fg-soft); font-weight: 500; }
+.fx-rate { font-weight: 600; color: var(--c-blue-lago-deep); flex: 1 1 auto; }
+.btn-fx { font-size: 0.82rem; padding: 4px 12px; }
+
+/* ─── Budget summary ──────────────────────────────────────────────── */
+.budget-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.budget-summary-card {
+  background: white;
+  border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-blue-lago);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+}
+.ks-label { font-size: 0.78rem; color: var(--c-fg-soft); text-transform: uppercase; letter-spacing: 0.5px; }
+.ks-value { font-size: 1.2rem; font-weight: 700; color: var(--c-blue-lago-deep); margin-top: 2px; }
+.ks-value.negative { color: #a02020; }
+
+/* ─── Budget cards ────────────────────────────────────────────────── */
+.budget-list { display: flex; flex-direction: column; gap: 10px; }
+.budget-card {
+  background: white;
+  border: 1px solid var(--c-line);
+  border-left: 4px solid var(--c-blue-lago);
+  border-radius: 10px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.budget-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.budget-head {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.budget-icon { font-size: 1.2rem; }
+.budget-cat { font-weight: 600; }
+.budget-sub { color: var(--c-fg-soft); }
+.budget-public {
+  background: var(--c-blanc);
+  font-size: 0.74rem;
+  padding: 1px 8px;
+  border-radius: 8px;
+  color: var(--c-fg-soft);
+}
+.budget-amount {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--c-blue-lago-deep);
+  font-size: 0.96rem;
+}
+.budget-meta {
+  font-size: 0.84rem;
+  color: var(--c-fg-soft);
+  margin-bottom: 8px;
+}
+.budget-notes {
+  font-size: 0.86rem;
+  color: var(--c-fg);
+  margin-top: 6px;
+  white-space: pre-wrap;
+}
+
+.progress-bar {
+  background: var(--c-blanc);
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--c-line);
+}
+.progress-fill {
+  height: 100%;
+  background: #6a9a4a;
+  transition: width 0.3s;
+}
+.progress-fill.warn { background: #d18a3a; }
+.progress-fill.over { background: #a02020; }
+.progress-label {
+  font-size: 0.78rem;
+  color: var(--c-fg-soft);
+  margin-top: 4px;
+}
+
+/* ─── Expenses ────────────────────────────────────────────────────── */
+.expenses-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+  padding: 10px 14px;
+  background: var(--c-blanc);
+  border-radius: 8px;
+}
+.expenses-list { display: flex; flex-direction: column; gap: 8px; }
+.expense-card {
+  background: white;
+  border: 1px solid var(--c-line);
+  border-left: 3px solid #888;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.expense-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.expense-card.mode-cash { border-left-color: #d18a3a; }
+.expense-card.mode-transfer { border-left-color: #4a6a9a; }
+.expense-card.mode-mobile_money { border-left-color: #6a9a4a; }
+.expense-card.mode-check { border-left-color: #888; }
+
+.expense-head {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.expense-mode { font-size: 0.82rem; font-weight: 600; }
+.expense-date { color: var(--c-fg-soft); font-size: 0.82rem; }
+.expense-line {
+  background: #e3eef8;
+  color: #2a4a6a;
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.expense-line.orphan { background: #fff3dd; color: #a05a00; }
+.expense-amount {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--c-blue-lago-deep);
+}
+.expense-meta {
+  font-size: 0.82rem;
+  color: var(--c-fg-soft);
+  display: flex; flex-wrap: wrap; gap: 4px;
+}
+.expense-valid { color: #2a5a2a; font-weight: 500; }
+.expense-receipt { color: var(--c-blue-lago-deep); }
+.expense-desc {
+  font-size: 0.86rem;
+  color: var(--c-fg);
+  margin-top: 4px;
+}
+
+/* ─── Cash flow ───────────────────────────────────────────────────── */
+.cashflow-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.kpi-card {
+  background: white;
+  border: 1px solid var(--c-line);
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+}
+.kpi-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  color: var(--c-fg-soft);
+  letter-spacing: 0.5px;
+}
+.kpi-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--c-blue-lago-deep);
+  margin-top: 4px;
+}
+.kpi-value.negative { color: #a02020; }
+
+.cashflow-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: white;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  padding: 10px;
+}
+.month-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 110px 130px;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.84rem;
+}
+.month-label { color: var(--c-fg-soft); font-weight: 500; }
+.month-bar-wrap {
+  background: var(--c-blanc);
+  height: 14px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.month-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c-blue-lago), var(--c-blue-lago-deep));
+  transition: width 0.3s;
+}
+.month-value {
+  text-align: right;
+  font-weight: 600;
+  color: var(--c-blue-lago-deep);
+}
+.month-cum {
+  text-align: right;
+  color: var(--c-fg-soft);
+  font-size: 0.78rem;
+}
+
+.cashflow-pie {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  background: white;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  padding: 16px;
+  flex-wrap: wrap;
+}
+.pie-chart {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid white;
+  box-shadow: var(--shadow-sm);
+}
+.pie-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.88rem;
+}
+.swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.cashflow-cats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: white;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  padding: 12px;
+}
+.cat-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 200px;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.86rem;
+}
+.cat-name { font-weight: 500; }
+.cat-bars {
+  position: relative;
+  height: 18px;
+  background: var(--c-blanc);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.cat-bar {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  border-radius: 4px;
+}
+.cat-bar.target { background: #b8cce0; }
+.cat-bar.spent { background: var(--c-blue-lago-deep); }
+.cat-bar.spent.over { background: #a02020; }
+.cat-meta {
+  text-align: right;
+  font-size: 0.82rem;
+  color: var(--c-fg-soft);
+}
+
+/* ─── Payroll ─────────────────────────────────────────────────────── */
+.payroll-month-card {
+  background: linear-gradient(90deg, #f5f8fb, white);
+  border: 1px solid var(--c-line);
+  border-left: 4px solid var(--c-blue-lago-deep);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+}
+.payroll-month-card h3 { margin: 0 0 6px; }
+.payroll-totals { font-size: 0.92rem; }
+.payroll-totals .negative { color: #a02020; }
+
+.payroll-list { display: flex; flex-direction: column; gap: 12px; }
+.team-card {
+  background: white;
+  border: 1px solid var(--c-line);
+  border-left: 4px solid #6a9a4a;
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+.team-card.inactive { opacity: 0.55; border-left-color: #888; }
+
+.team-head {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.team-name {
+  font-weight: 600;
+  font-size: 1.04rem;
+  cursor: pointer;
+  color: var(--c-blue-lago-deep);
+}
+.team-name:hover { text-decoration: underline; }
+.team-role {
+  background: #e3eef8;
+  color: #2a4a6a;
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.team-rate { color: var(--c-fg-soft); font-size: 0.86rem; }
+.team-status {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: var(--c-fg-soft);
+}
+
+.team-stats {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 0.86rem;
+  margin-bottom: 8px;
+  color: var(--c-fg-soft);
+}
+.team-stats .remaining { color: #a05a00; font-weight: 600; }
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  background: var(--c-blanc);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.attendance-table th {
+  background: white;
+  padding: 6px 10px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid var(--c-line);
+  font-size: 0.78rem;
+}
+.attendance-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--c-line);
+}
+.attendance-table tr:last-child td { border-bottom: none; }
+.attendance-table .paid { color: #2a5a2a; }
+.attendance-table .unpaid { color: #a05a00; }
+
+/* ─── Form hints (cash double-validation) ─────────────────────────── */
+.dec-form-hint {
+  background: #fff3dd;
+  color: #a05a00;
+  border: 1px solid #f0c47a;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  margin: 6px 0;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .month-row { grid-template-columns: 50px 1fr 90px; }
+  .month-cum { display: none; }
+  .cat-row { grid-template-columns: 1fr; gap: 4px; }
+  .cat-meta { text-align: left; }
+  .cashflow-pie { flex-direction: column; align-items: flex-start; }
+  .team-stats { gap: 10px; }
+  .attendance-table { font-size: 0.78rem; }
+  .attendance-table th, .attendance-table td { padding: 4px 6px; }
+}

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Finance — Chan Ming POOL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/technique.css">
+  <link rel="stylesheet" href="assets/css/logistique.css">
+  <link rel="stylesheet" href="assets/css/finance.css">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#2d4f5c">
+  <link rel="apple-touch-icon" href="/favicon.png">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        Chan Ming POOL
+        <small>Mahajanga · Madagascar</small>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">Accueil</a>
+        <a href="modele-3d.html">Modèle 3D</a>
+        <a href="specifications.html">Spécifications</a>
+        <a href="plans.html">Plan</a>
+        <a href="decisions.html">Décisions</a>
+        <a href="technique.html">Technique</a>
+        <a href="chantier.html">Chantier</a>
+        <a href="logistique.html">Logistique</a>
+        <a href="finance.html" class="active">Finance</a>
+        <a href="dashboard.html">Tableau de bord</a>
+        <a href="finance.html" class="active">Finance</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container-narrow">
+      <h1>Finance</h1>
+      <p style="color: var(--c-fg-soft); font-size: 1.05rem;">
+        Pilotage du budget, suivi des dépenses, cash flow et paie de l'équipe
+        chantier. <strong>Conversion EUR auto</strong> via les derniers taux
+        de change. <strong>Double validation</strong> obligatoire pour les
+        dépenses espèces &gt; 100 000 MGA.
+      </p>
+
+      <div class="fx-bar" id="fx-bar">
+        <span class="fx-label">Taux du jour :</span>
+        <span class="fx-rate" id="fx-rate">—</span>
+        <button class="btn btn-secondary btn-fx" id="btn-edit-fx" type="button">✏ Saisir taux</button>
+      </div>
+
+      <div class="tech-tabs" role="tablist">
+        <button class="tech-tab active" data-tab="budget" role="tab" aria-selected="true">
+          💰 Budget <span class="badge-count" id="budget-count"></span>
+        </button>
+        <button class="tech-tab" data-tab="expenses" role="tab" aria-selected="false">
+          💳 Dépenses <span class="badge-count" id="expenses-count"></span>
+        </button>
+        <button class="tech-tab" data-tab="cashflow" role="tab" aria-selected="false">
+          📈 Cash flow
+        </button>
+        <button class="tech-tab" data-tab="payroll" role="tab" aria-selected="false">
+          👷 Paie <span class="badge-count" id="team-count"></span>
+        </button>
+      </div>
+
+      <!-- BUDGET -->
+      <section class="tech-panel" id="panel-budget" role="tabpanel">
+        <div class="tech-panel-head">
+          <h2>Budget prévisionnel</h2>
+          <button class="btn" id="btn-new-budget">➕ Nouvelle ligne</button>
+        </div>
+        <p class="hint" style="margin-top:-8px;">
+          Une ligne = une catégorie (ex. « gros_oeuvre ») + sous-catégorie
+          (ex. « ciment »). Total dépensé calculé automatiquement à partir des
+          dépenses liées. Vue famille convertie en EUR.
+        </p>
+        <div class="budget-summary" id="budget-summary"></div>
+        <div class="budget-list" id="budget-list"><p class="empty-state">Chargement…</p></div>
+      </section>
+
+      <!-- EXPENSES -->
+      <section class="tech-panel" id="panel-expenses" role="tabpanel" hidden>
+        <div class="tech-panel-head">
+          <h2>Dépenses</h2>
+          <button class="btn" id="btn-new-expense">➕ Nouvelle dépense</button>
+        </div>
+        <div class="expenses-filters" id="expenses-filters">
+          <label class="dec-field">
+            <span>Poste</span>
+            <select id="filter-budget"><option value="">Tous</option></select>
+          </label>
+          <label class="dec-field">
+            <span>Fournisseur</span>
+            <select id="filter-supplier"><option value="">Tous</option></select>
+          </label>
+          <label class="dec-field">
+            <span>Mode paiement</span>
+            <select id="filter-mode">
+              <option value="">Tous</option>
+              <option value="cash">Espèces</option>
+              <option value="transfer">Virement</option>
+              <option value="mobile_money">Mobile money</option>
+              <option value="check">Chèque</option>
+              <option value="other">Autre</option>
+            </select>
+          </label>
+        </div>
+        <div class="expenses-list" id="expenses-list"><p class="empty-state">Chargement…</p></div>
+      </section>
+
+      <!-- CASH FLOW -->
+      <section class="tech-panel" id="panel-cashflow" role="tabpanel" hidden>
+        <div class="tech-panel-head">
+          <h2>Cash flow &amp; KPIs</h2>
+        </div>
+        <div class="cashflow-kpis" id="cashflow-kpis"></div>
+        <h3 style="margin-top:1.6em;">Dépenses des 12 derniers mois (EUR)</h3>
+        <div class="cashflow-bars" id="cashflow-bars"><p class="empty-state">Chargement…</p></div>
+        <h3 style="margin-top:1.6em;">Mode de paiement</h3>
+        <div class="cashflow-pie" id="cashflow-pie"></div>
+        <h3 style="margin-top:1.6em;">Budget vs réel par catégorie</h3>
+        <div class="cashflow-cats" id="cashflow-cats"></div>
+      </section>
+
+      <!-- PAYROLL -->
+      <section class="tech-panel" id="panel-payroll" role="tabpanel" hidden>
+        <div class="tech-panel-head">
+          <h2>Paie chantier</h2>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-secondary" id="btn-quick-attendance">⏱ Saisie présence</button>
+            <button class="btn" id="btn-new-member">➕ Nouvel équipier</button>
+          </div>
+        </div>
+        <div class="payroll-month" id="payroll-month"></div>
+        <div class="payroll-list" id="payroll-list"><p class="empty-state">Chargement…</p></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Chan Ming POOL · Mahajanga · Suivi de projet familial</p>
+    </div>
+  </footer>
+  <script src="assets/js/notify.js" defer></script>
+  <script src="assets/js/finance.js" defer></script>
+  <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));}</script>
+  <script src="assets/js/auth-widget.js" type="module" defer></script>
+</body>
+</html>

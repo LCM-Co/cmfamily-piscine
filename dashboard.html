@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tableau de bord — Chan Ming POOL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#2d4f5c">
+  <link rel="apple-touch-icon" href="/favicon.png">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        Chan Ming POOL
+        <small>Mahajanga · Madagascar</small>
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">Accueil</a>
+        <a href="modele-3d.html">Modèle 3D</a>
+        <a href="specifications.html">Spécifications</a>
+        <a href="plans.html">Plan</a>
+        <a href="decisions.html">Décisions</a>
+        <a href="technique.html">Technique</a>
+        <a href="chantier.html">Chantier</a>
+        <a href="logistique.html">Logistique</a>
+        <a href="finance.html">Finance</a>
+        <a href="dashboard.html" class="active">Tableau de bord</a>
+        <a href="dashboard.html" class="active">Tableau de bord</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container-narrow">
+      <div class="dash-head">
+        <div>
+          <h1>Tableau de bord</h1>
+          <p class="dash-subtitle">
+            Vue d'ensemble du chantier : avancement, budget, décisions, activité.
+            <span class="dash-generated" id="dash-generated"></span>
+          </p>
+        </div>
+        <div class="dash-actions">
+          <button class="btn btn-primary" id="btn-share">📲 Partager</button>
+          <button class="btn" id="btn-refresh" title="Recharger">↻</button>
+        </div>
+      </div>
+
+      <!-- A. Bandeau KPIs -->
+      <section class="dash-section" id="sec-kpis">
+        <div class="kpi-grid" id="kpi-grid">
+          <p class="empty-state">Chargement…</p>
+        </div>
+      </section>
+
+      <!-- B. Phases -->
+      <section class="dash-section">
+        <h2>Avancement par phase</h2>
+        <div class="phases-bars" id="phases-bars">
+          <p class="empty-state">…</p>
+        </div>
+      </section>
+
+      <!-- C. Budget -->
+      <section class="dash-section">
+        <h2>Budget par catégorie <small id="budget-summary"></small></h2>
+        <div class="budget-bars" id="budget-bars">
+          <p class="empty-state">…</p>
+        </div>
+      </section>
+
+      <!-- E. Décisions famille -->
+      <section class="dash-section">
+        <h2>Décisions famille à trancher</h2>
+        <div class="dec-cards" id="dec-cards">
+          <p class="empty-state">…</p>
+        </div>
+      </section>
+
+      <!-- D. Timeline -->
+      <section class="dash-section">
+        <h2>Activité récente</h2>
+        <div class="timeline" id="timeline">
+          <p class="empty-state">…</p>
+        </div>
+        <div class="timeline-more">
+          <button class="btn" id="btn-more" hidden>Voir plus</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Chan Ming POOL · Mahajanga · Suivi de projet familial</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/whatsapp-export.js" defer></script>
+  <script src="assets/js/dashboard.js" defer></script>
+  <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));}</script>
+  <script src="assets/js/auth-widget.js" type="module" defer></script>
+</body>
+</html>

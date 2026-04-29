@@ -1,0 +1,34 @@
+{
+  "name": "Chan Ming POOL",
+  "short_name": "CM POOL",
+  "description": "Suivi du chantier piscine Chan Ming — Mahajanga, Madagascar.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#2d4f5c",
+  "background_color": "#f5f1e8",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzJkNGY1YyIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMTQwIiBmaWxsPSIjZjVmMWU4Ii8+PHRleHQgeD0iMjU2IiB5PSIyOTAiIGZvbnQtZmFtaWx5PSJzZXJpZiIgZm9udC1zaXplPSIxNDAiIGZvbnQtd2VpZ2h0PSI2MDAiIGZpbGw9IiMyZDRmNWMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNNPC90ZXh0Pjwvc3ZnPg==",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
