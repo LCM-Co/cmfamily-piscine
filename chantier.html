@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/technique.css">
+  <link rel="stylesheet" href="assets/css/chantier.css">
 </head>
 <body>
   <header class="site-header">
@@ -29,179 +31,181 @@
   </header>
 
   <main>
-    <div class="container">
-      <h1>Avancement du chantier</h1>
+    <div class="container-narrow">
+      <h1>Suivi du chantier</h1>
       <p style="color: var(--c-fg-soft); font-size: 1.05rem;">
-        Photos réelles du chantier au fil de l’avancement, et vues photoréalistes
-        générées par IA pour se projeter sur le rendu final.
+        Journal de bord opérationnel : avancement des phases, journal quotidien
+        (météo, coupures, problèmes), contrôles qualité (béton, étanchéité,
+        niveaux) et incidents (vol, accident, dégâts météo). Photos chantier
+        et rendus de référence en bas de page.
       </p>
 
-      <h2>Vues photoréalistes IA</h2>
-      <p>Rendus générés par IA (ChatGPT-5 mode image) à partir du tracé
-        géométrique du plan v29. Les matériaux et végétaux représentés sont
-        des <strong>propositions à valider</strong> (voir le
-        <a href="decisions.html">journal des décisions</a>).</p>
-
-      <div class="gallery">
-        <figure>
-          <img src="assets/images/ai/ai-01.png" alt="Rendu IA — vue générale piscine au crépuscule">
-          <figcaption>
-            <span class="date">Avril 2026 · IA</span>
-            Vue d’ensemble — golden hour Mahajanga
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/ai/ai-02.png" alt="Rendu IA — vue générale au coucher de soleil">
-          <figcaption>
-            <span class="date">Avril 2026 · IA</span>
-            Plage et bar avec coucher de soleil sur le canal du Mozambique
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/ai/ai-03.png" alt="Rendu IA — plongée verticale">
-          <figcaption>
-            <span class="date">Avril 2026 · IA</span>
-            Vue plongée verticale (drone) — multi-zones et karesansui
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/ai/ai-04.png" alt="Rendu IA — détail bar avec tabourets immergés">
-          <figcaption>
-            <span class="date">Avril 2026 · IA</span>
-            Détail bar granit noir et tabourets immergés
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/ai/ai-05.png" alt="Rendu IA — mode nuit avec LED">
-          <figcaption>
-            <span class="date">Avril 2026 · IA</span>
-            Mode nuit — éclairage LED submergé blue hour
-          </figcaption>
-        </figure>
+      <div class="tech-tabs" role="tablist">
+        <button class="tech-tab active" data-tab="phases" role="tab" aria-selected="true">
+          🏗 Phases <span class="badge-count" id="phases-count"></span>
+        </button>
+        <button class="tech-tab" data-tab="journal" role="tab" aria-selected="false">
+          📓 Journal <span class="badge-count" id="journal-count"></span>
+        </button>
+        <button class="tech-tab" data-tab="qc" role="tab" aria-selected="false">
+          ✅ Qualité <span class="badge-count" id="qc-count"></span>
+        </button>
+        <button class="tech-tab" data-tab="incidents" role="tab" aria-selected="false">
+          ⚠ Incidents <span class="badge-count" id="incidents-count"></span>
+        </button>
+        <button class="tech-tab" data-tab="photos" role="tab" aria-selected="false">
+          📸 Photos
+        </button>
       </div>
 
-      <h2 style="margin-top: 3em;">Vues 3D Blender (modélisation technique)</h2>
-      <p>Rendus Cycles à partir du modèle 3D Three.js. Géométrie exacte, matériaux PBR,
-        utiles pour vérifier les cotes et l’agencement des zones.</p>
+      <!-- ─── PHASES ─── -->
+      <section class="tech-panel" id="panel-phases" role="tabpanel">
+        <div class="tech-panel-head">
+          <h2>Phases du chantier</h2>
+          <button class="btn" id="btn-new-phase">➕ Nouvelle phase</button>
+        </div>
+        <div class="phases-list" id="phases-list">
+          <p class="empty-state">Chargement…</p>
+        </div>
+      </section>
 
-      <div class="gallery">
-        <figure>
-          <img src="assets/images/blender/01_overview.png" alt="Vue d'ensemble 3D Blender">
-          <figcaption>
-            <span class="date">Avril 2026 · Blender</span>
-            Vue d’ensemble 3/4 sud-ouest
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/blender/02_pool_top.png" alt="Plongée verticale 3D Blender">
-          <figcaption>
-            <span class="date">Avril 2026 · Blender</span>
-            Plongée verticale — plan de masse
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/blender/03_lounge.png" alt="Sunken Lounge 3D Blender">
-          <figcaption>
-            <span class="date">Avril 2026 · Blender</span>
-            Sunken Lounge depuis le nord-est
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/blender/04_zen.png" alt="Jardin zen 3D Blender">
-          <figcaption>
-            <span class="date">Avril 2026 · Blender</span>
-            Jardin zen et karesansui
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/blender/05_bar.png" alt="Bar 3D Blender">
-          <figcaption>
-            <span class="date">Avril 2026 · Blender</span>
-            Détail bar et tabourets
-          </figcaption>
-        </figure>
-        <figure>
-          <img src="assets/images/blender/06_lame.png" alt="Lame d'eau 3D Blender">
-          <figcaption>
-            <span class="date">Avril 2026 · Blender</span>
-            Lame d’eau ouest infinity edge
-          </figcaption>
-        </figure>
-      </div>
+      <!-- ─── JOURNAL ─── -->
+      <section class="tech-panel" id="panel-journal" role="tabpanel" hidden>
+        <div class="tech-panel-head">
+          <h2>Journal quotidien</h2>
+          <button class="btn" id="btn-new-log">➕ Nouvelle entrée</button>
+        </div>
+        <p class="hint" style="margin-top:-8px;">
+          Une entrée par jour ouvré : ce qui a été fait, météo, heures perdues,
+          problèmes rencontrés, photos. Saisie rapide sur mobile depuis le terrain.
+        </p>
+        <div class="journal-list" id="journal-list">
+          <p class="empty-state">Chargement…</p>
+        </div>
+      </section>
 
-      <h2 style="margin-top: 3em;">Photos chantier</h2>
-      <p>Photos réelles du chantier à Mahajanga. À mettre à jour à chaque
-        nouvelle phase de construction.</p>
+      <!-- ─── QC ─── -->
+      <section class="tech-panel" id="panel-qc" role="tabpanel" hidden>
+        <div class="tech-panel-head">
+          <h2>Contrôles qualité</h2>
+          <button class="btn" id="btn-new-qc">➕ Nouveau contrôle</button>
+        </div>
+        <p class="hint" style="margin-top:-8px;">
+          Tests béton (7j, 28j), étanchéité, niveaux, débit, pression hydraulique,
+          électrique. Chaque contrôle = fiche datée avec valeur attendue, valeur
+          mesurée, résultat (pass/fail/partial).
+        </p>
+        <div class="qc-list" id="qc-list">
+          <p class="empty-state">Chargement…</p>
+        </div>
+      </section>
 
-      <div class="callout">
-        <strong>Comment ajouter une photo ?</strong> Placez le fichier image dans
-        <code>assets/images/chantier/</code>, puis ajoutez une figure dans cette
-        page en suivant le modèle des cartes ci-dessous.
-      </div>
+      <!-- ─── INCIDENTS ─── -->
+      <section class="tech-panel" id="panel-incidents" role="tabpanel" hidden>
+        <div class="tech-panel-head">
+          <h2>Incidents et problèmes</h2>
+          <button class="btn" id="btn-new-incident">➕ Nouvel incident</button>
+        </div>
+        <p class="hint" style="margin-top:-8px;">
+          Tout ce qui sort du plan : vol, accident, dégâts météo, retard douane,
+          défaut matériau, conflit. Tracé avec sévérité et résolution.
+        </p>
+        <div class="incidents-list" id="incidents-list">
+          <p class="empty-state">Chargement…</p>
+        </div>
+      </section>
 
-      <div class="gallery">
-        <figure>
-          <div class="placeholder-photo">
-            Photo à venir<br>
-            <small>Réception fondations</small>
-          </div>
-          <figcaption>
-            <span class="date">Avril 2026 · À venir</span>
-            Réception des fondations coulées
-          </figcaption>
-        </figure>
-        <figure>
-          <div class="placeholder-photo">
-            Photo à venir<br>
-            <small>Élévation murs</small>
-          </div>
-          <figcaption>
-            <span class="date">Mai 2026 · À venir</span>
-            Début de l’élévation des murs (35 cm agglos + chape)
-          </figcaption>
-        </figure>
-        <figure>
-          <div class="placeholder-photo">
-            Photo à venir<br>
-            <small>Local technique</small>
-          </div>
-          <figcaption>
-            <span class="date">Juin 2026 · À venir</span>
-            Construction du local technique enterré
-          </figcaption>
-        </figure>
-        <figure>
-          <div class="placeholder-photo">
-            Photo à venir<br>
-            <small>Pose carrelage</small>
-          </div>
-          <figcaption>
-            <span class="date">Été 2026 · À venir</span>
-            Pose du carrelage BLUE LAGO QUARTZ
-          </figcaption>
-        </figure>
-        <figure>
-          <div class="placeholder-photo">
-            Photo à venir<br>
-            <small>Mise en eau</small>
-          </div>
-          <figcaption>
-            <span class="date">Automne 2026 · À venir</span>
-            Mise en eau et calage de la lame d’eau
-          </figcaption>
-        </figure>
-        <figure>
-          <div class="placeholder-photo">
-            Photo à venir<br>
-            <small>Réception</small>
-          </div>
-          <figcaption>
-            <span class="date">2027 · À venir</span>
-            Réception finale
-          </figcaption>
-        </figure>
-      </div>
+      <!-- ─── PHOTOS (existant : galleries IA + Blender + chantier) ─── -->
+      <section class="tech-panel" id="panel-photos" role="tabpanel" hidden>
+        <h2>Photos chantier</h2>
+        <p>Photos réelles du chantier à Mahajanga, à mettre à jour à chaque
+          nouvelle phase. À court terme, ajout via les fichiers
+          <code>assets/images/chantier/</code> ; bientôt upload direct depuis
+          le téléphone.</p>
 
+        <div class="gallery">
+          <figure>
+            <div class="placeholder-photo">Photo à venir<br><small>Réception fondations</small></div>
+            <figcaption><span class="date">Avril 2026 · À venir</span> Réception des fondations coulées</figcaption>
+          </figure>
+          <figure>
+            <div class="placeholder-photo">Photo à venir<br><small>Élévation murs</small></div>
+            <figcaption><span class="date">Mai 2026 · À venir</span> Début de l'élévation des murs</figcaption>
+          </figure>
+          <figure>
+            <div class="placeholder-photo">Photo à venir<br><small>Local technique</small></div>
+            <figcaption><span class="date">Juin 2026 · À venir</span> Construction du local technique enterré</figcaption>
+          </figure>
+          <figure>
+            <div class="placeholder-photo">Photo à venir<br><small>Pose carrelage</small></div>
+            <figcaption><span class="date">Été 2026 · À venir</span> Pose du carrelage BLUE LAGO QUARTZ</figcaption>
+          </figure>
+          <figure>
+            <div class="placeholder-photo">Photo à venir<br><small>Mise en eau</small></div>
+            <figcaption><span class="date">Automne 2026 · À venir</span> Mise en eau et calage de la lame d'eau</figcaption>
+          </figure>
+          <figure>
+            <div class="placeholder-photo">Photo à venir<br><small>Réception</small></div>
+            <figcaption><span class="date">2027 · À venir</span> Réception finale</figcaption>
+          </figure>
+        </div>
+
+        <h2 style="margin-top: 3em;">Vues photoréalistes IA (référence)</h2>
+        <p>Rendus générés par IA à partir du tracé géométrique du plan v29.
+          Les matériaux et végétaux représentés sont des
+          <strong>propositions à valider</strong> (voir le
+          <a href="decisions.html">journal des décisions</a>).</p>
+        <div class="gallery">
+          <figure>
+            <img src="assets/images/ai/ai-01.png" alt="Rendu IA — vue générale crépuscule">
+            <figcaption><span class="date">Avril 2026 · IA</span> Vue d'ensemble — golden hour</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/ai/ai-02.png" alt="Rendu IA — coucher de soleil">
+            <figcaption><span class="date">Avril 2026 · IA</span> Plage et bar — coucher de soleil</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/ai/ai-03.png" alt="Rendu IA — drone">
+            <figcaption><span class="date">Avril 2026 · IA</span> Vue plongée drone</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/ai/ai-04.png" alt="Rendu IA — bar">
+            <figcaption><span class="date">Avril 2026 · IA</span> Détail bar et tabourets immergés</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/ai/ai-05.png" alt="Rendu IA — mode nuit">
+            <figcaption><span class="date">Avril 2026 · IA</span> Mode nuit — éclairage LED</figcaption>
+          </figure>
+        </div>
+
+        <h2 style="margin-top: 3em;">Vues 3D Blender (modélisation technique)</h2>
+        <div class="gallery">
+          <figure>
+            <img src="assets/images/blender/01_overview.png" alt="Vue d'ensemble Blender">
+            <figcaption><span class="date">Avril 2026 · Blender</span> Vue 3/4 sud-ouest</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/blender/02_pool_top.png" alt="Plongée Blender">
+            <figcaption><span class="date">Avril 2026 · Blender</span> Plongée verticale</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/blender/03_lounge.png" alt="Sunken Lounge Blender">
+            <figcaption><span class="date">Avril 2026 · Blender</span> Sunken Lounge</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/blender/04_zen.png" alt="Jardin sec Blender">
+            <figcaption><span class="date">Avril 2026 · Blender</span> Jardin sec</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/blender/05_bar.png" alt="Bar Blender">
+            <figcaption><span class="date">Avril 2026 · Blender</span> Détail bar</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/blender/06_lame.png" alt="Lame d'eau Blender">
+            <figcaption><span class="date">Avril 2026 · Blender</span> Lame d'eau ouest</figcaption>
+          </figure>
+        </div>
+      </section>
     </div>
   </main>
 
@@ -211,6 +215,7 @@
     </div>
   </footer>
   <script src="assets/js/notify.js" defer></script>
+  <script src="assets/js/chantier.js" defer></script>
   <script src="assets/js/tech-notify.js" defer></script>
 </body>
 </html>
