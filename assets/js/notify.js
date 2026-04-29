@@ -93,14 +93,60 @@
     localStorage.setItem(STORAGE_KEY, current);
   }
 
+  function setPanelOpen(panel, open) {
+    if (!panel) return;
+    panel.classList.toggle("open", open);
+    const target = "#" + panel.id;
+    document.querySelectorAll(`[data-toggle-comments][data-target="${target}"]`).forEach(btn => {
+      const label = btn.dataset.openLabel || "💬 Donner mon avis";
+      const closeLabel = btn.dataset.closeLabel || "🙈 Masquer le fil";
+      btn.textContent = open ? closeLabel : label;
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  }
+
   function toggleComments(e) {
     e.preventDefault();
     const btn = e.currentTarget;
     const panel = document.querySelector(btn.dataset.target);
+    if (!panel) return;
+    setPanelOpen(panel, !panel.classList.contains("open"));
+  }
+
+  function openPanelFromHash() {
+    const hash = window.location.hash;
+    if (!hash || hash.length < 2) return;
+    // Cas 1 : hash = #comments-XX → ouvrir directement le panneau
+    let panel = document.querySelector(hash + ".comments-panel, " + hash + " .comments-panel");
+    if (!panel) {
+      const target = document.querySelector(hash);
+      if (target) {
+        if (target.classList.contains("comments-panel")) {
+          panel = target;
+        } else {
+          panel = target.querySelector(".comments-panel");
+        }
+      }
+    }
     if (panel) {
-      const isOpen = panel.classList.toggle("open");
-      btn.textContent = isOpen ? "🙈 Masquer les commentaires" : "👁 Voir les commentaires";
-      btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      setPanelOpen(panel, true);
+      panel.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
+  function handleAnchorClick(e) {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const href = a.getAttribute("href");
+    if (!href || href === "#") return;
+    const target = document.querySelector(href);
+    if (!target) return;
+    // Si l'ancre cible un panneau ou contient un panneau de commentaires, l'ouvrir
+    let panel = null;
+    if (target.classList.contains("comments-panel")) panel = target;
+    else panel = target.querySelector(".comments-panel");
+    if (panel) {
+      setPanelOpen(panel, true);
     }
   }
 
@@ -110,8 +156,16 @@
     });
     document.querySelectorAll("[data-toggle-comments]").forEach(b => {
       b.addEventListener("click", toggleComments);
+      // Initialise le label depuis data-open-label si présent
+      if (b.dataset.openLabel && !b.classList.contains("comments-toggle--initialized")) {
+        b.textContent = b.dataset.openLabel;
+        b.classList.add("comments-toggle--initialized");
+      }
     });
+    document.addEventListener("click", handleAnchorClick);
+    window.addEventListener("hashchange", openPanelFromHash);
     updateButtons();
     checkForNewDecision();
+    openPanelFromHash();
   });
 })();
