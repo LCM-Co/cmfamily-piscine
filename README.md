@@ -51,13 +51,20 @@ Toutes les pages doivent rester cohérentes avec lui.
 À lancer après toute modification du modèle 3D :
 
 ```bash
+# Vérifie que les pages HTML sont cohérentes avec la 3D
 python3 scripts/check-coherence.py
+
+# Régénère le plan 2D SVG depuis les coordonnées de la 3D
+python3 scripts/generate-plan-svg.py
 ```
 
-Le script extrait les coordonnées des bassins depuis le code Three.js,
+`check-coherence.py` extrait les coordonnées des bassins depuis le code Three.js,
 recalcule surfaces et volumes, et signale les divergences sur les pages
 HTML (anciennes valeurs, dimensions imprécises, mentions de « 5 bassins », etc.).
 Exit code 0 si OK, 1 sinon.
+
+`generate-plan-svg.py` produit `assets/plan-3d.svg` — un plan 2D vectoriel
+montré sur la page Plan, par construction cohérent avec la 3D.
 
 ## Hébergement
 

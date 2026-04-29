@@ -31,9 +31,32 @@
     <div class="container">
       <h1>Plan architecte</h1>
       <p style="color: var(--c-fg-soft); font-size: 1.05rem;">
-        Plan v29 final, validé le 9 avril 2026. PDF complet avec cotes
-        et détails techniques. Vous pouvez zoomer et naviguer dans le PDF
-        directement, ou le télécharger pour l’imprimer.
+        Plan v29 final. La <strong>vue 2D synthèse ci-dessous est générée
+        automatiquement à partir du modèle 3D</strong> — elle est donc toujours
+        cohérente avec lui. Les PDF historiques de l’architecte sont conservés
+        plus bas pour référence.
+      </p>
+
+      <h2>Plan 2D synthèse — vue de dessus</h2>
+      <p>
+        Toutes les cotes proviennent directement des coordonnées du modèle 3D
+        (origine = angle sud-ouest du Grand Bassin, axe Y vers le nord, 1 carreau = 1 m).
+        Régénéré à chaque modification du modèle via
+        <code>python3 scripts/generate-plan-svg.py</code>.
+      </p>
+
+      <div style="background: #f7f4ee; border-radius: 12px; padding: 16px; margin: 24px 0; overflow: auto;">
+        <object data="assets/plan-3d.svg" type="image/svg+xml" style="width:100%; max-width: 700px; display:block; margin:0 auto;">
+          <img src="assets/plan-3d.svg" alt="Plan 2D synthèse Chan Ming POOL — généré depuis le modèle 3D">
+        </object>
+      </div>
+
+      <h2 style="margin-top: 3em;">PDF historiques de l’architecte</h2>
+      <p style="color: var(--c-fg-soft);">
+        ⚠ Ces PDF correspondent à des états antérieurs du plan (avant réduction
+        du couloir 13→5 m, repositionnement de l’îlot D 2,20×2,20, et niveau
+        lounge à −1,05 m). Pour les cotes finales validées, se référer au plan
+        2D ci-dessus ou au modèle 3D.
       </p>
 
       <p style="margin: 24px 0;">
@@ -45,8 +68,7 @@
         </a>
       </p>
 
-      <h2>Plan synthèse — 4 pages</h2>
-      <p>Document de référence avec implantation, cotes, détails techniques et coupes.</p>
+      <h3>Plan synthèse — 4 pages (historique)</h3>
 
       <iframe
         src="assets/pdf/plan-piscine.pdf#view=Fit"
@@ -58,7 +80,7 @@
         </p>
       </iframe>
 
-      <h2 style="margin-top: 3em;">Plan v29 — version originale</h2>
+      <h3 style="margin-top: 3em;">Plan v29 — version originale (historique)</h3>
       <p>Plan d’origine de l’architecte, avec toutes les pages et annotations.</p>
 
       <iframe
