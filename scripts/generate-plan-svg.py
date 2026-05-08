@@ -193,7 +193,7 @@ def main():
         parts.append(
             f'<text x="{x(-0.2):.1f}" y="{y(8):.1f}" fill="#1a1a1c" font-size="10" '
             f'font-weight="600" text-anchor="end" transform="rotate(-90 {x(-0.2):.1f},{y(8):.1f})">'
-            f'Lame d\'eau granit · 17 m (12 m débordement)</text>'
+            f'Lame d\'eau granit · 17 m débordement</text>'
         )
 
     # Bar

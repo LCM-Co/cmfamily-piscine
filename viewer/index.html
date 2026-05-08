@@ -125,7 +125,7 @@
 </div>
 
 <div class="panel" id="stats">
-  GB 7,04×7,87×−1,80 · MB 7,28×4,00×−1,40 · Couloir 2,00×5,00×−1,40 · Plage 3,24×7,87×−0,60 · Lounge 4,35×4,00×−1,05 (sec) · Vestiaire 2,0×3,8 · Rangement 2,0×3,9 · Îlot D 2,20×2,20 (Z=0) · Talus 7,48×10,84
+  GB 7,04×7,87×−1,80 · MB 7,28×4,00×−1,40 · Couloir 2,00×5,00×−1,40 · Plage 3,24×7,87×−0,60 · Lounge 4,35×4,00×−1,05 (sec) · Vestiaire 2,0×3,2 · Rangement 2,0×2,25 · Local technique 2,0×2,2 (sol −2,20, toits Z=0) · Îlot D 2,20×2,20 (Z=0) · Talus 7,48×10,84
 </div>
 <div class="panel" id="help">
   🖱️ <b>Glisser</b> = orbite · <b>Molette</b> = zoom · <b>Clic droit + glisser</b> = panoramique
@@ -205,7 +205,7 @@ const C = {
   LAME_EAU: {
     mur_ouest: { x0: -0.350, y0: -0.130, x1: 0.000, y1: 16.870 },  // 17.00 m (au lieu de 25.24)
     fente_debut: 0.000,
-    fente_fin: 12.000,  // les 12 m linéaires de débordement actif (face GB+MB)
+    fente_fin: 17.000,  // 17 m linéaires de débordement actif (face ouest GB+MB+Couloir, alignés sur mur_ouest 17 m) — décision 2026-05-02
     fente_largeur: 0.050,
     granit_top: 0.000  // à Z=0 niveau eau
   },
@@ -243,6 +243,12 @@ const C = {
   // Esc #4 ajusté : zen au niveau -1.40 (correction utilisateur), lounge à -1.20 → dénivelée 0.20 m = 1 marche unique
   ESC4_ZEN_LOUNGE: { x0: 7.280, y0: 11.870, x1: 8.280, y1: 12.150, marches: 1, h: 0.200, giron: 0.280, z_bas: -1.400, z_haut: -1.200, dir: 'nord' },
   ESC5_TERRASSE_LOUNGE: { x0: 10.630, y0: 6.190, x1: 11.630, y1: 7.870, marches: 6, h: 0.200, giron: 0.280, z_bas: -1.200, z_haut: 0.030, dir: 'nord' },
+
+  // === ESCALIERS LOCAUX ANNEXES (zen Z=-1.40 → sol intérieur Z=-2.20, dénivelée 0.80 m, 4 marches × 0.20)
+  // Axe X, sens=1 : marche basse devant porte (x=2.20, z=-2.00), marche haute côté zen (x=3.20, z=-1.40)
+  ESC_LOC_VESTIAIRE:   { x0: 2.200, y0: 18.420, x1: 3.200, y1: 19.220, marches: 4, h: 0.200, giron: 0.250, z_bas: -2.200, z_haut: -1.400, dir: 'est', largeur: 0.80 },
+  ESC_LOC_RANGEMENT:   { x0: 2.200, y0: 21.145, x1: 3.200, y1: 21.945, marches: 4, h: 0.200, giron: 0.250, z_bas: -2.200, z_haut: -1.400, dir: 'est', largeur: 0.80 },
+  ESC_LOC_TECHNIQUE:   { x0: 2.200, y0: 23.370, x1: 3.200, y1: 24.170, marches: 4, h: 0.200, giron: 0.250, z_bas: -2.200, z_haut: -1.400, dir: 'est', largeur: 0.80 },
 
   // === DALLES ===
   DALLE_HAUTE: 0.030,
@@ -489,24 +495,27 @@ groups.murs.add(rectBox(2.000, 11.870, 7.040, 12.220, 1.40, M.blancPiscine, -1.4
 groups.murs.add(rectBox(7.040, 11.870, 7.390, 12.220, 1.40, M.blancPiscine, -1.40));
 
 // ============================================================
-// LOCAUX PISCINE (vestiaire + stockage) — sol au niveau du jardin zen (-1.40)
-// Murs blanc cassé (cohérence bord piscine), toit bois Hintsy débordant
-// 2 portes plein-pied côté est (zen), une par local, sans détails intérieurs
+// LOCAUX PISCINE (vestiaire + rangement + LOCAL TECHNIQUE) — refonte 2026-05-02
+// 3 locaux alignés N-S, toits affleurant la margelle piscine (Z=0)
+// Sol intérieur creusé à Z=-2.20 (= 0.80 m sous le zen) → hauteur utile 2.20 m
+// Accès depuis le zen via 3 escaliers (4 marches × 0.20 m), une porte par local
 // ============================================================
 {
   const lx0 = 0.000, lx1 = 2.000;
   const ly0 = 17.220, ly1 = 24.870;
-  const sepY = 21.000;
-  const sol = -1.400;           // sol au niveau zen
-  const hMur = 2.400;
-  const sommet = sol + hMur;    // +1.00
+  // Subdivision Y : Vestiaire 3.20 m + Rangement 2.25 m + Local technique 2.20 m
+  const sepVestRang = 20.420;   // séparation vestiaire / rangement
+  const sepRangTech = 22.670;   // séparation rangement / local technique
+  const sol = -2.200;           // sol intérieur creusé (0.80 m sous zen)
+  const sommet = 0.000;         // sommet murs / dessous toit affleure margelle piscine (Z=0)
+  const hMur = sommet - sol;    // 2.200 m (hauteur utile intérieure)
   const epExt = 0.200;
   const epInt = 0.100;
 
-  // Sol intérieur — dalle 4 cm posée sur le sol zen
+  // Sol intérieur — dalle 4 cm à Z=-2.20
   groups.murs.add(rectBox(lx0, ly0, lx1, ly1, 0.04, M.blancPiscine, sol));
 
-  // Mur sud (façade piscine, englobe l'ancien mur nord couloir)
+  // Mur sud (façade piscine, englobe l'ancien mur nord couloir, descend jusqu'au sol -2.20)
   groups.murs.add(rectBox(lx0, 16.870, lx1, 17.220, hMur, M.blancPiscine, sol));
   // Margelle de fin de couloir (z=0) — débord 10 cm côté piscine + 5 cm côté nord, marque la fin de course du nageur
   groups.murs.add(rectBox(lx0, 16.770, lx1, 17.270, 0.04, M.margelleTravertin, -0.02));
@@ -517,26 +526,35 @@ groups.murs.add(rectBox(7.040, 11.870, 7.390, 12.220, 1.40, M.blancPiscine, -1.4
   // Mur ouest (côté jardin)
   groups.murs.add(rectBox(lx0 - epExt, ly0, lx0, ly1 + epExt, hMur, M.blancPiscine, sol));
 
-  // Mur est (côté zen) — plein, percé visuellement par les 2 portes
+  // Mur est (côté zen) — plein, percé visuellement par les 3 portes
   groups.murs.add(rectBox(lx1, ly0, lx1 + epExt, ly1 + epExt, hMur, M.blancPiscine, sol));
 
-  // Cloison séparation vestiaire / stockage
-  groups.murs.add(rectBox(lx0, sepY, lx1, sepY + epInt, hMur, M.blancPiscine, sol));
+  // Cloisons séparations (vestiaire/rangement, rangement/local technique)
+  groups.murs.add(rectBox(lx0, sepVestRang, lx1, sepVestRang + epInt, hMur, M.blancPiscine, sol));
+  groups.murs.add(rectBox(lx0, sepRangTech, lx1, sepRangTech + epInt, hMur, M.blancPiscine, sol));
 
-  // Toit plat bois Hintsy, débordant 25 cm
+  // Toit plat bois Hintsy, débordant 25 cm — sommet visible jusque Z=+0.08, dessous Z=0 (margelle)
   groups.murs.add(rectBox(lx0 - 0.25 - epExt, ly0 - 0.25, lx1 + 0.25 + epExt, ly1 + 0.25 + epExt, 0.08, M.bois, sommet));
 
-  // PORTE VESTIAIRE (côté est, plein-pied avec sol zen, centrée sur le vestiaire y≈19.0)
+  // PORTE VESTIAIRE (côté est, hauteur 2.10 m sur sol intérieur, centrée sur y=18.82)
   {
-    const py = 19.000, pw = 0.80, ph = 2.10;
+    const py = 18.820, pw = 0.80, ph = 2.10;
+    groups.murs.add(rectBox(lx1 + epExt - 0.04, py - pw / 2, lx1 + epExt, py + pw / 2, ph, M.bois, sol));
+  }
+  // PORTE RANGEMENT (côté est, centrée sur y=21.545)
+  {
+    const py = 21.545, pw = 0.80, ph = 2.10;
+    groups.murs.add(rectBox(lx1 + epExt - 0.04, py - pw / 2, lx1 + epExt, py + pw / 2, ph, M.bois, sol));
+  }
+  // PORTE LOCAL TECHNIQUE (côté est, centrée sur y=23.770)
+  {
+    const py = 23.770, pw = 0.80, ph = 2.10;
     groups.murs.add(rectBox(lx1 + epExt - 0.04, py - pw / 2, lx1 + epExt, py + pw / 2, ph, M.bois, sol));
   }
 
-  // PORTE STOCKAGE (côté est, plein-pied, centrée sur le stockage y≈22.95)
-  {
-    const py = 22.950, pw = 0.80, ph = 2.10;
-    groups.murs.add(rectBox(lx1 + epExt - 0.04, py - pw / 2, lx1 + epExt, py + pw / 2, ph, M.bois, sol));
-  }
+  // TRAPPE D'ACCÈS BAC TAMPON (sol local technique, 0.80 × 0.80 m, bois, Z=-2.16)
+  // Le bac tampon 15 m³ est enterré sous le sol — la trappe permet l'accès maintenance
+  groups.murs.add(rectBox(0.600, 23.500, 1.400, 24.300, 0.04, M.bois, -2.160));
 }
 
 // ============================================================
@@ -714,7 +732,15 @@ addWater(C.PLAGE);
 {
   const Z = C.ZEN;
   // Sol zen à -1.40 (= fond MB/Couloir) — en creux par rapport au terrain
-  groups.zen.add(rectBox(Z.x0, Z.y0, Z.x1, Z.y1, 0.04, M.zen, Z.top - 0.04));
+  // 3 fosses (1.0 m × 0.80 m) percées dans la bande ouest pour les escaliers d'accès aux locaux annexes
+  // Fosses : x=2.20..3.20, y={18.42..19.22, 21.145..21.945, 23.37..24.17}
+  // Bande est (x=3.20..11.277) : pleine sur toute la longueur
+  groups.zen.add(rectBox(3.200, Z.y0, Z.x1, Z.y1, 0.04, M.zen, Z.top - 0.04));
+  // Bande ouest (x=1.997..3.20) : 4 segments entre les 3 fosses
+  groups.zen.add(rectBox(Z.x0, Z.y0,    3.200, 18.420, 0.04, M.zen, Z.top - 0.04)); // sud (inclut karesansui)
+  groups.zen.add(rectBox(Z.x0, 19.220,  3.200, 21.145, 0.04, M.zen, Z.top - 0.04)); // entre vestiaire et rangement
+  groups.zen.add(rectBox(Z.x0, 21.945,  3.200, 23.370, 0.04, M.zen, Z.top - 0.04)); // entre rangement et local tech
+  groups.zen.add(rectBox(Z.x0, 24.170,  3.200, Z.y1,   0.04, M.zen, Z.top - 0.04)); // nord
   // Cailloux décoratifs (au sol zen)
   for (let i = 0; i < 8; i++) {
     const sx = Z.x0 + 1 + Math.random() * (Z.x1 - Z.x0 - 2);
@@ -924,6 +950,12 @@ buildEscalierLineaire(C.ESC4_ZEN_LOUNGE, M.basalte, 'y', 1);
 // Esc #5 Terrasse→Lounge : descente vers le nord (chemin bois Z=+0.030 → lounge Z=-1.20)
 // sens=-1 pour que la marche haute soit côté sud (chemin) et la marche basse côté nord (lounge)
 buildEscalierLineaire(C.ESC5_TERRASSE_LOUNGE, M.basalte, 'y', -1);
+
+// Escaliers d'accès aux 3 locaux annexes (zen Z=-1.40 → sol intérieur Z=-2.20)
+// Axe X, sens=1 : marche basse à x=2.20 (devant porte) Z=-2.00, marche haute à x=3.20 (zen) Z=-1.40
+buildEscalierLineaire(C.ESC_LOC_VESTIAIRE, M.basalte, 'x', 1);
+buildEscalierLineaire(C.ESC_LOC_RANGEMENT, M.basalte, 'x', 1);
+buildEscalierLineaire(C.ESC_LOC_TECHNIQUE, M.basalte, 'x', 1);
 
 // ============================================================
 // DALLES PÉRIMÉTRIQUES (entre piscine et zones)
@@ -1189,8 +1221,10 @@ function makeLabel(text, position, color = '#7dd3fc', size = 1.0) {
 groups.labels.add(makeLabel('GB 7,04×7,87 −1,80', new THREE.Vector3(3.5, 4, 1.0)));
 groups.labels.add(makeLabel('MB 7,28×4,00 −1,40', new THREE.Vector3(3.5, 9.8, 1.0)));
 groups.labels.add(makeLabel('Couloir 2×5 −1,40', new THREE.Vector3(1.0, 14.5, 1.0)));
-groups.labels.add(makeLabel('Vestiaire 2,0×3,8', new THREE.Vector3(1.0, 19.1, 1.3), '#fbbf24'));
-groups.labels.add(makeLabel('Stockage piscine 2,0×3,9', new THREE.Vector3(1.0, 22.9, 1.3), '#fbbf24'));
+groups.labels.add(makeLabel('Vestiaire 2,0×3,20 (sol −2,20)', new THREE.Vector3(1.0, 18.82, -0.4), '#fbbf24'));
+groups.labels.add(makeLabel('Rangement 2,0×2,25 (sol −2,20)', new THREE.Vector3(1.0, 21.55, -0.4), '#fbbf24'));
+groups.labels.add(makeLabel('Local technique 2,0×2,20 (sol −2,20)', new THREE.Vector3(1.0, 23.77, -0.4), '#fbbf24'));
+groups.labels.add(makeLabel('Toits locaux Z=0 (affleurent margelle)', new THREE.Vector3(1.0, 24.50, 0.30), '#7d4f2a'));
 groups.labels.add(makeLabel('Plage 3,24×7,87 −0,60', new THREE.Vector3(8.7, 4, 0.6)));
 groups.labels.add(makeLabel('Lounge B 4,35×4 −1,05 sec', new THREE.Vector3(9.4, 9.8, 1.0)));
 groups.labels.add(makeLabel('Bar tablette granit (Z=0)', new THREE.Vector3(7.215, 9.87, 0.6), '#fbbf24'));
